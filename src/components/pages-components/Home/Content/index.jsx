@@ -1,7 +1,7 @@
 import Image from "next/image"
 
 import electronics from "@/assets/electronics.jpg"
-import categoryElectronics from "../../../../assets/categoryElectronics.png"
+import categoryElectronics from "@/assets/categoryElectronics.png"
 
 export const Content = () => {
 
@@ -95,7 +95,9 @@ export const Content = () => {
                 </div>
             </div>
             
+            
             <div>
+                {/* Special Offer */}
                 <div className="bg-gray-900 py-16 text-white">
                     <div className="flex justify-center">
                         <div className="flex flex-col items-center">
@@ -107,6 +109,7 @@ export const Content = () => {
                         </div>
                     </div>
                 </div>
+
                 <footer className="bg-gray-50 py-16 px-10">
                     a
                 </footer>

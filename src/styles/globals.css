@@ -4,5 +4,7 @@
 
 /* customizar css aqui */
 @layer base {
-
+    * {
+        box-sizing: border-box;
+    }
 }
