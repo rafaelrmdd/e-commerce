@@ -15,6 +15,7 @@ export const Header = () => {
                         placeholder="Search products..."
                     />
                 </div>
+
                 <nav className="flex gap-6">
                     <Link href={"/favorites"}><BiHeart className="size-6"/></Link>
                     <Link href={"/cart"}><BiShoppingBag className="size-6"/></Link>               

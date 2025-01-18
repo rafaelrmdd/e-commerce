@@ -11,12 +11,14 @@ export const Content = () => {
                 <h2 className="text-2xl font-semibold">Your Cart</h2>
 
                 <div className="flex mt-6">
+
+                    {/* Products on Cart */}
                     <div className="flex flex-col w-3/4 h-36">
                         <Product />
                         <Product />
                     </div>
                     
-
+                    {/* Purchase Informations */}
                     <div className="p-4 w-1/4 ml-8 mt-6">
                         <h2 className="font-medium text-lg">Order Summary</h2>
                         <div className="justify-between flex gap-y-4 mt-4">
