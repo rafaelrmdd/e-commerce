@@ -1,4 +1,5 @@
 import { BiSearch, BiShoppingBag, BiHeart, BiUser } from 'react-icons/bi'
+import Link from 'next/link'
 
 export const Header = () => {
     return (
@@ -15,8 +16,8 @@ export const Header = () => {
                     />
                 </div>
                 <nav className="flex gap-6">
-                    <span><BiHeart className="size-6"/></span>
-                    <span><BiShoppingBag className="size-6"/></span>
+                    <Link href={"/favorites"}><BiHeart className="size-6"/></Link>
+                    <Link href={"/cart"}><BiShoppingBag className="size-6"/></Link>               
                     <span><BiUser className="size-6"/></span>
                 </nav>
                 

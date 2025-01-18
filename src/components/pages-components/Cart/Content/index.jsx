@@ -8,7 +8,7 @@ export const Content = () => {
             </div>
 
             <div className="px-10 mt-6">
-                <h2>Your Cart</h2>
+                <h2 className="text-2xl font-semibold">Your Cart</h2>
 
                 <div className="flex mt-6">
                     <div className="flex flex-col w-3/4 h-36">
