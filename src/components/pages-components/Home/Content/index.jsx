@@ -2,10 +2,24 @@ import Image from "next/image"
 
 import electronics from "@/assets/electronics.jpg"
 import categoryElectronics from "@/assets/categoryElectronics.png"
+import { Card } from "../Card"
+import { useContext } from "react"
+import { ProductsContext } from "@/pages/_app"
 
 export const Content = () => {
 
-    console.log(categoryElectronics)
+    const products = useContext(ProductsContext)
+    console.log("Products: ", products)
+
+    const featuredProducts = products.filter((product) => product.is_featured === true)
+
+    const usdFormat = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 2
+    });
+
+
     return (
         <div className="bg-gray-50">
             {/* Hero Section*/}
@@ -48,50 +62,19 @@ export const Content = () => {
 
                 {/* Featured Products */}
                 <div className="flex justify-between gap-x-20 mt-8">
-                    <div 
-                        className="w-[20%] h-70 p-4 rounded-lg shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow duration-200"
-                    >
-                        <div className="h-60 mb-4">
-                            <Image src={categoryElectronics} alt="teste" className="object-cover w-full h-full rounded-lg" />
-                        </div> 
-                        <div className="h-10">
-                            <h3 className="font-medium text-lg mb-2">Wireless Headphones</h3>
-                            <span className="text-blue-600 font-semibold">$89.99</span>
-                        </div>
-                    </div>    
-                    <div 
-                        className="w-[20%] h-70 p-4 rounded-lg shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow duration-200"
-                    >
-                        <div className="h-60 mb-4 ">
-                            <Image src={categoryElectronics} alt="teste" className="object-cover w-full h-full rounded-lg" />
-                        </div> 
-                        <div className="h-10">
-                            <h3 className="font-medium text-lg mb-2">Wireless Headphones</h3>
-                            <span className="text-blue-600 font-semibold">$89.99</span>
-                        </div>
-                    </div>    
-                    <div 
-                        className="w-[20%] h-70 p-4 rounded-lg shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow duration-200"
-                    >
-                        <div className="h-60 mb-4">
-                            <Image src={categoryElectronics} alt="teste" className="object-cover w-full h-full rounded-lg" />
-                        </div> 
-                        <div className="h-10">
-                            <h3 className="font-medium text-lg mb-2">Wireless Headphones</h3>
-                            <span className="text-blue-600 font-semibold">$89.99</span>
-                        </div>
-                    </div>    
-                    <div 
-                        className="w-[20%] h-70 p-4 rounded-lg shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow duration-200"
-                    >
-                        <div className="h-60 mb-4">
-                            <Image src={categoryElectronics} alt="teste" className="object-cover w-full h-full rounded-lg" />
-                        </div> 
-                        <div className="h-10">
-                            <h3 className="font-medium text-lg mb-2">Wireless Headphones</h3>
-                            <span className="text-blue-600 font-semibold">$89.99</span>
-                        </div>
-                    </div>     
+                    {featuredProducts.map((product) => (
+                        <div 
+                            className="w-[20%] h-70 p-4 rounded-lg shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow duration-200"
+                        >
+                            <div className="h-60 mb-4">
+                                <Image src={categoryElectronics} alt="teste" className="object-cover w-full h-full rounded-lg" />
+                            </div> 
+                            <div className="h-10">
+                                <h3 className="font-medium text-lg mb-2">{product.name}</h3>
+                                <span className="text-blue-600 font-semibold">{usdFormat.format(product.price)}</span>
+                            </div>
+                        </div>  
+                    ))}
                 </div>
             </div>
             
