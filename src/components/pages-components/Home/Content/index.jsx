@@ -9,8 +9,6 @@ import { ProductsContext } from "@/pages/_app"
 export const Content = () => {
 
     const products = useContext(ProductsContext)
-    console.log("Products: ", products)
-
     const featuredProducts = products.filter((product) => product.is_featured === true)
 
     const usdFormat = new Intl.NumberFormat('en-US', {
@@ -18,7 +16,6 @@ export const Content = () => {
         currency: 'USD',
         maximumFractionDigits: 2
     });
-
 
     return (
         <div className="bg-gray-50">

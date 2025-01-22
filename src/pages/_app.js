@@ -12,16 +12,15 @@ export default function App({ Component, pageProps }) {
     const fetchProducts = async () => {
       let { data: Products, error } = await supabase
         .from('Products')
-        .select('*')
-
+        .select('*')    
+        
       if(error){
-        console.log(error)
+        setProducts('')
+        console.log('fetch products error: ', error)
+        return
       }
 
-      
       setProducts(Products)
-      console.log(products)
-      
     }
 
     fetchProducts();
