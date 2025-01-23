@@ -1,15 +1,15 @@
 import Image from "next/image"
-
 import electronics from "@/assets/electronics.jpg"
 import categoryElectronics from "@/assets/categoryElectronics.png"
+
 import { Card } from "../Card"
 import { useContext } from "react"
 import { ProductsContext } from "@/pages/_app"
 
 export const Content = () => {
 
-    const products = useContext(ProductsContext)
-    const featuredProducts = products.filter((product) => product.is_featured === true)
+    const products = useContext(ProductsContext);
+    const featuredProducts = products.filter((product) => product.is_featured === true);
 
     const usdFormat = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -62,6 +62,7 @@ export const Content = () => {
                     {featuredProducts.map((product) => (
                         <div 
                             className="w-[20%] h-70 p-4 rounded-lg shadow-sm hover:shadow-md hover:cursor-pointer transition-shadow duration-200"
+                            key={product.id}
                         >
                             <div className="h-60 mb-4">
                                 <Image src={categoryElectronics} alt="teste" className="object-cover w-full h-full rounded-lg" />

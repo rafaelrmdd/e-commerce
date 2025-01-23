@@ -6,21 +6,19 @@ export const ProductsContext = createContext();
 
 export default function App({ Component, pageProps }) {
 
-  const [products, setProducts] = useState()
+  const [products, setProducts] = useState([])
 
   useEffect(() => {
     const fetchProducts = async () => {
       let { data: Products, error } = await supabase
         .from('Products')
         .select('*')    
-        
-      if(error){
-        setProducts('')
-        console.log('fetch products error: ', error)
-        return
-      }
-
+          
       setProducts(Products)
+
+      if(error){
+        console.log('fetch products error: ', error)
+      }
     }
 
     fetchProducts();
