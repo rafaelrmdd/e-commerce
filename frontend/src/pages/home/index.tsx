@@ -11,7 +11,10 @@ export default function Home() {
         infinite: false,
         speed: 500,
         slidesToShow: 3,
-        slidesToScroll: 3
+        slidesToScroll: 3,
+        variableWidth: false,
+        centerMode: false,
+        adaptiveHeight: true
     }
 
     const temporaryBestSellers = [
@@ -79,25 +82,86 @@ export default function Home() {
                     </div>
 
                     {/* Carousel */}
-                    <div className="bg-gray-700 p-6 rounded">
+                    <div className="bg-gray-800 p-6 rounded ">
                         <Slider {...settings}>
-                            
-                            <div className="">
-                                <div className="bg-yellow-500 w-80">
-                                    <h1>teste</h1>
-                                </div>
-                            </div>      
+                            <div className="p-3">
+                                <div className="bg-gray-700 p-2.5 rounded-lg w-96">
+                                    {/* Image */}
+                                    <div className="bg-black w-full h-56">
+                                        
+                                    </div>
 
-                            <div className="">
-                                <div className="bg-yellow-500 w-80">
-                                    <h1>teste</h1>
-                                </div>
-                            </div>   
-                            <div className="">
-                                <div className="bg-yellow-500 w-80">
-                                    <h1>teste</h1>
-                                </div>
-                            </div>   
+                                    {/* Product Informations */}
+                                    <div className="">
+                                        <h2 className="text-white text-lg font-semibold mb-2">Product Name</h2>
+                                        <span className="text-purple-400 text-2xl block mb-4 font-bold">$99.90</span>
+                                        <button 
+                                            className="px-4 py-2 bg-purple-500 text-gray-900 rounded w-full"
+                                        >
+                                            Add to Cart
+                                        </button>
+                                    </div>       
+                                </div>      
+                            </div>
+                            <div className="p-3">
+                                <div className="bg-gray-700 p-2.5 rounded-lg w-96">
+                                    {/* Image */}
+                                    <div className="bg-black w-full h-56">
+                                        
+                                    </div>
+
+                                    {/* Product Informations */}
+                                    <div className="">
+                                        <h2 className="text-white text-lg font-semibold mb-2">Product Name</h2>
+                                        <span className="text-purple-400 text-2xl block mb-4 font-bold">$99.90</span>
+                                        <button 
+                                            className="px-4 py-2 bg-purple-500 text-gray-900 rounded w-full"
+                                        >
+                                            Add to Cart
+                                        </button>
+                                    </div>       
+                                </div>      
+                            </div>
+                            <div className="p-3">
+                                <div className="bg-gray-700 p-2.5 rounded-lg w-96">
+                                    {/* Image */}
+                                    <div className="bg-black w-full h-56">
+                                        
+                                    </div>
+
+                                    {/* Product Informations */}
+                                    <div className="">
+                                        <h2 className="text-white text-lg font-semibold mb-2">Product Name</h2>
+                                        <span className="text-purple-400 text-2xl block mb-4 font-bold">$99.90</span>
+                                        <button 
+                                            className="px-4 py-2 bg-purple-500 text-gray-900 rounded w-full"
+                                        >
+                                            Add to Cart
+                                        </button>
+                                    </div>       
+                                </div>      
+                            </div>
+                            <div className="p-3">
+                                <div className="bg-gray-700 p-2.5 rounded-lg w-76">
+                                    {/* Image */}
+                                    <div className="bg-black w-full h-56">
+                                        
+                                    </div>
+
+                                    {/* Product Informations */}
+                                    <div className="">
+                                        <h2 className="text-white text-lg font-semibold mb-2">Product Name</h2>
+                                        <span className="text-purple-400 text-2xl block mb-4 font-bold">$99.90</span>
+                                        <button
+                                            className="px-4 py-2 bg-purple-500 text-gray-900 rounded w-full"
+                                        >
+                                            Add to Cart
+                                        </button>
+                                    </div>       
+                                </div>      
+                            </div>
+                            
+
                         </Slider>
                     </div>
                 </div>
