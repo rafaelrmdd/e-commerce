@@ -64,7 +64,7 @@ export default function Home() {
       ];
 
     return (
-        <div>
+        <div className="h-screen bg-gray-900">
             <Header/>
             
             <section className="flex justify-center py-20 w-full bg-gray-950">
@@ -80,7 +80,7 @@ export default function Home() {
                 </div>   
             </section>
 
-            <main className=" bg-gray-900">
+            <main className="bg-gray-900">
                 <div className="py-16 px-8">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-52"/>
@@ -116,6 +116,134 @@ export default function Home() {
                     </div>
                 </div>
                 
+                {/* Categories */}
+                <section className="px-8">
+                    <div className="flex justify-center items-center gap-4">
+                        <hr className="text-gray-600 w-52"/>
+                        <h2 className="font-bold text-white text-2xl">CATEGORIES</h2>
+                        <hr className="text-gray-600 w-52"/>
+                    </div>
+
+                    <div className="flex justify-between mt-16">
+                        <div className="bg-red-500 rounded w-72 h-44 hover:brightness-50">
+                            Electronics
+                        </div>
+                        <div className="bg-red-500 rounded w-72 h-44">
+                            Vogue
+                        </div>
+                        <div className="bg-red-500 rounded w-72 h-44">
+                            House & Decoration
+                        </div>
+                        <div className="bg-red-500 rounded w-72 h-44">
+                            Sports
+                        </div>
+                    </div>
+                </section>
+
+                {/* Featured Items */}
+                <section className="mt-16 px-8">
+                    <div className="flex justify-center items-center gap-4">
+                        <hr className="text-gray-600 w-40"/>
+                        <h2 className="font-bold text-white text-2xl">FEATURED THIS WEEK</h2>
+                        <hr className="text-gray-600 w-40"/>
+                    </div>
+
+                    <div className="flex justify-between mt-16">
+                        <div className="bg-red-600 w-96 h-96 rounded">
+                            {/* Image */}
+                            <div className="bg-blue-500 w-full h-2/3">
+
+                            </div>
+                        </div>
+                        <div className="bg-red-600 w-96 h-96 rounded">
+                            <div className="bg-blue-500 w-full h-2/3">
+                            
+                            </div>
+                        </div>
+                        <div className="bg-red-600 w-96 h-96 rounded">
+                            <div className="bg-blue-500 w-full h-2/3">
+                            
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <footer className="bg-gray-600 mt-16 ">
+                    <nav className="flex gap-x-56 p-4 justify-center">
+                        <ul>
+                            <li className="text-gray-50 text-xl font-bold ">
+                                Navigation
+                            </li>
+                            <li className="text-gray-400">
+                                Home
+                            </li>
+                            <li className="text-gray-400">
+                                Products
+                            </li>
+                            <li className="text-gray-400">
+                                Offers
+                            </li>
+                            <li className="text-gray-400">
+                                News
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li className="text-gray-50 text-xl font-bold ">
+                                Navigation
+                            </li>
+                            <li className="text-gray-400">
+                                Home
+                            </li>
+                            <li className="text-gray-400">
+                                Products
+                            </li>
+                            <li className="text-gray-400">
+                                Offers
+                            </li>
+                            <li className="text-gray-400">
+                                News
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li className="text-gray-50 text-xl font-bold ">
+                                Navigation
+                            </li>
+                            <li className="text-gray-400">
+                                Home
+                            </li>
+                            <li className="text-gray-400">
+                                Products
+                            </li>
+                            <li className="text-gray-400">
+                                Offers
+                            </li>
+                            <li className="text-gray-400">
+                                News
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li className="text-gray-50 text-xl font-bold ">
+                                Navigation
+                            </li>
+                            <li className="text-gray-400">
+                                Home
+                            </li>
+                            <li className="text-gray-400">
+                                Products
+                            </li>
+                            <li className="text-gray-400">
+                                Offers
+                            </li>
+                            <li className="text-gray-400">
+                                News
+                            </li>
+                        </ul>
+                    </nav>
+                </footer>
+
             </main>
         </div>
     )
