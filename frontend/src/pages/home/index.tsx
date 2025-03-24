@@ -61,7 +61,31 @@ export default function Home() {
           price: "R$ 3.999,90",
           image: "/api/placeholder/250/200"
         }
-      ];
+    ];
+
+    const temporaryFeaturedProducts = [
+        {
+          id: 1,
+          title: "Notebook Ultra Slim i7",
+          description: "Processador potente, tela de alta resolução e bateria de longa duração.",
+          price: "R$ 4.999,90",
+          image: "/api/placeholder/300/250"
+        },
+        {
+          id: 2,
+          title: "Smartphone 5G Pro Max",
+          description: "Câmera de 108MP, tela AMOLED e carregamento ultra-rápido.",
+          price: "R$ 3.499,90",
+          image: "/api/placeholder/300/250"
+        },
+        {
+          id: 3,
+          title: "TV Smart 65 4K UHD",
+          description: "Imagem crystal clear, som surround e sistema inteligente.",
+          price: "R$ 5.299,90",
+          image: "/api/placeholder/300/250"
+        }
+    ];
 
     return (
         <div className="h-screen bg-gray-900">
@@ -125,17 +149,29 @@ export default function Home() {
                     </div>
 
                     <div className="flex justify-between mt-16">
-                        <div className="bg-red-500 rounded w-72 h-44 hover:brightness-50">
-                            Electronics
+                        <div 
+                            className="flex items-center justify-center 
+                          bg-gray-800 rounded w-72 h-44 hover:brightness-50 hover:cursor-pointer"
+                        >
+                            <span className="text-gray-50 text-xl font-bold ">Electronics</span>
                         </div>
-                        <div className="bg-red-500 rounded w-72 h-44">
-                            Vogue
+                        <div 
+                            className="flex items-center justify-center 
+                          bg-gray-800 rounded w-72 h-44 hover:brightness-50 hover:cursor-pointer"
+                        >
+                            <span className="text-gray-50 text-xl font-bold ">Fashion</span>
                         </div>
-                        <div className="bg-red-500 rounded w-72 h-44">
-                            House & Decoration
+                        <div 
+                            className="flex items-center justify-center 
+                          bg-gray-800 rounded w-72 h-44 hover:brightness-50 hover:cursor-pointer"
+                        >
+                            <span className="text-gray-50 text-xl font-bold ">House & Decoration</span>
                         </div>
-                        <div className="bg-red-500 rounded w-72 h-44">
-                            Sports
+                        <div 
+                            className="flex items-center justify-center 
+                          bg-gray-800 rounded w-72 h-44 hover:brightness-50 hover:cursor-pointer"
+                        >
+                            <span className="text-gray-50 text-xl font-bold ">Sports</span>
                         </div>
                     </div>
                 </section>
@@ -148,29 +184,35 @@ export default function Home() {
                         <hr className="text-gray-600 w-40"/>
                     </div>
 
+                    {/* Items */}
                     <div className="flex justify-between mt-16">
-                        <div className="bg-red-600 w-96 h-96 rounded">
-                            {/* Image */}
-                            <div className="bg-blue-500 w-full h-2/3">
+                        {temporaryFeaturedProducts.map((product) => (
+                            <div className="bg-gray-800 w-96 min-h-[500px] rounded p-4" key={product.id}>
+                                {/* Image */}
+                                <div className="bg-gray-600 rounded w-full h-[280px]">
 
+                                </div>
+
+                                {/* Featured Item Information */}
+                                <div className="mt-2">
+                                    <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.title}</h2>
+                                    <h3 className="text-gray-400 mb-2">{product.description}</h3>
+                                    <span className="text-purple-400 text-2xl font-bold mb-4 block">{product.price}</span>
+
+                                    <button 
+                                        className="w-full bg-purple-500 rounded py-3 text-gray-950 font-semibold"
+                                    >
+                                        Add to Cart
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div className="bg-red-600 w-96 h-96 rounded">
-                            <div className="bg-blue-500 w-full h-2/3">
-                            
-                            </div>
-                        </div>
-                        <div className="bg-red-600 w-96 h-96 rounded">
-                            <div className="bg-blue-500 w-full h-2/3">
-                            
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </section>
 
                 <footer className="bg-gray-600 mt-16 ">
                     <nav className="flex gap-x-56 p-4 justify-center">
-                        <ul>
+                        <ul className="flex flex-col gap-y-2">
                             <li className="text-gray-50 text-xl font-bold ">
                                 Navigation
                             </li>
@@ -188,57 +230,57 @@ export default function Home() {
                             </li>
                         </ul>
 
-                        <ul>
+                        <ul className="flex flex-col gap-y-2">
                             <li className="text-gray-50 text-xl font-bold ">
-                                Navigation
+                                Categories
                             </li>
                             <li className="text-gray-400">
-                                Home
+                                Electronics
                             </li>
                             <li className="text-gray-400">
-                                Products
+                                Fashion
                             </li>
                             <li className="text-gray-400">
-                                Offers
+                                House & Decoration
                             </li>
                             <li className="text-gray-400">
-                                News
+                                Sports
                             </li>
                         </ul>
 
-                        <ul>
+                        <ul className="flex flex-col gap-y-2">
                             <li className="text-gray-50 text-xl font-bold ">
-                                Navigation
+                                Support
                             </li>
                             <li className="text-gray-400">
-                                Home
+                                Help Center
                             </li>
                             <li className="text-gray-400">
-                                Products
+                                How to Shop
                             </li>
                             <li className="text-gray-400">
-                                Offers
+                                Payment Methods
                             </li>
                             <li className="text-gray-400">
-                                News
+                                Delivery Time
                             </li>
                         </ul>
 
-                        <ul>
+                        <ul className="flex flex-col gap-y-2">
                             <li className="text-gray-50 text-xl font-bold ">
-                                Navigation
+                                Contact Us
                             </li>
                             <li className="text-gray-400">
-                                Home
+                                Email
                             </li>
                             <li className="text-gray-400">
-                                Products
+                                Phone Support
                             </li>
                             <li className="text-gray-400">
-                                Offers
+                                Whatsapp
                             </li>
                             <li className="text-gray-400">
-                                News
+                                Social Media
                             </li>
                         </ul>
                     </nav>
