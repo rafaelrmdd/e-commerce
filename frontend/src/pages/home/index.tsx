@@ -1,10 +1,42 @@
 
-import Slider from "react-slick"
-import { Header } from "@/components/Header"
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css"; 
 
+import Slider from "react-slick"
+
+import { Header } from "@/components/Header"
+import { useEffect, useState } from "react";
+import { api } from "@/services/api/api";
+
 export default function Home() {
+
+    type ProductProps = {
+        id: number
+        title: string
+        description: string
+        price: string
+        image: string
+        isBestSeller: boolean
+        isFeatured: boolean
+    }
+
+    const [products, setProducts] = useState<ProductProps[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await api.get("products");
+        
+            const { data } = response;
+
+            if(data) {
+                setProducts(data);
+                console.log(products);
+            }
+        }
+
+        setTimeout(fetchData, 5000);
+
+    }, [products])
 
     const settings = {
         dots: true,
@@ -17,75 +49,10 @@ export default function Home() {
         adaptiveHeight: true
     }
 
-    type ProductProps = {
-        id: number
-        title: string
-        price: string
-        image: string
-    }
-
-    const temporaryBestSellers : ProductProps[] = [
-        {
-          id: 1,
-          title: "Fone de Ouvido Bluetooth Premium",
-          price: "R$ 299,90",
-          image: "/api/placeholder/250/200"
-        },
-        {
-          id: 2,
-          title: "Smartwatch Ultra Series",
-          price: "R$ 499,90",
-          image: "/api/placeholder/250/200"
-        },
-        {
-          id: 3,
-          title: "Tênis Esportivo Pro",
-          price: "R$ 399,90",
-          image: "/api/placeholder/250/200"
-        },
-        {
-          id: 4,
-          title: "Câmera DSLR 4K",
-          price: "R$ 2.499,90",
-          image: "/api/placeholder/250/200"
-        },
-        {
-          id: 5,
-          title: "Mochila Urbana Premium",
-          price: "R$ 199,90",
-          image: "/api/placeholder/250/200"
-        },
-        {
-          id: 6,
-          title: "Console de Jogos Ultimate",
-          price: "R$ 3.999,90",
-          image: "/api/placeholder/250/200"
-        }
-    ];
-
-    const temporaryFeaturedProducts = [
-        {
-          id: 1,
-          title: "Notebook Ultra Slim i7",
-          description: "Processador potente, tela de alta resolução e bateria de longa duração.",
-          price: "R$ 4.999,90",
-          image: "/api/placeholder/300/250"
-        },
-        {
-          id: 2,
-          title: "Smartphone 5G Pro Max",
-          description: "Câmera de 108MP, tela AMOLED e carregamento ultra-rápido.",
-          price: "R$ 3.499,90",
-          image: "/api/placeholder/300/250"
-        },
-        {
-          id: 3,
-          title: "TV Smart 65 4K UHD",
-          description: "Imagem crystal clear, som surround e sistema inteligente.",
-          price: "R$ 5.299,90",
-          image: "/api/placeholder/300/250"
-        }
-    ];
+    const productsBestSellers = products.filter(p => p.isBestSeller);
+    const productsFeatureds = products.filter(p => p.isFeatured);
+    console.log('bestsellers:', productsBestSellers);
+    console.log('featured:', productsFeatureds);
 
     return (
         <div className="h-screen bg-gray-900">
@@ -115,7 +82,7 @@ export default function Home() {
                     {/* Carousel */}
                     <div className="bg-gray-800 p-6 rounded mt-16">
                         <Slider {...settings}>
-                            {temporaryBestSellers.map((product : ProductProps)  => (
+                            {productsBestSellers.map((product : ProductProps)  => (
                                 <div className="p-3" key={product.id}>
                                     <div className="bg-gray-700 p-2.5 rounded-lg w-96">
                                         {/* Image */}
@@ -176,7 +143,7 @@ export default function Home() {
                     </div>
                 </section>
 
-                {/* Featured Items */}
+                {/* Featured Items Section*/}
                 <section className="mt-16 px-8">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-40"/>
@@ -184,16 +151,16 @@ export default function Home() {
                         <hr className="text-gray-600 w-40"/>
                     </div>
 
-                    {/* Items */}
+                    {/* Featured Items */}
                     <div className="flex justify-between mt-16">
-                        {temporaryFeaturedProducts.map((product) => (
+                        {productsFeatureds.map((product) => (
                             <div className="bg-gray-800 w-96 min-h-[500px] rounded p-4" key={product.id}>
                                 {/* Image */}
                                 <div className="bg-gray-600 rounded w-full h-[280px]">
 
                                 </div>
 
-                                {/* Featured Item Information */}
+                                {/* Information */}
                                 <div className="mt-2">
                                     <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.title}</h2>
                                     <h3 className="text-gray-400 mb-2">{product.description}</h3>
@@ -285,7 +252,6 @@ export default function Home() {
                         </ul>
                     </nav>
                 </footer>
-
             </main>
         </div>
     )

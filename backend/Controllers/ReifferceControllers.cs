@@ -12,14 +12,14 @@ namespace backend.Controllers;
 [Route("/api/reifferce")]
 public class ReifferceControllers : ControllerBase
 {
-    private readonly ReifferceService _service;
+    private readonly IReifferceService _service;
 
-    public ReifferceControllers(ReifferceService service)
+    public ReifferceControllers(IReifferceService service)
     {
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet("products")]
     public async Task<IActionResult> GetProducts()
     {
         try
@@ -34,7 +34,7 @@ public class ReifferceControllers : ControllerBase
 
     }
 
-    [HttpGet("{id}", Name = "GetProductById")]
+    [HttpGet("product/{id}", Name = "GetProductById")]
     public async Task<IActionResult> GetProductById(Guid id)
     {
         try
@@ -48,7 +48,7 @@ public class ReifferceControllers : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost("product")]
     public async Task<IActionResult> AddProduct(ProductDTO productDto)
     {
         try
@@ -62,7 +62,7 @@ public class ReifferceControllers : ControllerBase
         }
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("product/{id}")]
     public async Task<IActionResult> UpdateProduct(ProductDTO productDto, Guid id)
     {
         try
@@ -76,13 +76,69 @@ public class ReifferceControllers : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("product/{id}")]
     public async Task<IActionResult> DeleteProduct(Guid id)
     {
         try
         {
             await _service.DeleteProductService(id);
             return Ok("Specified product was deleted");
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpPut("product/setbestseller/{id}")]
+    public async Task<IActionResult> SetProductAsBestSeller(Guid id)
+    {
+        try
+        {
+            await _service.SetProductAsBestSeller(id);
+            return Ok("Specified product was updated");
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpPut("product/setfeatured/{id}")]
+    public async Task<IActionResult> SetProductAsFeatured(Guid id)
+    {
+        try
+        {
+            await _service.SetProductAsFeatured(id);
+            return Ok("Specified product was updated");
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpPut("product/unsetbestseller/{id}")]
+    public async Task<IActionResult> UnSetProductAsBestSeller(Guid id)
+    {
+        try
+        {
+            await _service.UnSetProductAsBestSeller(id);
+            return Ok("Specified product was updated");
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpPut("product/unsetfeatured/{id}")]
+    public async Task<IActionResult> UnSetProductAsFeatured(Guid id)
+    {
+        try
+        {
+            await _service.UnSetProductAsFeatured(id);
+            return Ok("Specified product was updated");
         }
         catch (NotFoundException ex)
         {

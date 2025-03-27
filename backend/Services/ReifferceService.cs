@@ -1,6 +1,7 @@
 using backend.Context;
 using backend.DTOs;
 using backend.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -101,6 +102,64 @@ public class ReifferceService : IReifferceService
         }
 
         _context.Products.Remove(product);
+        await _context.SaveChangesAsync();
+
+        return product;
+    }
+
+    public async Task<Product> SetProductAsBestSeller(Guid id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            throw new NotFoundException($"Product with id: {id} was not found");
+        }
+
+        product.isBestSeller = true;
+        await _context.SaveChangesAsync();
+
+        return product;
+    }
+    public async Task<Product> SetProductAsFeatured(Guid id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            throw new NotFoundException($"Product with id: {id} was not found");
+        }
+
+        product.IsFeatured = true;
+        await _context.SaveChangesAsync();
+
+        return product;
+    }
+
+    public async Task<Product> UnSetProductAsBestSeller(Guid id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            throw new NotFoundException($"Product with id: {id} was not found");
+        }
+
+        product.isBestSeller = false;
+        await _context.SaveChangesAsync();
+
+        return product;
+    }
+    public async Task<Product> UnSetProductAsFeatured(Guid id)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if (product == null)
+        {
+            throw new NotFoundException($"Product with id: {id} was not found");
+        }
+
+        product.IsFeatured = false;
         await _context.SaveChangesAsync();
 
         return product;

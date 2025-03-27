@@ -11,4 +11,8 @@ public interface IReifferceService
     public Task<Product> AddProductService(ProductDTO productDto);
     public Task<Product> UpdateProductService(ProductDTO productDto, Guid id);
     public Task<Product> DeleteProductService(Guid id);
+    public Task<Product> SetProductAsBestSeller(Guid id);
+    public Task<Product> SetProductAsFeatured(Guid id);
+    public Task<Product> UnSetProductAsBestSeller(Guid id);
+    public Task<Product> UnSetProductAsFeatured(Guid id);
 }
