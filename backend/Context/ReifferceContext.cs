@@ -22,4 +22,5 @@ public class ReifferceContext : DbContext
     }
 
     public DbSet<Product> Products { get; set; }
+    public DbSet<Categorie> Categories { get; set; }
 }
