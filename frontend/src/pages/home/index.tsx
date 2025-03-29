@@ -5,38 +5,12 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick"
 
 import { Header } from "@/components/Header"
-import { useEffect, useState } from "react";
-import { api } from "@/services/api/api";
+import { useContext } from "react";
+import { ProductsContext } from "@/Context/ProductsContextProvider";
 
 export default function Home() {
 
-    type ProductProps = {
-        id: number
-        title: string
-        description: string
-        price: string
-        image: string
-        isBestSeller: boolean
-        isFeatured: boolean
-    }
-
-    const [products, setProducts] = useState<ProductProps[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await api.get("products");
-        
-            const { data } = response;
-
-            if(data) {
-                setProducts(data);
-                console.log(products);
-            }
-        }
-
-        setTimeout(fetchData, 5000);
-
-    }, [products])
+    const { products } = useContext(ProductsContext);
 
     const settings = {
         dots: true,
@@ -82,7 +56,7 @@ export default function Home() {
                     {/* Carousel */}
                     <div className="bg-gray-800 p-6 rounded mt-16">
                         <Slider {...settings}>
-                            {productsBestSellers.map((product : ProductProps)  => (
+                            {productsBestSellers.map((product)  => (
                                 <div className="p-3" key={product.id}>
                                     <div className="bg-gray-700 p-2.5 rounded-lg w-96">
                                         {/* Image */}
@@ -92,8 +66,8 @@ export default function Home() {
 
                                         {/* Product Informations */}
                                         <div className="">
-                                            <h2 className="text-white font-semibold mb-2">{product.title}</h2>
-                                            <span className="text-purple-400 text-xl block mb-4 font-bold">{product.price}</span>
+                                            <h2 className="text-white font-semibold mb-2">{product.name}</h2>
+                                            <span className="text-purple-400 text-xl block mb-4 font-bold">${product.price}</span>
                                             <button 
                                                 className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold rounded w-full"
                                             >
@@ -162,7 +136,7 @@ export default function Home() {
 
                                 {/* Information */}
                                 <div className="mt-2">
-                                    <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.title}</h2>
+                                    <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                     <h3 className="text-gray-400 mb-2">{product.description}</h3>
                                     <span className="text-purple-400 text-2xl font-bold mb-4 block">{product.price}</span>
 

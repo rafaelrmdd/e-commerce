@@ -1,4 +1,5 @@
 import { IoCartOutline } from "react-icons/io5";
+import Link from "next/link";
 
 export function Header() {
     return (
@@ -6,11 +7,11 @@ export function Header() {
             <h1 className="text-purple-400 text-2xl font-bold">e-commerce</h1>
 
             <nav className="flex gap-8 text-white ">
-                <span>Home</span>
-                <span>Categories</span>
-                <span>Offers</span>
-                <span>New Releases</span>
-                <span>Contact</span>
+                <Link href={"/home"}>Home</Link>
+                <Link href={"/categories"}>Categories</Link>
+                <Link href={"/offers"}>Offers</Link>
+                <Link href={"/newreleases"}>New Releases</Link>
+                <Link href={"/contact"}>Contact</Link>
             </nav>
 
             <div className="flex gap-6 items-center">
