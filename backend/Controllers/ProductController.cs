@@ -1,20 +1,16 @@
-using backend.Context;
 using backend.DTOs;
-using backend.Models;
 using backend.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace backend.Controllers;
 
 [ApiController]
 [Route("/api/reifferce")]
-public class ReifferceControllers : ControllerBase
+public class ProductController : ControllerBase
 {
-    private readonly IReifferceService _service;
+    private readonly IProductService _service;
 
-    public ReifferceControllers(IReifferceService service)
+    public ProductController(IProductService service)
     {
         _service = service;
     }
@@ -88,6 +84,12 @@ public class ReifferceControllers : ControllerBase
         {
             return NotFound(ex.Message);
         }
+    }
+
+    [HttpDelete]
+    public async void DeleteAllProducts()
+    {
+        await _service.DeleteAllProductsService();
     }
 
     [HttpPut("product/setbestseller/{id}")]

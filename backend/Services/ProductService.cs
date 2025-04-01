@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services;
 
-public class ReifferceService : IReifferceService
+public class ProductService : IProductService
 {
     private readonly ReifferceContext _context;
 
-    public ReifferceService(ReifferceContext context)
+    public ProductService(ReifferceContext context)
     {
         _context = context;
     }
@@ -55,7 +55,8 @@ public class ReifferceService : IReifferceService
         Product newProduct = new Product(
             productDto.Name,
             productDto.Description,
-            productDto.Price
+            productDto.Price,
+            productDto.CategoryId
         );
 
         await _context.Products.AddAsync(newProduct);
@@ -86,6 +87,7 @@ public class ReifferceService : IReifferceService
         product.Name = productDto.Name;
         product.Description = productDto.Description;
         product.Price = productDto.Price;
+        product.CategoryId = productDto.CategoryId;
 
         await _context.SaveChangesAsync();
 
@@ -105,6 +107,16 @@ public class ReifferceService : IReifferceService
         await _context.SaveChangesAsync();
 
         return product;
+    }
+
+    public async Task<IEnumerable<Product>> DeleteAllProductsService()
+    {
+        var products = await _context.Products.ToListAsync();
+
+        _context.RemoveRange(products);
+        await _context.SaveChangesAsync();
+
+        return products;
     }
 
     public async Task<Product> SetProductAsBestSeller(Guid id)

@@ -1,6 +1,5 @@
 using backend.Models;
 using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace backend.Context;
 
@@ -21,6 +20,15 @@ public class ReifferceContext : DbContext
         }
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.Category)
+            .WithMany(c => c.Products)
+            .HasForeignKey(p => p.CategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
+    }
+
     public DbSet<Product> Products { get; set; }
-    public DbSet<Categorie> Categories { get; set; }
+    public DbSet<Category> Categories { get; set; }
 }
