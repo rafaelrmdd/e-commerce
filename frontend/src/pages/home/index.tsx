@@ -3,12 +3,19 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"; 
 
 import Slider from "react-slick"
+import { useRouter } from 'next/navigation'
 
 import { Header } from "@/components/Header"
 import { useContext } from "react";
 import { ProductsContext } from "@/Context/ProductsContextProvider";
 
 export default function Home() {
+
+    const router = useRouter();
+
+    const handleClick = (productId : number) => {
+        router.push(`/product/${productId}`)
+    }
 
     const { products } = useContext(ProductsContext);
 
@@ -58,7 +65,11 @@ export default function Home() {
                         <Slider {...settings}>
                             {productsBestSellers.map((product)  => (
                                 <div className="p-3" key={product.id}>
-                                    <div className="bg-gray-700 p-2.5 rounded-lg w-96">
+                                    <div 
+                                        onClick={() => handleClick(product.id)}
+                                        className="bg-gray-700 p-2.5 rounded-lg w-96 hover:cursor-pointer"
+                                    >
+                                        
                                         {/* Image */}
                                         <div className="bg-black w-full h-56">
                                             

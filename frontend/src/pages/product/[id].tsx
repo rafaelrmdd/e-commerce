@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 
-export function ProductPage() {
+export default function ProductPage() {
 
     const router = useRouter();
 
