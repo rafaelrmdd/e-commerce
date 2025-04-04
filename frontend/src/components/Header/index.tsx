@@ -18,7 +18,8 @@ export function Header() {
                 <input 
                     type="text" 
                     placeholder="Enter the product's name" 
-                    className="w-64 bg-gray-700 placeholder:text-gray-400 rounded-full px-4 py-2"
+                    className="w-64 bg-gray-700 placeholder:text-gray-400 rounded-full px-4 py-2
+                    outline-0 text-gray-50"
                 />
                 <span className="text-white"><IoCartOutline size={20}/></span>
             </div>
