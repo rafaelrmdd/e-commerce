@@ -21,35 +21,35 @@ export default function Contact() {
 
             <main className="flex p-8">
                 <aside className="bg-gray-800 p-6 rounded w-[30%] mr-8">
-                    <h2 className="text-2xl font-semibold text-gray-50">Contact Informations</h2>
+                    <h2 className="text-2xl font-semibold text-gray-50 mb-5">Contact Informations</h2>
                     
                     <div className="mb-7">
                         <h2 className="text-2xl font-semibold text-gray-50 mb-2">Adress</h2>
 
-                        <h3 className="text-[0.9rem] text-gray-400">Av. Paulista, 1000</h3>
-                        <h3 className="text-[0.9rem] text-gray-400">São Paulo, SP</h3>
-                        <h3 className="text-[0.9rem] text-gray-400">CEP: 01310-100</h3>
+                        <h3 className="text-gray-400">Av. Paulista, 1000</h3>
+                        <h3 className="text-gray-400">São Paulo, SP</h3>
+                        <h3 className="text-gray-400">CEP: 01310-100</h3>
                     </div>
 
                     <div className="mb-7">
                         <h2 className="text-2xl font-semibold text-gray-50 mb-2">Phone</h2>
 
-                        <h3 className="text-[0.9rem] text-gray-400">(11) 3000-1000</h3>
-                        <h3 className="text-[0.9rem] text-gray-400">(11) 99999-9999 (Whatsapp)</h3>
+                        <h3 className="text-gray-400">(11) 3000-1000</h3>
+                        <h3 className="text-gray-400">(11) 99999-9999 (Whatsapp)</h3>
                     </div>
 
                     <div className="mb-7">
                         <h2 className="text-2xl font-semibold text-gray-50 mb-2">Email</h2>
 
-                        <h3 className="text-[0.9rem] text-gray-400">contato@ecommerce.com</h3>
-                        <h3 className="text-[0.9rem] text-gray-400">suporte@ecommerce.com</h3>
+                        <h3 className="text-gray-400">contato@ecommerce.com</h3>
+                        <h3 className="text-gray-400">suporte@ecommerce.com</h3>
                     </div>
 
                     <div className="mb-7">
                         <h2 className="text-2xl font-semibold text-gray-50 mb-2">Opening Hours</h2>
 
-                        <h3 className="text-[0.9rem] text-gray-400">Monday to Friday: 8AM - 6PM</h3>
-                        <h3 className="text-[0.9rem] text-gray-400">Saturday: 9AM - 1PM</h3>
+                        <h3 className="text-gray-400">Monday to Friday: 8AM - 6PM</h3>
+                        <h3 className="text-gray-400">Saturday: 9AM - 1PM</h3>
                     </div>
 
                     <div className="mb-7">
@@ -76,14 +76,19 @@ export default function Contact() {
                 </aside>
 
                 <div className="bg-gray-800 flex-1 rounded p-6">
-                    <h2 className="text-2xl font-semibold text-gray-50">Send your Message</h2>
+                    <h2 className="text-2xl font-semibold text-gray-50 mb-5">Send your Message</h2>
 
                     <form 
                         action=""
                     >
                         <div className="flex gap-x-3 mb-3 w-full">
                             <div className="w-1/2">
-                                <label htmlFor="name">Name</label>
+                                <label 
+                                    htmlFor="name"
+                                    className="text-gray-400"
+                                >
+                                    Name
+                                </label>
                                 <input 
                                     type="text" 
                                     name="name" 
@@ -95,7 +100,12 @@ export default function Contact() {
                             </div>
 
                             <div className="w-1/2">
-                                <label htmlFor="name">Email</label>
+                                <label 
+                                    htmlFor="name"
+                                    className="text-gray-400"
+                                >
+                                    Email
+                                </label>
                                 <input 
                                     type="text" 
                                     name="email" 
@@ -128,10 +138,11 @@ export default function Contact() {
                         </label>
                         <select 
                             name="subject"
+                            defaultValue="cs"
                             className="block text-gray-50 p-3 mb-3 mt-1 w-full bg-gray-700
                             rounded"
                         >
-                            <option value="" disabled selected>Choose a subject</option>
+                            <option value="cs" >Choose a subject</option>
                             <option value="question">Question</option>
                             <option value="suggestion">Suggestion</option>
                             <option value="complaint">Complaint</option>
