@@ -181,7 +181,7 @@ export default function Contact() {
 
                         <button
                             className="w-full bg-purple-600 text-gray-950 px-5 py-3 rounded
-                            mt-8"
+                            mt-8 hover:cursor-pointer hover:bg-purple-700"
                         >   
                             Send Message
                         </button>
