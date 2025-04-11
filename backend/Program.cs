@@ -1,4 +1,5 @@
 using backend.Context;
+using backend.Models;
 using backend.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ISubCategoryService, SubCategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ReifferceContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("MyConnectionStrings:NpgsqlConnectionString")));
