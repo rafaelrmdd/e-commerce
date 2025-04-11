@@ -9,8 +9,19 @@ public class Product
     public bool isBestSeller { get; set; } = false;
     public bool IsFeatured { get; set; } = false;
 
-    public int CategoryId { get; set; }
+    public int? CategoryId { get; set; }
     public virtual Category? Category { get; set; }
+    public int? SubCategoryId { get; set; }
+    public virtual SubCategory? SubCategory { get; set; }
+
+    public Product(string name, string description, decimal price, int categoryId, int subCategoryId)
+    {
+        Name = name;
+        Description = description;
+        Price = price;
+        CategoryId = categoryId;
+        SubCategoryId = subCategoryId;
+    }
 
     public Product(string name, string description, decimal price, int categoryId)
     {
@@ -18,5 +29,12 @@ public class Product
         Description = description;
         Price = price;
         CategoryId = categoryId;
+    }
+
+    public Product(string name, string description, decimal price)
+    {
+        Name = name;
+        Description = description;
+        Price = price;
     }
 }

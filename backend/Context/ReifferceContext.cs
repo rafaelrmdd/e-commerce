@@ -27,8 +27,15 @@ public class ReifferceContext : DbContext
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.CategoryId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<Product>()
+            .HasOne(p => p.SubCategory)
+            .WithMany(c => c.Products)
+            .HasForeignKey(p => p.SubCategoryId)
+            .OnDelete(DeleteBehavior.SetNull); ;
     }
 
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<SubCategory> SubCategories { get; set; }
 }
