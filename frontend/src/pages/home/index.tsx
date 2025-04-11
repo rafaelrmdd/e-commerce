@@ -3,18 +3,19 @@ import "slick-carousel/slick/slick-theme.css";
 
 import Slider from "react-slick"
 
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { Header } from "@/components/Header"
 import { useContext } from "react";
 import { ProductsContext } from "@/Context/ProductsContextProvider";
+import Link from "next/link";
 
 export default function Home() {
 
-    const router = useRouter();
+    // const router = useRouter();
 
-    const handleClick = (productId : number) => {
-        router.push(`/product/${productId}`)
-    }
+    // const handleClick = (productId : number) => {
+    //     router.push(`/product/${productId}`)
+    // }
 
     const { products } = useContext(ProductsContext);
 
@@ -41,13 +42,15 @@ export default function Home() {
             <section className="flex justify-center py-20 w-full bg-gray-950">
                 <div className="text-center">
                     <h1 className="text-4xl text-white font-bold mb-4">The Best Products with the Best Prices</h1>
-                    <h3 className="text-lg mb-8 text-gray-300">Discover our exclusive products collection with up to 50% discount this week</h3>
+                    <h3 className="text-lg mb-16 text-gray-300">Discover our exclusive products collection with up to 50% discount this week</h3>
 
-                    <button 
-                        className="px-6 py-3 bg-purple-500 hover:bg-purple-400 rounded font-bold"
+                    <Link
+                        href="/offers"
+                        className="px-6 py-3 bg-purple-500 hover:bg-purple-400 rounded font-bold
+                        hover:cursor-pointer"
                     >
                         BUY NOW
-                    </button>
+                    </Link>
                 </div>   
             </section>
 
@@ -64,9 +67,11 @@ export default function Home() {
                         <Slider {...settings}>
                             {productsBestSellers.map((product)  => (
                                 <div className="p-3" key={product.id}>
-                                    <div 
-                                        onClick={() => handleClick(product.id)}
-                                        className="bg-gray-700 p-2.5 rounded-lg w-96 hover:cursor-pointer"
+                                    <Link
+                                        href={`/product/${product.id}`}
+                                        // onClick={() => handleClick(product.id)}
+                                        className="bg-gray-700 p-2.5 rounded-lg w-96 
+                                        hover:cursor-pointer block"
                                     >
                                         
                                         {/* Image */}
@@ -84,7 +89,7 @@ export default function Home() {
                                                 Add to Cart
                                             </button>
                                         </div>       
-                                    </div>      
+                                    </Link>      
                                 </div>
                             ))}
                         </Slider>

@@ -1,7 +1,7 @@
 import { api } from "@/services/api/api";
 import { createContext, ReactNode, useEffect, useState } from "react"
 
-type ProductProps = {
+export type ProductProps = {
     id: number
     name: string
     description: string

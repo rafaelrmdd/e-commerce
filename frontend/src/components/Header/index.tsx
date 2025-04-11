@@ -4,7 +4,7 @@ import Link from "next/link";
 export function Header() {
     return (
         <header className="flex justify-between items-center px-4 py-4 bg-gray-800">
-            <h1 className="text-purple-400 text-2xl font-bold">e-commerce</h1>
+            <h1 className="text-purple-400 text-2xl font-bold hover:cursor-pointer">e-commerce</h1>
 
             <nav className="flex gap-8 text-white ">
                 <Link href={"/home"}>Home</Link>

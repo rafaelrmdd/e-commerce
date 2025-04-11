@@ -1,9 +1,20 @@
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
+import { useContext } from "react";
+import { ProductProps, ProductsContext } from "@/Context/ProductsContextProvider";
 
 export default function ProductPage() {
 
-    // const router = useRouter();
+    const router = useRouter();
+    const productId = router.query.id;
+    console.log("id do produto: ", productId);
+
+    const { products } = useContext(ProductsContext)
+    console.log("produtos: ", products);
+
+    const clickedProduct = products.find((p) => String(p.id) === productId);
+
+    console.log("clicked product: ", clickedProduct);
 
     return (
         <div className="bg-gray-900 h-full">
@@ -35,9 +46,9 @@ export default function ProductPage() {
                     </div>
 
                     <div className="w-[48%] min-h-[380px]">
-                        <h1 className="text-gray-50 text-3xl font-bold mb-2">Smartphone 5G Pro Max</h1>
+                        <h1 className="text-gray-50 text-3xl font-bold mb-2">{clickedProduct?.name}</h1>
                         <span className="text-gray-300 block mb-2">4.7 (153 avalições)</span>
-                        <span className="text-purple-400 text-3xl font-bold">$3.499.90</span>
+                        <span className="text-purple-400 text-3xl font-bold">{clickedProduct?.price}</span>
 
                         {/* Color choose */}
                         <div className="mt-6">
@@ -97,14 +108,13 @@ export default function ProductPage() {
                             <h2 className="text-2xl font-bold text-gray-50 mb-3">Description</h2>
                             <div className="bg-gray-800 rounded p-5">
                                 <h3 className="text-gray-50">
-                                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Architecto
-                                    voluptatem quos veritatis deserunt, asperiores nostrum libero quam est expedita ipsa?
+                                    {clickedProduct?.description}
                                 </h3>
                             </div>
                         </div>
 
                         <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-gray-50 mb-3">Traits</h2>
+                            <h2 className="text-2xl font-bold text-gray-50 mb-3">Features</h2>
                             <div className="bg-gray-800 rounded p-5">
                                 <ul className="flex flex-col gap-y-2">
                                     <li>
