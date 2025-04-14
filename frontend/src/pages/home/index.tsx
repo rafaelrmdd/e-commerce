@@ -47,7 +47,7 @@ export default function Home() {
                     <Link
                         href="/offers"
                         className="px-6 py-3 bg-purple-500 hover:bg-purple-400 rounded font-bold
-                        hover:cursor-pointer"
+                        hover:cursor-pointer transition duration-300"
                     >
                         BUY NOW
                     </Link>
@@ -69,22 +69,22 @@ export default function Home() {
                                 <div className="p-3" key={product.id}>
                                     <Link
                                         href={`/product/${product.id}`}
-                                        // onClick={() => handleClick(product.id)}
                                         className="bg-gray-700 p-2.5 rounded-lg w-96 
                                         hover:cursor-pointer block"
                                     >
                                         
                                         {/* Image */}
-                                        <div className="bg-black w-full h-56">
+                                        <div className="bg-black w-full h-56 rounded mb-2">
                                             
                                         </div>
 
                                         {/* Product Informations */}
                                         <div className="">
                                             <h2 className="text-white font-semibold mb-2">{product.name}</h2>
-                                            <span className="text-purple-400 text-xl block mb-4 font-bold">${product.price}</span>
+                                            <span className="text-purple-400 text-2xl block mb-4 font-bold">${product.price}</span>
                                             <button 
-                                                className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold rounded w-full"
+                                                className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold
+                                                rounded w-full hover:cursor-pointer hover:bg-purple-400 transition duration-300"
                                             >
                                                 Add to Cart
                                             </button>
@@ -107,25 +107,29 @@ export default function Home() {
                     <div className="flex justify-between mt-16">
                         <div 
                             className="flex items-center justify-center 
-                          bg-gray-800 rounded w-72 h-44 hover:brightness-50 hover:cursor-pointer"
+                          bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
+                            transition duration-300"
                         >
                             <span className="text-gray-50 text-xl font-bold ">Electronics</span>
                         </div>
                         <div 
                             className="flex items-center justify-center 
-                          bg-gray-800 rounded w-72 h-44 hover:brightness-50 hover:cursor-pointer"
+                          bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
+                            transition duration-300"
                         >
                             <span className="text-gray-50 text-xl font-bold ">Fashion</span>
                         </div>
                         <div 
                             className="flex items-center justify-center 
-                          bg-gray-800 rounded w-72 h-44 hover:brightness-50 hover:cursor-pointer"
+                          bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
+                            transition duration-300"
                         >
                             <span className="text-gray-50 text-xl font-bold ">House & Decoration</span>
                         </div>
                         <div 
                             className="flex items-center justify-center 
-                          bg-gray-800 rounded w-72 h-44 hover:brightness-50 hover:cursor-pointer"
+                          bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
+                            transition duration-300"
                         >
                             <span className="text-gray-50 text-xl font-bold ">Sports</span>
                         </div>

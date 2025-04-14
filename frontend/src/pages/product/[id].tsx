@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
 import { useContext } from "react";
-import { ProductProps, ProductsContext } from "@/Context/ProductsContextProvider";
+import { ProductsContext } from "@/Context/ProductsContextProvider";
 
 export default function ProductPage() {
 
@@ -9,12 +9,9 @@ export default function ProductPage() {
     const productId = router.query.id;
 
     const { products } = useContext(ProductsContext);
-    console.log(products);
 
-    const clickedProduct = products.find((p) => String(p.id) === productId);
-    const relatedProducts = products.filter((p) => p.subCategoryId === clickedProduct?.subCategoryId).slice(0, 3);
-
-    console.log("clicked product: ", clickedProduct);
+    const thisProduct = products.find((p) => String(p.id) === productId);
+    const relatedProducts = products.filter((p) => p.subCategoryId === thisProduct?.subCategoryId).slice(0, 3);
 
     return (
         <div className="bg-gray-900 h-full">
@@ -46,9 +43,9 @@ export default function ProductPage() {
                     </div>
 
                     <div className="w-[48%] min-h-[380px]">
-                        <h1 className="text-gray-50 text-3xl font-bold mb-2">{clickedProduct?.name}</h1>
+                        <h1 className="text-gray-50 text-3xl font-bold mb-2">{thisProduct?.name}</h1>
                         <span className="text-gray-300 block mb-2">4.7 (153 avalições)</span>
-                        <span className="text-purple-400 text-3xl font-bold">${clickedProduct?.price}</span>
+                        <span className="text-purple-400 text-3xl font-bold">${thisProduct?.price}</span>
 
                         {/* Color choose */}
                         <div className="mt-6">
@@ -86,13 +83,13 @@ export default function ProductPage() {
                         <div className="mt-7.5">
                             <button 
                                 className="w-full bg-purple-500 px-4 py-4 text-black font-bold text-xl 
-                                rounded mb-4 hover:cursor-pointer"
+                                rounded mb-4 hover:cursor-pointer hover:bg-purple-400 transition duration-300"
                             >
                                 BUY NOW
                             </button>
                             <button     
                                 className="w-full bg-gray-800 px-4 py-4 text-gray-50 font-bold text-xl 
-                                rounded hover:cursor-pointer"
+                                rounded hover:cursor-pointer hover:bg-gray-700 transition duration-300"
                             >
                                 ADD TO CART
                             </button>
@@ -108,7 +105,7 @@ export default function ProductPage() {
                             <h2 className="text-2xl font-bold text-gray-50 mb-3">Description</h2>
                             <div className="bg-gray-800 rounded p-5">
                                 <h3 className="text-gray-50">
-                                    {clickedProduct?.description}
+                                    {thisProduct?.description}
                                 </h3>
                             </div>
                         </div>
