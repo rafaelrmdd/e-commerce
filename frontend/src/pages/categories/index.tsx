@@ -1,10 +1,17 @@
 import { Header } from "@/components/Header"
 import { ProductsContext } from "@/Context/ProductsContextProvider"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 
 export default function Categories() {
 
     const { products } = useContext(ProductsContext);
+    // const [category, setCategory] = useState("");
+
+    // const productsShowing = products.filter((p) => p.categoryId === category)
+
+    // const handleClick = (e : React.MouseEvent<HTMLButtonElement>) => {
+    //     setCategory(String(e.currentTarget.textContent));
+    // }
 
     return (
         <div className="h-full bg-gray-900">
@@ -15,16 +22,28 @@ export default function Categories() {
 
                 {/* Categorie selection icons */}
                 <div className="flex justify-center gap-4 mt-6">
-                    <div className="flex items-center px-5 py-3 rounded-full bg-gray-700 hover:bg-gray-500">
-                        <span className="text-gray-200">Electronics</span>
-                    </div>
-                    <div className="flex items-center px-5 py-3 rounded-full bg-gray-700 hover:bg-gray-500">
+                    <button
+                        onClick={(e : CategoryEvent) => handleClick(e)}
+                        className="flex items-center px-5 py-3 rounded-full bg-gray-700
+                        hover:bg-gray-500 hover:cursor-pointer text-gray-200"
+                    >
+                        Electronics
+                    </button>
+                    <div 
+                        className="flex items-center px-5 py-3 rounded-full bg-gray-700
+                        hover:bg-gray-500 hover:cursor-pointer"
+                    >
                         <span className="text-gray-200">Fashion</span>
                     </div>
-                    <div className="flex items-center px-5 py-3 rounded-full bg-gray-700 hover:bg-gray-500">
+                    <div className="flex items-center px-5 py-3 rounded-full bg-gray-700
+                        hover:bg-gray-500 hover:cursor-pointer"
+                    >
                         <span className="text-gray-200">House & Decoration</span>
                     </div>
-                    <div className="flex items-center px-5 py-3 rounded-full bg-gray-700 hover:bg-gray-500">
+                    <div 
+                        className="flex items-center px-5 py-3 rounded-full bg-gray-700
+                        hover:bg-gray-500 hover:cursor-pointer"
+                    >
                         <span className="text-gray-200">Sports</span>
                     </div>
                 </div>

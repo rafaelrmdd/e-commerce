@@ -1,21 +1,15 @@
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css"; 
 
-import Slider from "react-slick"
-
-// import { useRouter } from 'next/navigation'
 import { Header } from "@/components/Header"
 import { useContext } from "react";
 import { ProductsContext } from "@/Context/ProductsContextProvider";
+
+import Slider from "react-slick"
 import Link from "next/link";
 
+
 export default function Home() {
-
-    // const router = useRouter();
-
-    // const handleClick = (productId : number) => {
-    //     router.push(`/product/${productId}`)
-    // }
 
     const { products } = useContext(ProductsContext);
 
@@ -32,8 +26,6 @@ export default function Home() {
 
     const productsBestSellers = products.filter(p => p.isBestSeller);
     const productsFeatureds = products.filter(p => p.isFeatured);
-    console.log('bestsellers:', productsBestSellers);
-    console.log('featured:', productsFeatureds);
 
     return (
         <div className="h-screen bg-gray-900">

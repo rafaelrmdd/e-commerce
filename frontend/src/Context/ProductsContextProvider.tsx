@@ -37,7 +37,6 @@ export function ProductsContextProvider({children} : ProductsProviderProps) {
 
             if(data) {
                 setProducts(data);
-                console.log(products);
             }
         }
 
