@@ -65,7 +65,7 @@ export default function Home() {
                     {/* Carousel */}
                     <div className="bg-gray-800 p-6 rounded mt-16">
                         <Slider {...settings}>
-                            {productsBestSellers.map((product)  => (
+                            {productsBestSellers.map((product) => (
                                 <div className="p-3" key={product.id}>
                                     <Link
                                         href={`/product/${product.id}`}

@@ -7,12 +7,12 @@ export default function ProductPage() {
 
     const router = useRouter();
     const productId = router.query.id;
-    console.log("id do produto: ", productId);
 
-    const { products } = useContext(ProductsContext)
-    console.log("produtos: ", products);
+    const { products } = useContext(ProductsContext);
+    console.log(products);
 
     const clickedProduct = products.find((p) => String(p.id) === productId);
+    const relatedProducts = products.filter((p) => p.subCategoryId === clickedProduct?.subCategoryId).slice(0, 3);
 
     console.log("clicked product: ", clickedProduct);
 
@@ -48,7 +48,7 @@ export default function ProductPage() {
                     <div className="w-[48%] min-h-[380px]">
                         <h1 className="text-gray-50 text-3xl font-bold mb-2">{clickedProduct?.name}</h1>
                         <span className="text-gray-300 block mb-2">4.7 (153 avalições)</span>
-                        <span className="text-purple-400 text-3xl font-bold">{clickedProduct?.price}</span>
+                        <span className="text-purple-400 text-3xl font-bold">${clickedProduct?.price}</span>
 
                         {/* Color choose */}
                         <div className="mt-6">
@@ -86,13 +86,13 @@ export default function ProductPage() {
                         <div className="mt-7.5">
                             <button 
                                 className="w-full bg-purple-500 px-4 py-4 text-black font-bold text-xl 
-                                rounded mb-4"
+                                rounded mb-4 hover:cursor-pointer"
                             >
                                 BUY NOW
                             </button>
                             <button     
                                 className="w-full bg-gray-800 px-4 py-4 text-gray-50 font-bold text-xl 
-                                rounded"
+                                rounded hover:cursor-pointer"
                             >
                                 ADD TO CART
                             </button>
@@ -188,39 +188,24 @@ export default function ProductPage() {
                         <h2 className="text-2xl font-bold text-gray-50 mb-3">Related Products</h2>
 
                         <div className="flex flex-col gap-y-3">
-                            <div className="p-2 bg-gray-800 flex rounded hover:cursor-pointer">
-                                {/* Image */}
-                                <div>
+                            {relatedProducts.map((product) => (
+                                <div 
+                                    key={product.id}
+                                    className="p-2 bg-gray-800 flex rounded hover:cursor-pointer"
+                                >
+                                    {/* Image */}
+                                    <div className="w-[40%] mr-2">
 
+                                    </div>
+
+                                    {/* Informations */}
+                                    <div>
+                                        <h3 className="text-gray-50 text-xl font-semibold">{product.name}</h3>
+                                        <span className="text-purple-500 text-xl font-bold">{product.price}</span>
+                                    </div>
                                 </div>
-
-                                {/* Informations */}
-                                <div>
-                                    <h3 className="text-gray-50 text-xl font-semibold">Fone de ouvido</h3>
-                                    <span className="text-purple-500 text-xl font-bold">$75.90</span>
-                                </div>
-                            </div>
-                            <div className="p-2 bg-gray-800 rounded hover:cursor-pointer">
-                                <div>
-
-                                </div>
-
-                                <div>
-                                    <h3 className="text-gray-50 text-xl font-semibold">Fone de ouvido</h3>
-                                    <span className="text-purple-500 text-xl font-bold">$75.90</span>
-                                </div>
-
-                            </div>
-                            <div className="p-2 bg-gray-800 rounded hover:cursor-pointer">
-                                <div>
-
-                                </div>
-
-                                <div>
-                                    <h3 className="text-gray-50 text-xl font-semibold">Fone de ouvido</h3>
-                                    <span className="text-purple-500 text-xl font-bold">$75.90</span>
-                                </div>
-                            </div>
+                            ))}
+                            
                         </div>
                     </div>
                 </section>

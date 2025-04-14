@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace backend.Models;
 
 public class Product
@@ -9,9 +11,13 @@ public class Product
     public bool isBestSeller { get; set; } = false;
     public bool IsFeatured { get; set; } = false;
 
-    public int? CategoryId { get; set; }
+    public int CategoryId { get; set; }
+
+    [JsonIgnore]
     public virtual Category? Category { get; set; }
-    public int? SubCategoryId { get; set; }
+    public int SubCategoryId { get; set; }
+
+    [JsonIgnore]
     public virtual SubCategory? SubCategory { get; set; }
 
     public Product(string name, string description, decimal price, int categoryId, int subCategoryId)

@@ -9,6 +9,8 @@ export type ProductProps = {
     image: string
     isBestSeller: boolean
     isFeatured: boolean
+    categoryId: number
+    subCategoryId: number
 }
 
 type ProductsContextProps = {

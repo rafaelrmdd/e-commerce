@@ -88,6 +88,8 @@ public class ProductService : IProductService
         product.Description = productDto.Description;
         product.Price = productDto.Price;
         product.CategoryId = productDto.CategoryId;
+        //Colocar em minúsculo depois "Sub C ategory" para "Sub c ategory"
+        product.SubCategoryId = productDto.SubcategoryId;
 
         await _context.SaveChangesAsync();
 
