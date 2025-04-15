@@ -1,7 +1,15 @@
 import { Footer } from "@/components/Footer"
 import { Header } from "@/components/Header"
+import { useForm } from "react-hook-form"
 
 export default function Contact() {
+
+    const { register, handleSubmit } = useForm()
+
+    const onSubmit = (data : object) => {
+        console.log(data)
+    }
+
     return (
         <div className="h-full bg-gray-900">
             <Header /> 
@@ -80,7 +88,7 @@ export default function Contact() {
                     <h2 className="text-2xl font-semibold text-gray-50 mb-5">Send your Message</h2>
 
                     <form 
-                        action=""
+                        onSubmit={handleSubmit(onSubmit)}
                     >
                         <div className="flex gap-x-3 mb-3 w-full">
                             <div className="w-1/2">
@@ -91,8 +99,8 @@ export default function Contact() {
                                     Name
                                 </label>
                                 <input 
+                                    {...register("name")}
                                     type="text" 
-                                    name="name" 
                                     placeholder="Rafael"
                                     className="text-gray-400 placeholder:text-gray-400 block p-3
                                     bg-gray-700 rounded outline-0 mt-1 w-full"
@@ -108,8 +116,8 @@ export default function Contact() {
                                     Email
                                 </label>
                                 <input 
+                                    {...register("email")}
                                     type="text" 
-                                    name="email" 
                                     placeholder="youremail@example.com"
                                     className="text-gray-400 placeholder:text-gray-400 block p-3
                                     bg-gray-700 rounded outline-0 mt-1 w-full"
@@ -124,8 +132,8 @@ export default function Contact() {
                             Number
                         </label>
                         <input 
+                            {...register("number")}
                             type="text" 
-                            name="number" 
                             placeholder="(00) 00000-0000"
                             className="text-gray-400 placeholder:text-gray-400 block p-3
                             bg-gray-700 rounded outline-0 mb-3 mt-1 w-full"
@@ -138,7 +146,7 @@ export default function Contact() {
                             Subject
                         </label>
                         <select 
-                            name="subject"
+                            {...register("subject")}
                             defaultValue="cs"
                             className="block text-gray-50 p-3 mb-3 mt-1 w-full bg-gray-700
                             rounded"
@@ -158,8 +166,8 @@ export default function Contact() {
                             Message
                         </label>
                         <textarea 
-                            name="message" 
-                            placeholder="(00) 00000-0000"
+                            {...register("message")}
+                            placeholder="Enter your message"
                             rows={10}
                             cols={10}
                             className="text-gray-400 placeholder:text-gray-400 block p-3
