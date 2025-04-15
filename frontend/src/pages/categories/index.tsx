@@ -1,3 +1,4 @@
+import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
 import { ProductsContext } from "@/Context/ProductsContextProvider"
 import { useContext, useState } from "react"
@@ -87,16 +88,17 @@ export default function Categories() {
     const categoryNumber = convertCategoryToNumber(category)
 
     const productsShowing = products.filter((p) => p.categoryId === categoryNumber)
-
+    console.log('products showing: ', productsShowing);
+    console.log('products: ', products);
 
     return (
         <div className="h-full bg-gray-900">
             <Header />
 
-            <main className="mt-10">
+            <main className="mt-10 min-h-screen">
                 <h1 className="text-4xl font-bold text-gray-50 text-center">Categories</h1>
 
-                {/* Categorie selection icons */}
+                {/* Category selection icons */}
                 <div className="flex justify-center gap-4 mt-6">
                     <button
                         onClick={(e) => handleClick(e)}
@@ -130,7 +132,7 @@ export default function Categories() {
 
                 {/* Products */}
                 <section className="flex flex-wrap gap-y-4 justify-between mt-6 px-10">
-                    {productsShowing.map((product) => (
+                    {productsShowing.length > 0 ? productsShowing.map((product) => (
                         <div className="p-3" key={product.id}>
                             <div className="bg-gray-800 p-2.5 rounded-lg w-96">
                                     {/* Image */}
@@ -150,10 +152,32 @@ export default function Categories() {
                                 </div>       
                             </div>        
                         </div>
+                )) : products.map((product) => (
+                    <div className="p-3" key={product.id}>
+                        <div className="bg-gray-800 p-2.5 rounded-lg w-96">
+                                {/* Image */}
+                            <div className="bg-black w-full h-56">
+                                
+                            </div>
+
+                            {/* Product Informations */}
+                            <div className="">
+                                <h2 className="text-white font-semibold mb-2">{product.name}</h2>
+                                <span className="text-purple-400 text-xl block mb-4 font-bold">{product.price}</span>
+                                <button 
+                                    className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold rounded w-full"
+                                >
+                                    Add to Cart
+                                </button>
+                            </div>       
+                        </div>        
+                    </div>
                 ))}
                     
                 </section>
             </main>
+
+            <Footer />
         </div>
     )
 }
