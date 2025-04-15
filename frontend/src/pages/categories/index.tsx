@@ -4,14 +4,90 @@ import { useContext, useState } from "react"
 
 export default function Categories() {
 
+    //Subcategorie
+    // [
+    //     {
+    //       "id": 1,
+    //       "name": "Smartphones & Mobile Devices"
+    //     },
+    //     {
+    //       "id": 2,
+    //       "name": "Laptops & Computers"
+    //     },
+    //     {
+    //       "id": 3,
+    //       "name": "Peripherals & Accessories"
+    //     },
+    //     {
+    //       "id": 4,
+    //       "name": "Women's Clothing"
+    //     },
+    //     {
+    //       "id": 5,
+    //       "name": "Men's Clothing"
+    //     },
+    //     {
+    //       "id": 6,
+    //       "name": "Watches & Jewelry"
+    //     },
+    //     {
+    //       "id": 7,
+    //       "name": "Lighting"
+    //     },
+    //     {
+    //       "id": 8,
+    //       "name": "Kitchen & Utilities"
+    //     },
+    //     {
+    //       "id": 9,
+    //       "name": "Furniture"
+    //     },
+    //     {
+    //       "id": 10,
+    //       "name": "Team Sports"
+    //     },
+    //     {
+    //       "id": 11,
+    //       "name": "Cycling"
+    //     },
+    //     {
+    //       "id": 12,
+    //       "name": "Fitness & Weight Training"
+    //     }
+    //   ]
+
+
     const { products } = useContext(ProductsContext);
-    // const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("");
 
-    // const productsShowing = products.filter((p) => p.categoryId === category)
+    const handleClick = (e : React.MouseEvent<HTMLButtonElement>) => {
+        setCategory(String(e.currentTarget.textContent));
+        console.log(category);
+    }
 
-    // const handleClick = (e : React.MouseEvent<HTMLButtonElement>) => {
-    //     setCategory(String(e.currentTarget.textContent));
-    // }
+    const convertCategoryToNumber = (category : string) => {
+        switch(category) {
+            case "Electronics":
+                return 1;
+                break;
+            case "Fashion":
+                return 2;
+                break;
+            case "House & Decoration":
+                return 3;
+                break;
+            case "Sports":
+                return 4
+                break;
+            default:
+                return null;
+        }
+    }
+
+    const categoryNumber = convertCategoryToNumber(category)
+
+    const productsShowing = products.filter((p) => p.categoryId === categoryNumber)
+
 
     return (
         <div className="h-full bg-gray-900">
@@ -23,34 +99,38 @@ export default function Categories() {
                 {/* Categorie selection icons */}
                 <div className="flex justify-center gap-4 mt-6">
                     <button
-                        onClick={(e : CategoryEvent) => handleClick(e)}
+                        onClick={(e) => handleClick(e)}
                         className="flex items-center px-5 py-3 rounded-full bg-gray-700
                         hover:bg-gray-500 hover:cursor-pointer text-gray-200"
                     >
                         Electronics
                     </button>
-                    <div 
+                    <button 
+                        onClick={(e) => handleClick(e)}
                         className="flex items-center px-5 py-3 rounded-full bg-gray-700
                         hover:bg-gray-500 hover:cursor-pointer"
                     >
                         <span className="text-gray-200">Fashion</span>
-                    </div>
-                    <div className="flex items-center px-5 py-3 rounded-full bg-gray-700
+                    </button>
+                    <button
+                        onClick={(e) => handleClick(e)}
+                        className="flex items-center px-5 py-3 rounded-full bg-gray-700
                         hover:bg-gray-500 hover:cursor-pointer"
                     >
                         <span className="text-gray-200">House & Decoration</span>
-                    </div>
-                    <div 
+                    </button>
+                    <button 
+                        onClick={(e) => handleClick(e)}
                         className="flex items-center px-5 py-3 rounded-full bg-gray-700
                         hover:bg-gray-500 hover:cursor-pointer"
                     >
                         <span className="text-gray-200">Sports</span>
-                    </div>
+                    </button>
                 </div>
 
                 {/* Products */}
                 <section className="flex flex-wrap gap-y-4 justify-between mt-6 px-10">
-                    {products.map((product) => (
+                    {productsShowing.map((product) => (
                         <div className="p-3" key={product.id}>
                             <div className="bg-gray-800 p-2.5 rounded-lg w-96">
                                     {/* Image */}

@@ -162,7 +162,7 @@ export default function Home() {
                     </div>
                 </section>
 
-                <footer className="bg-gray-600 mt-16 ">
+                <footer className="bg-gray-700 mt-16 ">
                     <nav className="flex gap-x-56 p-4 justify-center">
                         <ul className="flex flex-col gap-y-2">
                             <li className="text-gray-50 text-xl font-bold ">

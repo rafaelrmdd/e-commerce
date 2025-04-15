@@ -56,7 +56,8 @@ public class ProductService : IProductService
             productDto.Name,
             productDto.Description,
             productDto.Price,
-            productDto.CategoryId
+            productDto.CategoryId,
+            productDto.SubCategoryId
         );
 
         await _context.Products.AddAsync(newProduct);
@@ -89,7 +90,7 @@ public class ProductService : IProductService
         product.Price = productDto.Price;
         product.CategoryId = productDto.CategoryId;
         //Colocar em minúsculo depois "Sub C ategory" para "Sub c ategory"
-        product.SubCategoryId = productDto.SubcategoryId;
+        product.SubCategoryId = productDto.SubCategoryId;
 
         await _context.SaveChangesAsync();
 
