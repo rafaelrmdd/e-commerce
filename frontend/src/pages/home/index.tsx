@@ -98,34 +98,39 @@ export default function Home() {
                     </div>
 
                     <div className="flex justify-between mt-16">
-                        <div 
+                        <Link
+                            href={`/categories?category=Electronics`}
                             className="flex items-center justify-center 
                           bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
                             transition duration-300"
                         >
                             <span className="text-gray-50 text-xl font-bold ">Electronics</span>
-                        </div>
-                        <div 
+                        </Link>
+                        <Link 
+                            href={`/categories?category=Fashion`}
                             className="flex items-center justify-center 
                           bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
                             transition duration-300"
                         >
                             <span className="text-gray-50 text-xl font-bold ">Fashion</span>
-                        </div>
-                        <div 
+                        </Link>
+                        <Link 
+                            //encode so that i can use & and space
+                            href={`/categories?category=${encodeURIComponent("House & Decoration")}`}
                             className="flex items-center justify-center 
                           bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
                             transition duration-300"
                         >
                             <span className="text-gray-50 text-xl font-bold ">House & Decoration</span>
-                        </div>
-                        <div 
+                        </Link>
+                        <Link 
+                            href={`/categories?category=Sports`}
                             className="flex items-center justify-center 
                           bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
                             transition duration-300"
                         >
                             <span className="text-gray-50 text-xl font-bold ">Sports</span>
-                        </div>
+                        </Link>
                     </div>
                 </section>
 

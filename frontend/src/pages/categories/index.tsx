@@ -2,8 +2,13 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
 import { ProductsContext } from "@/Context/ProductsContextProvider"
 import { useContext, useState } from "react"
+import { useSearchParams } from "next/navigation";
 
 export default function Categories() {
+
+    const searchParams = useSearchParams();
+
+    const categoryFromHome = searchParams.get("category");
 
     //Subcategorie
     // [
@@ -59,7 +64,7 @@ export default function Categories() {
 
 
     const { products } = useContext(ProductsContext);
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState(categoryFromHome || "");
 
     const handleClick = (e : React.MouseEvent<HTMLButtonElement>) => {
         setCategory(String(e.currentTarget.textContent));
@@ -88,8 +93,6 @@ export default function Categories() {
     const categoryNumber = convertCategoryToNumber(category)
 
     const productsShowing = products.filter((p) => p.categoryId === categoryNumber)
-    console.log('products showing: ', productsShowing);
-    console.log('products: ', products);
 
     return (
         <div className="h-full bg-gray-900">
