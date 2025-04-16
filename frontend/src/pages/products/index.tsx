@@ -4,13 +4,12 @@ import { ProductsContext } from "@/Context/ProductsContextProvider"
 import { useContext, useState } from "react"
 import { useSearchParams } from "next/navigation";
 
-export default function Categories() {
+export default function Products() {
 
     const searchParams = useSearchParams();
-
     const categoryFromHome = searchParams.get("category");
 
-    //Subcategorie
+    //Subcategories
     // [
     //     {
     //       "id": 1,
@@ -65,26 +64,41 @@ export default function Categories() {
 
     const { products } = useContext(ProductsContext);
     const [category, setCategory] = useState(categoryFromHome || "");
+    const [isElectronicsCategoryActive, setIsElectronicsCategoryActive] = useState(false);
+    const [isFashionCategoryActive, setIsFashionCategoryActive] = useState(false);
+    const [isSportsCategoryActive, setIsSportsCategoryActive] = useState(false);
+    const [isHouseDecorationCategoryActive, setIsHomeDecorationCategoryActive] = useState(false);
 
     const handleClick = (e : React.MouseEvent<HTMLButtonElement>) => {
         setCategory(String(e.currentTarget.textContent));
         console.log(category);
+
+        switch(category){
+            case "Electronics":
+                setIsElectronicsCategoryActive(!isElectronicsCategoryActive);
+                break;
+            case "Fashion":
+                setIsFashionCategoryActive(!isFashionCategoryActive);
+                break;
+            case "House & Decoration":
+                setIsHomeDecorationCategoryActive(!isHouseDecorationCategoryActive);
+                break;
+            case "Sports":
+                setIsSportsCategoryActive(!isSportsCategoryActive);
+                break;
+        }
     }
 
     const convertCategoryToNumber = (category : string) => {
         switch(category) {
             case "Electronics":
                 return 1;
-                break;
             case "Fashion":
                 return 2;
-                break;
             case "House & Decoration":
                 return 3;
-                break;
             case "Sports":
                 return 4
-                break;
             default:
                 return null;
         }
@@ -101,33 +115,38 @@ export default function Categories() {
             <main className="mt-10 min-h-screen">
                 <h1 className="text-4xl font-bold text-gray-50 text-center">Categories</h1>
 
+
                 {/* Category selection icons */}
                 <div className="flex justify-center gap-4 mt-6">
                     <button
                         onClick={(e) => handleClick(e)}
-                        className="flex items-center px-5 py-3 rounded-full bg-gray-700
-                        hover:bg-gray-500 hover:cursor-pointer text-gray-200"
+                        className={`flex items-center px-5 py-3 rounded-full
+                        hover:bg-gray-500 hover:cursor-pointer text-gray-200 
+                        ${isElectronicsCategoryActive ? "bg-gray-400" : "bg-gray-700"}` }
                     >
                         Electronics
                     </button>
                     <button 
                         onClick={(e) => handleClick(e)}
-                        className="flex items-center px-5 py-3 rounded-full bg-gray-700
-                        hover:bg-gray-500 hover:cursor-pointer"
+                        className={`flex items-center px-5 py-3 rounded-full
+                        hover:bg-gray-500 hover:cursor-pointer text-gray-200 
+                        ${isFashionCategoryActive ? "bg-gray-400" : "bg-gray-700"}` }
                     >
                         <span className="text-gray-200">Fashion</span>
                     </button>
                     <button
                         onClick={(e) => handleClick(e)}
-                        className="flex items-center px-5 py-3 rounded-full bg-gray-700
-                        hover:bg-gray-500 hover:cursor-pointer"
+                        className={`flex items-center px-5 py-3 rounded-full
+                        hover:bg-gray-500 hover:cursor-pointer text-gray-200 
+                        ${isHouseDecorationCategoryActive ? "bg-gray-400" : "bg-gray-700"}` }
                     >
                         <span className="text-gray-200">House & Decoration</span>
                     </button>
                     <button 
                         onClick={(e) => handleClick(e)}
-                        className="flex items-center px-5 py-3 rounded-full bg-gray-700
-                        hover:bg-gray-500 hover:cursor-pointer"
+                        className={`flex items-center px-5 py-3 rounded-full
+                        hover:bg-gray-500 hover:cursor-pointer text-gray-200 
+                        ${isSportsCategoryActive ? "bg-gray-400" : "bg-gray-700"}` }
                     >
                         <span className="text-gray-200">Sports</span>
                     </button>

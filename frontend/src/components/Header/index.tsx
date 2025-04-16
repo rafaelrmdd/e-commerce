@@ -8,7 +8,7 @@ export function Header() {
 
             <nav className="flex gap-8 text-white ">
                 <Link href={"/home"}>Home</Link>
-                <Link href={"/categories"}>Categories</Link>
+                <Link href={"/products"}>Products</Link>
                 <Link href={"/offers"}>Offers</Link>
                 <Link href={"/newreleases"}>New Releases</Link>
                 <Link href={"/contact"}>Contact</Link>
