@@ -132,7 +132,6 @@ export default function Products() {
     }
 
     const handleKeyPress = (e : KeyEvent) => {
-        console.log(e);
         if (e.code === 'Enter'){
             handleSearch();
         }
