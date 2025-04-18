@@ -1,5 +1,6 @@
 import { IoCartOutline } from "react-icons/io5";
 import Link from "next/link";
+import { FaUserCircle } from "react-icons/fa";
 
 export function Header() {
     return (
@@ -15,13 +16,10 @@ export function Header() {
             </nav>
 
             <div className="flex gap-6 items-center">
-                <input 
-                    type="text" 
-                    placeholder="Enter the product's name" 
-                    className="w-64 bg-gray-700 placeholder:text-gray-400 rounded-full px-4 py-2
-                    outline-0 text-gray-50"
-                />
-                <span className="text-white"><IoCartOutline size={20}/></span>
+                <FaUserCircle 
+                    className="hover:cursor-pointer"
+                    color="white" 
+                    size={24}/>
             </div>
         </header>
     )

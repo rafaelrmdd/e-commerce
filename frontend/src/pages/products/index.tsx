@@ -1,13 +1,15 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
 import { ProductsContext } from "@/Context/ProductsContextProvider"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
+import { SlMagnifier } from "react-icons/sl";
 
 export default function Products() {
 
     const searchParams = useSearchParams();
     const categoryFromHome = searchParams.get("category");
+
 
     //Subcategories
     // [
@@ -64,10 +66,23 @@ export default function Products() {
 
     const { products } = useContext(ProductsContext);
     const [category, setCategory] = useState(categoryFromHome || "");
+    const [searchKeyword, setSearchKeyword] = useState("");
+    const [temporarySearchKeyword, setTemporarySearchKeyword] = useState("");
+
+    const [isAllCategoryActive, setIsAllCategoryActive] = useState(false);
     const [isElectronicsCategoryActive, setIsElectronicsCategoryActive] = useState(false);
     const [isFashionCategoryActive, setIsFashionCategoryActive] = useState(false);
     const [isSportsCategoryActive, setIsSportsCategoryActive] = useState(false);
     const [isHouseDecorationCategoryActive, setIsHomeDecorationCategoryActive] = useState(false);
+
+    //Avoid multiple categories active
+    useEffect(() => {
+        setIsAllCategoryActive(category === "All");
+        setIsElectronicsCategoryActive(category === "Electronics");
+        setIsFashionCategoryActive(category === "Fashion");
+        setIsHomeDecorationCategoryActive(category === "House & Decoration");
+        setIsSportsCategoryActive(category === "Sports");
+    }, [category]);
 
     const handleClick = (e : React.MouseEvent<HTMLButtonElement>) => {
         setCategory(String(e.currentTarget.textContent));
@@ -85,34 +100,87 @@ export default function Products() {
             case "Sports":
                 setIsSportsCategoryActive(!isSportsCategoryActive);
                 break;
-
+            case "All":
+                resetFilters(); 
+                setIsAllCategoryActive(!isAllCategoryActive);
+                break;
         }
+    }
+
+    const resetFilters = () => {
+        setCategory("");
+        setSearchKeyword("");
+        setTemporarySearchKeyword("");
     }
 
     const convertCategoryToNumber = (category : string) => {
         switch(category) {
-            case "Electronics":
-                return 1;
-            case "Fashion":
-                return 2;
-            case "House & Decoration":
-                return 3;
-            case "Sports":
-                return 4
-            default:
-                return null;
+            case "Electronics": return 1;
+            case "Fashion": return 2;
+            case "House & Decoration": return 3;
+            case "Sports": return 4
+            default: return null;
         }
     }
 
-    const categoryNumber = convertCategoryToNumber(category)
+    const handleSearch = () => {
+        setSearchKeyword(temporarySearchKeyword);
+    }
 
-    const productsShowing = products.filter((p) => p.categoryId === categoryNumber)
+    interface KeyEvent {
+        code : string
+    }
+
+    const handleKeyPress = (e : KeyEvent) => {
+        console.log(e);
+        if (e.code === 'Enter'){
+            handleSearch();
+        }
+    } 
+
+    const filteredProducts = products.filter((product) => {
+        const categoryNumber = convertCategoryToNumber(category);
+        const hasCategory = categoryNumber !== null;
+        const hasKeyword = searchKeyword.trim() !== "";
+
+        if(hasCategory && hasKeyword) {
+            return product.categoryId === categoryNumber && product.name.toLowerCase().includes(searchKeyword.toLowerCase());
+        }
+        else if(hasCategory) {
+            return product.categoryId === categoryNumber;
+        }
+        else if(hasKeyword) {
+            return product.name.toLowerCase().includes(searchKeyword.toLowerCase());
+        }
+        
+        return true;
+    })
 
     return (
         <div className="h-full bg-gray-900">
             <Header />
 
             <main className="px-8 mt-8">
+                <div className="flex justify-center">
+                    <div 
+                        className="flex items-center justify-between mb-8 rounded bg-gray-700 w-3/5">
+                        <input
+                            onChange={(e) => setTemporarySearchKeyword(e.target.value)} 
+                            type="text" 
+                            placeholder="Enter the product's name"
+                            onKeyDown={handleKeyPress}
+                            className="rounded p-2 flex-1 outline-0 text-gray-50
+                            placeholder:text-gray-400"
+                        />
+                        <SlMagnifier 
+                            size={24} 
+                            className="mx-4 hover:cursor-pointer text-gray-50"
+                            onClick={handleSearch}
+                        />
+                    </div>
+                </div>
+                
+
                 <div className="flex gap-x-8 h-full">
                     <aside className="w-1/5">
                         <div className="bg-gray-800 p-4 rounded w-full min-h-96">
@@ -124,31 +192,36 @@ export default function Products() {
                                 <ul className="text-gray-50 flex flex-col gap-y-1">
                                     <button 
                                         onClick={(e) => handleClick(e)}
-                                        className="py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer"
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        ${isAllCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         All
                                     </button>
                                     <button 
                                         onClick={(e) => handleClick(e)}
-                                        className="py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer"
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        ${isElectronicsCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Electronics
                                     </button>
                                     <button 
                                         onClick={(e) => handleClick(e)}
-                                        className="py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer"
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        ${isFashionCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Fashion
                                     </button>
                                     <button 
                                         onClick={(e) => handleClick(e)}
-                                        className="py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer"
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        ${isHouseDecorationCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         House & Decoration
                                     </button>
                                     <button 
                                         onClick={(e) => handleClick(e)}
-                                        className="py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer"
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        ${isSportsCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Sports
                                     </button>
@@ -205,7 +278,7 @@ export default function Products() {
 
                         <div className="flex flex-wrap mt-6 gap-x-4 gap-y-6">
                             {/* Products */}
-                            {productsShowing.map((product) => (
+                            {filteredProducts.map((product) => (
                                 <div 
                                     key={product.id}
                                     className="rounded bg-gray-800 w-[23.79%] h-[374px]">
@@ -233,30 +306,6 @@ export default function Products() {
                                     </div>
                                 </div>  
                             ))}
-                            <div className="rounded bg-gray-800 w-[23.79%] h-[374px]">
-                                {/* Image */}
-                                <div className="bg-gray-950 w-full h-1/2 rounded-t">
-
-                                </div>
-
-                                {/* Informations */}
-                                <div className="px-3">
-                                    <div className="mb-1 mt-1">
-                                        <span className="text-yellow-300 mr-1">★★★★☆</span>
-                                        <span className="text-gray-400 text-[0.9rem]">(4.8)</span>
-                                    </div>
-                                    
-                                    <h2 className="text-gray-50 font-semibold mb-3 text-[0.9rem]">Fone de Ouvido Bluetooth Premium</h2>
-                                    <span className="text-purple-400 font-semibold text-xl">$99.90</span>
-
-                                    <button 
-                                        className="bg-purple-500 px-3 py-2 text-gray-950 font-semibold
-                                        rounded block mt-3 w-full"
-                                    >
-                                        Add To Cart
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                         
 
