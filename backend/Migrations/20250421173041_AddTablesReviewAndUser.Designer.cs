@@ -12,8 +12,8 @@ using backend.Context;
 namespace backend.Migrations
 {
     [DbContext(typeof(ReifferceContext))]
-    [Migration("20250401180342_NewForeignKeyCategoryId")]
-    partial class NewForeignKeyCategoryId
+    [Migration("20250421173041_AddTablesReviewAndUser")]
+    partial class AddTablesReviewAndUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,30 +65,75 @@ namespace backend.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<int>("SubCategoryId")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("isBestSeller")
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("backend.Models.Product", b =>
+            modelBuilder.Entity("backend.Models.Review", b =>
                 {
-                    b.HasOne("backend.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Navigation("Category");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Stars")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("backend.Models.Category", b =>
+            modelBuilder.Entity("backend.Models.SubCategory", b =>
                 {
-                    b.Navigation("Products");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SubCategories");
+                });
+
+            modelBuilder.Entity("backend.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

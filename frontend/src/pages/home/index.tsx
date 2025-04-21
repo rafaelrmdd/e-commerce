@@ -99,7 +99,7 @@ export default function Home() {
 
                     <div className="flex justify-between mt-16">
                         <Link
-                            href={`/categories?category=Electronics`}
+                            href={`/products?category=Electronics`}
                             className="flex items-center justify-center 
                           bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
                             transition duration-300"
@@ -107,7 +107,7 @@ export default function Home() {
                             <span className="text-gray-50 text-xl font-bold ">Electronics</span>
                         </Link>
                         <Link 
-                            href={`/categories?category=Fashion`}
+                            href={`/products?category=Fashion`}
                             className="flex items-center justify-center 
                           bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
                             transition duration-300"
@@ -116,7 +116,7 @@ export default function Home() {
                         </Link>
                         <Link 
                             //encode so that i can use & and space
-                            href={`/categories?category=${encodeURIComponent("House & Decoration")}`}
+                            href={`/products?category=${encodeURIComponent("House & Decoration")}`}
                             className="flex items-center justify-center 
                           bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
                             transition duration-300"
@@ -124,7 +124,7 @@ export default function Home() {
                             <span className="text-gray-50 text-xl font-bold ">House & Decoration</span>
                         </Link>
                         <Link 
-                            href={`/categories?category=Sports`}
+                            href={`/products?category=Sports`}
                             className="flex items-center justify-center 
                           bg-gray-800 rounded w-72 h-44 hover:bg-gray-700 hover:cursor-pointer
                             transition duration-300"

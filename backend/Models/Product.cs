@@ -20,6 +20,9 @@ public class Product
     [JsonIgnore]
     public virtual SubCategory? SubCategory { get; set; }
 
+    [JsonIgnore]
+    public virtual ICollection<Review>? Reviews { get; set; }
+
     public Product(string name, string description, decimal price, int categoryId, int subCategoryId)
     {
         Name = name;

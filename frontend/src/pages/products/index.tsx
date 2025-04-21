@@ -10,7 +10,6 @@ export default function Products() {
     const searchParams = useSearchParams();
     const categoryFromHome = searchParams.get("category");
 
-
     //Subcategories
     // [
     //     {
@@ -75,7 +74,7 @@ export default function Products() {
     const [isSportsCategoryActive, setIsSportsCategoryActive] = useState(false);
     const [isHouseDecorationCategoryActive, setIsHomeDecorationCategoryActive] = useState(false);
 
-    //Avoid multiple categories active
+    //Avoid multiple categories active at the same time
     useEffect(() => {
         setIsAllCategoryActive(category === "All");
         setIsElectronicsCategoryActive(category === "Electronics");

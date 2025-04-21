@@ -12,8 +12,8 @@ using backend.Context;
 namespace backend.Migrations
 {
     [DbContext(typeof(ReifferceContext))]
-    [Migration("20250411172444_AddNewTableSubCategories")]
-    partial class AddNewTableSubCategories
+    [Migration("20250421173309_AddRowForFutureRelationsInTablesReviewUserProductAndCategory")]
+    partial class AddRowForFutureRelationsInTablesReviewUserProductAndCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,7 +48,7 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Description")
@@ -65,7 +65,7 @@ namespace backend.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<int?>("SubCategoryId")
+                    b.Property<int>("SubCategoryId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("isBestSeller")
@@ -78,6 +78,36 @@ namespace backend.Migrations
                     b.HasIndex("SubCategoryId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("backend.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Stars")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("backend.Models.SubCategory", b =>
@@ -97,30 +127,80 @@ namespace backend.Migrations
                     b.ToTable("SubCategories");
                 });
 
+            modelBuilder.Entity("backend.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("backend.Models.Product", b =>
                 {
                     b.HasOne("backend.Models.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("backend.Models.SubCategory", "SubCategory")
                         .WithMany("Products")
-                        .HasForeignKey("SubCategoryId");
+                        .HasForeignKey("SubCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
                     b.Navigation("SubCategory");
                 });
 
-            modelBuilder.Entity("backend.Models.Category", b =>
+            modelBuilder.Entity("backend.Models.Review", b =>
                 {
-                    b.Navigation("Products");
+                    b.HasOne("backend.Models.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Models.User", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("backend.Models.Product", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("backend.Models.SubCategory", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("backend.Models.User", b =>
+                {
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

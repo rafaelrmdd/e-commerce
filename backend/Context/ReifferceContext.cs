@@ -32,10 +32,25 @@ public class ReifferceContext : DbContext
             .HasOne(p => p.SubCategory)
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.SubCategoryId)
-            .OnDelete(DeleteBehavior.SetNull); ;
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<Review>()
+            .HasOne(r => r.Product)
+            .WithMany(p => p.Reviews)
+            .HasForeignKey(r => r.ProductId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<Review>()
+            .HasOne(r => r.User)
+            .WithMany(u => u.Reviews)
+            .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
     }
 
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Review> Reviews { get; set; }
 }
