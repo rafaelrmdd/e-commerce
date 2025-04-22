@@ -15,7 +15,7 @@ public class SubCategoryController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("subcategory")]
+    [HttpGet("subcategories")]
     public async Task<IActionResult> GetSubCategories()
     {
         try

@@ -15,7 +15,7 @@ public class CategoryController : ControllerBase
         _service = service;
     }
 
-    [HttpGet("category")]
+    [HttpGet("categories")]
     public async Task<IActionResult> GetCategories()
     {
         try
@@ -35,8 +35,8 @@ public class CategoryController : ControllerBase
     {
         try
         {
-            var products = await _service.GetCategoryByIdService(id);
-            return Ok(products);
+            var category = await _service.GetCategoryByIdService(id);
+            return Ok(category);
         }
         catch (NotFoundException ex)
         {

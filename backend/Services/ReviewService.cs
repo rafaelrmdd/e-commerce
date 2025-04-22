@@ -44,7 +44,7 @@ public class ReviewService : IReviewService
 
         if (review == null)
         {
-            throw new NotFoundException($"Review with id: {id} was not found");
+            throw new NotFoundException($"Review with user id: {id} was not found");
         }
 
         return review;
