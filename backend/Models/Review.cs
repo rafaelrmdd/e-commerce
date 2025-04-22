@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace backend.Models;
@@ -8,10 +9,14 @@ public class Review
 
     [JsonIgnore]
     public virtual User User { get; set; }
+
+    [DefaultValue("")]
     public Guid UserId { get; set; }
 
     [JsonIgnore]
     public virtual Product? Product { get; set; }
+
+    [DefaultValue("")]
     public Guid ProductId { get; set; }
 
     public int Stars { get; set; }

@@ -71,8 +71,8 @@ public class ReviewService : IReviewService
         }
 
         Review newReview = new Review(
-            reviewDTO.UserId,
-            reviewDTO.ProductId,
+            Guid.Parse(reviewDTO.UserId),
+            Guid.Parse(reviewDTO.ProductId),
             reviewDTO.Stars,
             reviewDTO.Comment
         );
@@ -99,8 +99,8 @@ public class ReviewService : IReviewService
 
         review.Comment = reviewDTO.Comment;
         review.Stars = reviewDTO.Stars;
-        review.ProductId = reviewDTO.ProductId;
-        review.UserId = reviewDTO.UserId;
+        review.ProductId = Guid.Parse(reviewDTO.ProductId);
+        review.UserId = Guid.Parse(reviewDTO.UserId);
 
         await _context.SaveChangesAsync();
 

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
 import { useContext } from "react";
-import { ProductsContext } from "@/Context/ProductsContextProvider";
+import { ProductsContext } from "@/context/ProductsContextProvider";
 import Link from "next/link";
 
 export default function ProductPage() {
@@ -225,7 +225,7 @@ export default function ProductPage() {
                                 <div className="flex items-center">
                                     <button 
                                         className="px-5 py-3 font-bold text-gray-950 bg-purple-500
-                                        rounded"
+                                        rounded hover:bg-purple-400 hover:cursor-pointer transition duration-300"
                                     >
                                         AVALIAR PRODUTO
                                     </button>
@@ -247,23 +247,11 @@ export default function ProductPage() {
                                     </div>
                                 </div>
 
-                                <div className="border-b border-b-gray-700 py-6">
-                                    <div className="flex justify-between">
-                                        <span className="text-yellow-400">★★★★★</span>
-                                        <span className="text-gray-500 text-[0.9rem] font-semibold">14/03/2025</span>
-                                    </div>
-
-                                    <div>
-                                        <h2 className="text-gray-50 font-bold">Excelente Smartphone!</h2>
-                                        <h3 className="text-gray-300">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, debitis ea. Quisquam consectetur iusto eveniet.</h3>
-                                        <span className="text-gray-500 text-[0.9rem]">Rafael R. - Cliente</span>
-                                    </div>
-                                </div>
+                                {}
 
                                 <div className="py-6">
                                     <span className="hover:cursor-pointer text-purple-400 font-semibold">Ver todas as 180 avaliações</span>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>

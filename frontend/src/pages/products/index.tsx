@@ -1,6 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
-import { ProductsContext } from "@/Context/ProductsContextProvider"
+import { ProductsContext } from "@/context/ProductsContextProvider"
 import { useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";

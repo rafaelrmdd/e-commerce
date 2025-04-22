@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 import { Header } from "@/components/Header"
 import { useContext } from "react";
-import { ProductsContext } from "@/Context/ProductsContextProvider";
+import { ProductsContext } from "@/context/ProductsContextProvider";
 
 import Slider from "react-slick"
 import Link from "next/link";

@@ -1,4 +1,4 @@
-import { ProductsContextProvider } from "@/Context/ProductsContextProvider";
+import { ProductsContextProvider } from "@/context/ProductsContextProvider";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 
