@@ -21,7 +21,10 @@ export type ReviewProps = {
     id: number
     productId: string
     userId: string
+    stars: number
+    title: string
     comment: string
+    timestamp: string
 }
 
 export type UserProps = {

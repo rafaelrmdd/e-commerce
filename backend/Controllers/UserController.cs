@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
+[ApiController]
+[Route("/api/reifferce")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _service;

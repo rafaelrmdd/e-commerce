@@ -1,11 +1,11 @@
-import { ProductsContextProvider } from "@/context/ProductsContextProvider";
+import { ContextProvider } from "@/context/ContextProvider";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ProductsContextProvider>
+    <ContextProvider>
       <Component {...pageProps} />
-    </ProductsContextProvider>
+    </ContextProvider>
   ) 
 }

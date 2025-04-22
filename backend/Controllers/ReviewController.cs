@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
+[ApiController]
+[Route("/api/reifferce")]
 public class ReviewController : ControllerBase
 {
     private readonly IReviewService _service;

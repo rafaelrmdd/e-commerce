@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
 import { useContext } from "react";
-import { ProductsContext, ReviewsContext, UsersContext } from "@/context/ProductsContextProvider";
+import { ProductsContext, ReviewsContext } from "@/context/ContextProvider";
 import Link from "next/link";
 
 export default function ProductPage() {
@@ -10,7 +10,7 @@ export default function ProductPage() {
     const productId = router.query.id;
 
     const { products } = useContext(ProductsContext);
-    const { users } = useContext(UsersContext);
+    // const { users } = useContext(UsersContext);
     const { reviews } = useContext(ReviewsContext);
 
     const thisProduct = products.find((p) => String(p.id) === productId);
@@ -255,12 +255,12 @@ export default function ProductPage() {
                                         className="border-b border-b-gray-700 py-6"
                                     >
                                         <div className="flex justify-between">
-                                            <span className="text-yellow-400">★★★★★</span>
-                                            <span className="text-gray-500 text-[0.9rem] font-semibold">14/03/2025</span>
+                                            <span className="text-yellow-400">★★★★★ {review.stars}</span>
+                                            <span className="text-gray-500 text-[0.9rem] font-semibold">{review.timestamp}</span>
                                         </div>
 
                                         <div>
-                                            <h2 className="text-gray-50 font-bold">{review.comment}</h2>
+                                            <h2 className="text-gray-50 font-bold">{review.title}</h2>
                                             <h3 className="text-gray-300">{review.comment}</h3>
                                             <span className="text-gray-500 text-[0.9rem]">Rafael R. - Cliente</span>
                                         </div>
