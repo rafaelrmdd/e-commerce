@@ -74,6 +74,7 @@ public class ReviewService : IReviewService
             Guid.Parse(reviewDTO.UserId),
             Guid.Parse(reviewDTO.ProductId),
             reviewDTO.Stars,
+            reviewDTO.Title,
             reviewDTO.Comment
         );
 
@@ -97,6 +98,7 @@ public class ReviewService : IReviewService
             throw new ValidationException("Review's comment can't be null or empty");
         }
 
+        review.Title = reviewDTO.Title;
         review.Comment = reviewDTO.Comment;
         review.Stars = reviewDTO.Stars;
         review.ProductId = Guid.Parse(reviewDTO.ProductId);

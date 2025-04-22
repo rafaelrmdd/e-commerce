@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace backend.Models;
 
@@ -20,13 +22,16 @@ public class Review
     public Guid ProductId { get; set; }
 
     public int Stars { get; set; }
+    public string Title { get; set; }
     public string Comment { get; set; }
+    public DateTime Timestamp { get; set; }
 
-    public Review(Guid userId, Guid productId, int stars, string comment)
+    public Review(Guid userId, Guid productId, int stars, string title, string comment)
     {
         UserId = userId;
         ProductId = productId;
         Stars = stars;
+        Title = title;
         Comment = comment;
     }
 }

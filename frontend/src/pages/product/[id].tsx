@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
 import { useContext } from "react";
-import { ProductsContext } from "@/context/ProductsContextProvider";
+import { ProductsContext, ReviewsContext, UsersContext } from "@/context/ProductsContextProvider";
 import Link from "next/link";
 
 export default function ProductPage() {
@@ -10,6 +10,8 @@ export default function ProductPage() {
     const productId = router.query.id;
 
     const { products } = useContext(ProductsContext);
+    const { users } = useContext(UsersContext);
+    const { reviews } = useContext(ReviewsContext);
 
     const thisProduct = products.find((p) => String(p.id) === productId);
     const relatedProducts = products.filter((p) => p.subCategoryId === thisProduct?.subCategoryId).slice(0, 3);
@@ -247,7 +249,23 @@ export default function ProductPage() {
                                     </div>
                                 </div>
 
-                                {}
+                                {reviews.map((review) => (
+                                    <div 
+                                        key={review.id}
+                                        className="border-b border-b-gray-700 py-6"
+                                    >
+                                        <div className="flex justify-between">
+                                            <span className="text-yellow-400">★★★★★</span>
+                                            <span className="text-gray-500 text-[0.9rem] font-semibold">14/03/2025</span>
+                                        </div>
+
+                                        <div>
+                                            <h2 className="text-gray-50 font-bold">{review.comment}</h2>
+                                            <h3 className="text-gray-300">{review.comment}</h3>
+                                            <span className="text-gray-500 text-[0.9rem]">Rafael R. - Cliente</span>
+                                        </div>
+                                    </div>
+                                ))}
 
                                 <div className="py-6">
                                     <span className="hover:cursor-pointer text-purple-400 font-semibold">Ver todas as 180 avaliações</span>
