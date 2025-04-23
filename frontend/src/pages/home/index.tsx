@@ -135,7 +135,7 @@ export default function Home() {
                 </section>
 
                 {/* Featured Items Section*/}
-                <section className="mt-16 px-8">
+                <section className="mt-16 px-8 mb-20">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-40"/>
                         <h2 className="font-bold text-white text-2xl">FEATURED THIS WEEK</h2>

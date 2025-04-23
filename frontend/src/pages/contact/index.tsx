@@ -208,7 +208,7 @@ export default function Contact() {
                 </div>
             </div>
 
-            <section className="px-8 mt-8">
+            <section className="px-8 mt-8 mb-20">
                 <h2 className="text-2xl font-semibold text-gray-50 mb-6">FAQ</h2>
 
                 <div className="flex flex-col gap-y-4">

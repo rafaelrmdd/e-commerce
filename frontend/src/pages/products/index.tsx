@@ -158,7 +158,7 @@ export default function Products() {
         <div className="h-full bg-gray-900">
             <Header />
 
-            <main className="px-8 mt-8">
+            <main className="px-8 mt-8 mb-20">
                 <div className="flex justify-center">
                     <div 
                         className="flex items-center justify-between mb-8 rounded bg-gray-700 w-3/5">

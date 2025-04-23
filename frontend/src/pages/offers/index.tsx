@@ -41,7 +41,7 @@ export default function Offers() {
             </section>
 
             {/* Products on Offer */}
-            <main className="px-8 mt-8">
+            <main className="px-8 mt-8 mb-20">
                 <div className="flex gap-x-8">
                     <aside className="bg-gray-800 p-4 rounded w-1/5">
                         <h2 className="text-gray-50 font-semibold text-xl mb-5">Filters</h2>
