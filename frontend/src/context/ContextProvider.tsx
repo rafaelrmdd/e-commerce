@@ -102,10 +102,10 @@ export function ContextProvider({children} : ContextProviderProps) {
             fetchUsers()
             fetchProducts()
             fetchReviews()
-        }, 2000);
+        }, 5000);
 
         return () => clearTimeout(timeout)
-    }, [])
+    })
 
 
     return (

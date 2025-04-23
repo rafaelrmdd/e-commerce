@@ -1,8 +1,28 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
 import { useContext } from "react";
-import { ProductsContext, ReviewsContext } from "@/context/ContextProvider";
+import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
 import Link from "next/link";
+
+export const generateStars = (quantity : number) => {
+    const stars = [];
+
+    for(let x = 0; x < quantity; x++) {
+        stars.push("★")
+    }
+
+    return stars;
+} 
+
+export const searchUser = (review : ReviewProps, users) => {
+    const user : UserProps | undefined = users.find((user) => String(user.id) === review.userId);
+
+    if(user == undefined){
+        return "User not found";
+    }
+
+    return user.name;
+}
 
 export default function ProductPage() {
 
@@ -12,9 +32,18 @@ export default function ProductPage() {
     const { products } = useContext(ProductsContext);
     // const { users } = useContext(UsersContext);
     const { reviews } = useContext(ReviewsContext);
+    const { users } = useContext(UsersContext); 
+
+    console.log("reviews: ", reviews);
 
     const thisProduct = products.find((p) => String(p.id) === productId);
     const relatedProducts = products.filter((p) => p.subCategoryId === thisProduct?.subCategoryId).slice(0, 3);
+
+    const dateFormat = Intl.DateTimeFormat('pt-BR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
 
     return (
         <div className="bg-gray-900 h-full">
@@ -255,14 +284,14 @@ export default function ProductPage() {
                                         className="border-b border-b-gray-700 py-6"
                                     >
                                         <div className="flex justify-between">
-                                            <span className="text-yellow-400">★★★★★ {review.stars}</span>
-                                            <span className="text-gray-500 text-[0.9rem] font-semibold">{review.timestamp}</span>
+                                            <span className="text-yellow-400">{generateStars(review.stars)}</span>
+                                            <span className="text-gray-500 text-[0.9rem] font-semibold">{dateFormat.format(new Date(review.timestamp))}</span>
                                         </div>
 
                                         <div>
                                             <h2 className="text-gray-50 font-bold">{review.title}</h2>
                                             <h3 className="text-gray-300">{review.comment}</h3>
-                                            <span className="text-gray-500 text-[0.9rem]">Rafael R. - Cliente</span>
+                                            <span className="text-gray-500 text-[0.9rem]">{searchUser(review)}</span>
                                         </div>
                                     </div>
                                 ))}

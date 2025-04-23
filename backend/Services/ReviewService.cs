@@ -103,6 +103,7 @@ public class ReviewService : IReviewService
         review.Stars = reviewDTO.Stars;
         review.ProductId = Guid.Parse(reviewDTO.ProductId);
         review.UserId = Guid.Parse(reviewDTO.UserId);
+        review.Timestamp = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
 

@@ -24,7 +24,7 @@ public class Review
     public int Stars { get; set; }
     public string Title { get; set; }
     public string Comment { get; set; }
-    public DateTime Timestamp { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
     public Review(Guid userId, Guid productId, int stars, string title, string comment)
     {
