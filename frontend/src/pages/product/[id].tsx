@@ -4,33 +4,12 @@ import { useContext } from "react";
 import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
 import Link from "next/link";
 
-export const generateStars = (quantity : number) => {
-    const stars = [];
-
-    for(let x = 0; x < quantity; x++) {
-        stars.push("★")
-    }
-
-    return stars;
-} 
-
-export const searchUser = (review : ReviewProps, users) => {
-    const user : UserProps | undefined = users.find((user) => String(user.id) === review.userId);
-
-    if(user == undefined){
-        return "User not found";
-    }
-
-    return user.name;
-}
-
 export default function ProductPage() {
 
     const router = useRouter();
     const productId = router.query.id;
 
     const { products } = useContext(ProductsContext);
-    // const { users } = useContext(UsersContext);
     const { reviews } = useContext(ReviewsContext);
     const { users } = useContext(UsersContext); 
 
@@ -38,6 +17,28 @@ export default function ProductPage() {
 
     const thisProduct = products.find((p) => String(p.id) === productId);
     const relatedProducts = products.filter((p) => p.subCategoryId === thisProduct?.subCategoryId).slice(0, 3);
+
+    const totalReviews = reviews.filter((r) => r.productId === productId).length;
+
+    const generateStars = (quantity : number) => {
+        const stars = [];
+
+        for(let x = 0; x < quantity; x++) {
+            stars.push("★")
+        }
+
+        return stars;
+    } 
+
+    const searchUser = (review : ReviewProps) => {
+        const user : UserProps | undefined = users.find((user) => String(user.id) === review.userId);
+
+        if(user == undefined){
+            return "User not found";
+        }
+
+        return user.name;
+    }
 
     const dateFormat = Intl.DateTimeFormat('pt-BR', {
         year: 'numeric',
@@ -265,7 +266,7 @@ export default function ProductPage() {
                             
                             {/* Feedbacks */}
                             <div>
-                                <div className="border-b border-b-gray-700 py-6">
+                                {/* <div className="border-b border-b-gray-700 py-6">
                                     <div className="flex justify-between">
                                         <span className="text-yellow-400">★★★★★</span>
                                         <span className="text-gray-500 text-[0.9rem] font-semibold">14/03/2025</span>
@@ -276,8 +277,7 @@ export default function ProductPage() {
                                         <h3 className="text-gray-300">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, debitis ea. Quisquam consectetur iusto eveniet.</h3>
                                         <span className="text-gray-500 text-[0.9rem]">Rafael R. - Cliente</span>
                                     </div>
-                                </div>
-
+                                </div> */}
                                 {reviews.map((review) => (
                                     <div 
                                         key={review.id}
@@ -294,10 +294,15 @@ export default function ProductPage() {
                                             <span className="text-gray-500 text-[0.9rem]">{searchUser(review)}</span>
                                         </div>
                                     </div>
-                                ))}
+                                )).slice(0, 2)}
 
                                 <div className="py-6">
-                                    <span className="hover:cursor-pointer text-purple-400 font-semibold">Ver todas as 180 avaliações</span>
+                                    <Link 
+                                        href={`/product/reviews/${productId}`}
+                                        className="hover:cursor-pointer text-purple-400 font-semibold"
+                                    >
+                                        Ver todas as {totalReviews} avaliações
+                                    </Link>
                                 </div>
                             </div>
                         </div>
