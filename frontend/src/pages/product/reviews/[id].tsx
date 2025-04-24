@@ -2,7 +2,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 export default function ProductReviewsPage() {
 
@@ -13,8 +13,11 @@ export default function ProductReviewsPage() {
     const { reviews } = useContext(ReviewsContext);
     const { users } = useContext(UsersContext); 
 
+    const [filter, setFilter] = useState("Newest");
+
     const thisProduct = products.find((p) => String(p.id) === productId);
-    const thisProductReviews = reviews.filter((r) => r.productId === productId);
+    const thisProductReviews = reviews.filter((r) => r.productId === productId);   
+
     const starsTotal = thisProductReviews.reduce((a, review) => a + review.stars, 0);
     const totalReviews = thisProductReviews.length;
     const starsAverage = starsTotal / totalReviews;
@@ -49,7 +52,21 @@ export default function ProductReviewsPage() {
         day: '2-digit'
     });
 
-
+    const filterReviews = () => {
+        switch(filter){
+            case "Newest":
+                return [...thisProductReviews].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+            case "Oldest":
+                return [...thisProductReviews].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+            case "Lowest Rating":
+                return [...thisProductReviews].sort((a, b) => a.stars - b.stars);
+            case "Highest Rating":
+                return [...thisProductReviews].sort((a, b) => b.stars - a.stars);
+            default:
+                return thisProductReviews;
+        }
+    }
+ 
     return (
         <div className="h-full bg-gray-900">
             <Header />
@@ -100,6 +117,7 @@ export default function ProductReviewsPage() {
                                 <h3 className="text-gray-300">Sort by: </h3>
 
                                 <select 
+                                    onChange={(e) => setFilter(e.target.value)}
                                     name="filter"
                                     className="outline-0 bg-gray-800 rounded px-4 py-2
                                     border border-gray-600 text-gray-50"
@@ -121,7 +139,7 @@ export default function ProductReviewsPage() {
 
                         {/* Reviews */}
                         <section className="bg-gray-800 rounded p-5 mt-8">
-                            {reviews.map((review) => (
+                            {filterReviews().map((review) => (
                                 <div 
                                     key={review.id}
                                     className="border-b border-b-gray-700 py-6"
