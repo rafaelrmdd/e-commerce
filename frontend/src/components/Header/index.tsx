@@ -11,7 +11,6 @@ export function Header() {
                 <Link href={"/home"}>Home</Link>
                 <Link href={"/products"}>Products</Link>
                 <Link href={"/offers"}>Offers</Link>
-                <Link href={"/newreleases"}>New Releases</Link>
                 <Link href={"/contact"}>Contact</Link>
             </nav>
 

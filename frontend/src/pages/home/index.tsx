@@ -143,9 +143,9 @@ export default function Home() {
                     </div>
 
                     {/* Featured Items */}
-                    <div className="flex justify-between mt-16">
+                    <div className="flex justify-between mt-16 bg-gray-800 rounded">
                         {productsFeatureds.map((product) => (
-                            <div className="bg-gray-800 w-96 min-h-[500px] rounded p-4" key={product.id}>
+                            <div className=" w-[24%] bg-gray-800 min-h-[500px] rounded p-4" key={product.id}>
                                 {/* Image */}
                                 <div className="bg-gray-600 rounded w-full h-[280px]">
 
@@ -155,10 +155,12 @@ export default function Home() {
                                 <div className="mt-2">
                                     <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                     <h3 className="text-gray-400 mb-2">{product.description}</h3>
-                                    <span className="text-purple-400 text-2xl font-bold mb-4 block">{product.price}</span>
+                                    <span className="text-purple-400 text-2xl font-bold mb-4 block">${product.price}</span>
 
                                     <button 
-                                        className="w-full bg-purple-500 rounded py-3 text-gray-950 font-semibold"
+                                        className="w-full bg-purple-500 rounded py-3 text-gray-950
+                                        font-semibold hover:cursor-pointer hover:bg-purple-400 transition 
+                                        duration-300"
                                     >
                                         Add to Cart
                                     </button>

@@ -1,6 +1,6 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
-import { ProductsContext } from "@/context/ContextProvider"
+import { ProductsContext, ReviewsContext } from "@/context/ContextProvider"
 import { useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
@@ -64,6 +64,8 @@ export default function Products() {
 
 
     const { products } = useContext(ProductsContext);
+    const { reviews } = useContext(ReviewsContext);
+
     const [category, setCategory] = useState(categoryFromHome || "");
     const [searchKeyword, setSearchKeyword] = useState("");
     const [temporarySearchKeyword, setTemporarySearchKeyword] = useState("");
@@ -136,6 +138,41 @@ export default function Products() {
         }
     } 
 
+
+    const getSpecifiedProductAverageStars = (id : number) => {
+        const specifiedProductReview = reviews.filter((review) => review.productId === String(id));
+        const starsTotal = specifiedProductReview.reduce((a, review) => a + review.stars, 0);
+        const totalReviews = specifiedProductReview.length;
+
+        if(totalReviews === 0){
+            return 0;   
+        }
+
+        const starsAverage = starsTotal / totalReviews;
+
+        console.log("avg: ", starsAverage);
+        return Math.round(starsAverage);
+    }
+
+    const generateStars = (quantity : number | undefined) => {
+        const stars = [];
+
+
+        if(quantity === undefined || isNaN(quantity)){
+            return "No reviews found";
+        }
+
+        for(let x = 0; x < quantity; x++) {
+            stars.push("★")
+        }
+
+        for(let x = quantity; x < 5; x++){
+            stars.push("☆")
+        }
+
+        return stars;
+    } 
+
     const filteredProducts = products.filter((product) => {
         const categoryNumber = convertCategoryToNumber(category);
         const hasCategory = categoryNumber !== null;
@@ -153,6 +190,7 @@ export default function Products() {
         
         return true;
     })
+
 
     return (
         <div className="h-full bg-gray-900">
@@ -288,7 +326,9 @@ export default function Products() {
                                     {/* Informations */}
                                     <div className="px-3 pb-3">
                                         <div className="mb-1 mt-1">
-                                            <span className="text-yellow-300 mr-1">★★★★☆</span>
+                                            <span className="text-yellow-300 mr-1">
+                                                {generateStars(getSpecifiedProductAverageStars(product.id))}
+                                            </span>
                                             <span className="text-gray-400 text-[0.9rem]">(4.8)</span>
                                         </div>
                                         
