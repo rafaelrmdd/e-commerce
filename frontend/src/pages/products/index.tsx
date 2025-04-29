@@ -69,8 +69,8 @@ export default function Products() {
     const [category, setCategory] = useState(categoryFromHome || "");
     const [searchKeyword, setSearchKeyword] = useState("");
     const [temporarySearchKeyword, setTemporarySearchKeyword] = useState("");
+    const [priceRange, setPriceRange] = useState("")
 
-    const [isAllCategoryActive, setIsAllCategoryActive] = useState(false);
     const [isElectronicsCategoryActive, setIsElectronicsCategoryActive] = useState(false);
     const [isFashionCategoryActive, setIsFashionCategoryActive] = useState(false);
     const [isSportsCategoryActive, setIsSportsCategoryActive] = useState(false);
@@ -78,7 +78,7 @@ export default function Products() {
 
     //Avoid multiple categories active at the same time
     useEffect(() => {
-        setIsAllCategoryActive(category === "All");
+        // setIsAllCategoryActive(category === "All");
         setIsElectronicsCategoryActive(category === "Electronics");
         setIsFashionCategoryActive(category === "Fashion");
         setIsHomeDecorationCategoryActive(category === "House & Decoration");
@@ -86,6 +86,10 @@ export default function Products() {
     }, [category]);
 
     const handleClick = (e : React.MouseEvent<HTMLButtonElement>) => {
+        if (e.currentTarget.textContent === "Reset Filters"){
+            resetFilters();
+        }
+
         setCategory(String(e.currentTarget.textContent));
 
         switch(category){
@@ -101,10 +105,6 @@ export default function Products() {
             case "Sports":
                 setIsSportsCategoryActive(!isSportsCategoryActive);
                 break;
-            case "All":
-                resetFilters(); 
-                setIsAllCategoryActive(!isAllCategoryActive);
-                break;
         }
     }
 
@@ -112,14 +112,24 @@ export default function Products() {
         setCategory("");
         setSearchKeyword("");
         setTemporarySearchKeyword("");
+        setPriceRange("2500")
+        console.log("pricerange: ", priceRange);
     }
 
     const convertCategoryToNumber = (category : string) => {
         switch(category) {
-            case "Electronics": return 1;
-            case "Fashion": return 2;
-            case "House & Decoration": return 3;
-            case "Sports": return 4
+            case "Electronics":   
+                if(!isElectronicsCategoryActive) return null
+                return 1;
+            case "Fashion": 
+                if(!isFashionCategoryActive) return null
+                return 2;
+            case "House & Decoration":
+                if(!isHouseDecorationCategoryActive) return null
+                return 3;
+            case "Sports": 
+                if(!isSportsCategoryActive) return null
+                return 4;
             default: return null;
         }
     }
@@ -138,7 +148,6 @@ export default function Products() {
         }
     } 
 
-
     const getSpecifiedProductAverageStars = (id : number) => {
         const specifiedProductReview = reviews.filter((review) => review.productId === String(id));
         const starsTotal = specifiedProductReview.reduce((a, review) => a + review.stars, 0);
@@ -150,7 +159,6 @@ export default function Products() {
 
         const starsAverage = starsTotal / totalReviews;
 
-        console.log("avg: ", starsAverage);
         return Math.round(starsAverage);
     }
 
@@ -229,13 +237,6 @@ export default function Products() {
                                     <button 
                                         onClick={(e) => handleClick(e)}
                                         className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
-                                        ${isAllCategoryActive ? "bg-gray-700" : ""}`}
-                                    >
-                                        All
-                                    </button>
-                                    <button 
-                                        onClick={(e) => handleClick(e)}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
                                         ${isElectronicsCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Electronics
@@ -265,15 +266,17 @@ export default function Products() {
                             </div>
 
                             <div className="mt-7">
-                                <h2 className="text-gray-50 text-xl font-semibold">Price</h2>
+                                <h2 className="text-gray-50 text-xl font-semibold">Price Range</h2>
                                 <input 
-                                    type="range" min={50} max={5000} step={100} 
+                                    type="range" min={50} max={5000} step={100} value={priceRange}
+                                    onChange={(e) => setPriceRange(e.target.value)}
                                     className="w-full bg-gray-700 appearance-none rounded-full
                                     accent-purple-500 h-2 mt-5"
                                 />
                                 
                                 <div className="flex justify-between mt-2">
                                     <span className="text-gray-500 text-[0.8rem]">$50</span>
+                                    <span className="text-gray-500 text-[0.8rem]">{priceRange}</span>
                                     <span className="text-gray-500 text-[0.8rem]">$5000</span>
                                 </div>
                             </div>
@@ -301,10 +304,11 @@ export default function Products() {
                             </div>
 
                             <button 
+                                onClick={(e) => handleClick(e)}
                                 className="border border-purple-500 text-purple-400
-                                px-3 py-2 mt-7 w-full rounded"
+                                px-3 py-2 mt-7 w-full rounded hover:cursor-pointer"
                             >
-                                Clean Filters
+                                Reset Filters
                             </button>
                         </div>
                     </aside>
