@@ -70,22 +70,36 @@ export default function Products() {
     const [searchKeyword, setSearchKeyword] = useState("");
     const [temporarySearchKeyword, setTemporarySearchKeyword] = useState("");
     const [priceRange, setPriceRange] = useState("")
+    const [starsFilter, setStarsFilter] = useState(0);
 
     const [isElectronicsCategoryActive, setIsElectronicsCategoryActive] = useState(false);
     const [isFashionCategoryActive, setIsFashionCategoryActive] = useState(false);
     const [isSportsCategoryActive, setIsSportsCategoryActive] = useState(false);
     const [isHouseDecorationCategoryActive, setIsHomeDecorationCategoryActive] = useState(false);
 
+    const [isFiveStarsActive, setIsFiveStarsActive] = useState(false);
+    const [isFourOrMoreStarsActive, setIsFourOrMoreStarsActive] = useState(false);
+    const [isThreeOrMoreStarsActive, setIsThreeOrMoreStarsActive] = useState(false);
+    const [isTwoOrMoreStarsActive, setIsTwoOrMoreStarsActive] = useState(false);
+    const [isOneOrMoreStarsActive, setIsOneOrMoreStarsActive] = useState(false);
+
     //Avoid multiple categories active at the same time
     useEffect(() => {
-        // setIsAllCategoryActive(category === "All");
         setIsElectronicsCategoryActive(category === "Electronics");
         setIsFashionCategoryActive(category === "Fashion");
         setIsHomeDecorationCategoryActive(category === "House & Decoration");
         setIsSportsCategoryActive(category === "Sports");
     }, [category]);
 
-    const handleClick = (e : React.MouseEvent<HTMLButtonElement>) => {
+    useEffect(() => {
+        setIsFiveStarsActive(starsFilter === 5)
+        setIsFourOrMoreStarsActive(starsFilter === 4)
+        setIsThreeOrMoreStarsActive(starsFilter === 3)
+        setIsTwoOrMoreStarsActive(starsFilter === 2)
+        setIsOneOrMoreStarsActive(starsFilter === 1)
+    }, [starsFilter]);
+
+    const handleCategory = (e : React.MouseEvent<HTMLButtonElement>) => {
         if (e.currentTarget.textContent === "Reset Filters"){
             resetFilters();
         }
@@ -104,6 +118,26 @@ export default function Products() {
                 break;
             case "Sports":
                 setIsSportsCategoryActive(!isSportsCategoryActive);
+                break;
+        }
+    }
+
+    const handleStarsFilter = (quantity : number) => {
+        switch(quantity){
+            case 5:
+                setIsFiveStarsActive(!isFiveStarsActive);
+                break;
+            case 4:
+                setIsFourOrMoreStarsActive(!isFourOrMoreStarsActive);
+                break;
+            case 3:
+                setIsThreeOrMoreStarsActive(!isThreeOrMoreStarsActive);
+                break;
+            case 2:
+                setIsTwoOrMoreStarsActive(!isTwoOrMoreStarsActive);
+                break;
+            case 1:
+                setIsOneOrMoreStarsActive(!isOneOrMoreStarsActive);
                 break;
         }
     }
@@ -148,10 +182,38 @@ export default function Products() {
         }
     } 
 
-    const getSpecifiedProductAverageStars = (id : number) => {
-        const specifiedProductReview = reviews.filter((review) => review.productId === String(id));
-        const starsTotal = specifiedProductReview.reduce((a, review) => a + review.stars, 0);
-        const totalReviews = specifiedProductReview.length;
+    const filteredProducts = products.filter((product) => {
+        const categoryNumber = convertCategoryToNumber(category);
+        const hasCategory = categoryNumber !== null;
+        const hasKeyword = searchKeyword.trim() !== "";
+        const hasPriceRange = priceRange !== "";
+
+        if(hasCategory && hasKeyword && hasPriceRange) {
+            return product.categoryId === categoryNumber && 
+                   product.name.toLowerCase().includes(searchKeyword.toLowerCase()) && 
+                   product.price <= priceRange;
+        }
+        else if(hasCategory && hasKeyword) {
+            return product.categoryId === categoryNumber &&
+                   product.name.toLowerCase().includes(searchKeyword.toLowerCase());
+        }
+        else if(hasCategory) {
+            return product.categoryId === categoryNumber;
+        }
+        else if(hasKeyword) {
+            return product.name.toLowerCase().includes(searchKeyword.toLowerCase());
+        }
+        else if(hasPriceRange) {
+            return product.price <= priceRange;
+        }
+        
+        return true;
+    })
+
+    const getProductAverageStars = (id : number) => {
+        const productReviews = getProductReview(id);
+        const starsTotal = productReviews.reduce((a, review) => a + review.stars, 0);
+        const totalReviews = productReviews.length;
 
         if(totalReviews === 0){
             return 0;   
@@ -160,6 +222,12 @@ export default function Products() {
         const starsAverage = starsTotal / totalReviews;
 
         return Math.round(starsAverage);
+    }
+
+    const getProductReview = (id : number) => {
+        const productReviews = reviews.filter((review) => review.productId === String(id));
+
+        return productReviews;
     }
 
     const generateStars = (quantity : number | undefined) => {
@@ -180,25 +248,6 @@ export default function Products() {
 
         return stars;
     } 
-
-    const filteredProducts = products.filter((product) => {
-        const categoryNumber = convertCategoryToNumber(category);
-        const hasCategory = categoryNumber !== null;
-        const hasKeyword = searchKeyword.trim() !== "";
-
-        if(hasCategory && hasKeyword) {
-            return product.categoryId === categoryNumber && product.name.toLowerCase().includes(searchKeyword.toLowerCase());
-        }
-        else if(hasCategory) {
-            return product.categoryId === categoryNumber;
-        }
-        else if(hasKeyword) {
-            return product.name.toLowerCase().includes(searchKeyword.toLowerCase());
-        }
-        
-        return true;
-    })
-
 
     return (
         <div className="h-full bg-gray-900">
@@ -235,28 +284,28 @@ export default function Products() {
 
                                 <ul className="text-gray-50 flex flex-col gap-y-1">
                                     <button 
-                                        onClick={(e) => handleClick(e)}
+                                        onClick={(e) => handleCategory(e)}
                                         className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
                                         ${isElectronicsCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Electronics
                                     </button>
                                     <button 
-                                        onClick={(e) => handleClick(e)}
+                                        onClick={(e) => handleCategory(e)}
                                         className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
                                         ${isFashionCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Fashion
                                     </button>
                                     <button 
-                                        onClick={(e) => handleClick(e)}
+                                        onClick={(e) => handleCategory(e)}
                                         className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
                                         ${isHouseDecorationCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         House & Decoration
                                     </button>
                                     <button 
-                                        onClick={(e) => handleClick(e)}
+                                        onClick={(e) => handleCategory(e)}
                                         className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
                                         ${isSportsCategoryActive ? "bg-gray-700" : ""}`}
                                     >
@@ -285,26 +334,61 @@ export default function Products() {
                                 <h2 className="text-gray-50 text-xl font-semibold">Reviews</h2>
                                 
                                 <div className="flex flex-col gap-y-2 mt-2">
-                                    <span className="text-yellow-300 mr-1">
-                                        ★★★★★ <span className="text-gray-300">ou mais</span>
+                                    <span 
+                                        onClick={() => {
+                                            setStarsFilter(5);
+                                            handleStarsFilter(5)
+                                        }}
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        ${isFiveStarsActive ? "bg-gray-700" : ""}`}
+                                    >
+                                        ★★★★★
                                     </span>
-                                    <span className="text-yellow-300 mr-1">
+                                    <span 
+                                        onClick={() => {
+                                            setStarsFilter(4);
+                                            handleStarsFilter(4)
+                                        }}
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        ${isFourOrMoreStarsActive ? "bg-gray-700" : ""}`}
+                                    >
                                         ★★★★☆ <span className="text-gray-300">ou mais</span>
                                     </span>
-                                    <span className="text-yellow-300 mr-1">
+                                    <span 
+                                        onClick={() => {
+                                            setStarsFilter(3);
+                                            handleStarsFilter(3)
+                                        }}
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        ${isThreeOrMoreStarsActive ? "bg-gray-700" : ""}`}
+                                    >
                                         ★★★☆☆ <span className="text-gray-300">ou mais</span>
                                     </span>
-                                    <span className="text-yellow-300 mr-1">
+                                    <span 
+                                        onClick={() => {
+                                            setStarsFilter(2);
+                                            handleStarsFilter(2)
+                                        }}
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        ${isTwoOrMoreStarsActive ? "bg-gray-700" : ""}`}
+                                    >
                                         ★★☆☆☆ <span className="text-gray-300">ou mais</span>
                                     </span>
-                                    <span className="text-yellow-300 mr-1">
+                                    <span 
+                                        onClick={() => {
+                                            setStarsFilter(1);
+                                            handleStarsFilter(1)
+                                        }}
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        ${isOneOrMoreStarsActive ? "bg-gray-700" : ""}`}
+                                    >
                                         ★☆☆☆☆ <span className="text-gray-300">ou mais</span>
                                     </span>
                                 </div>
                             </div>
 
                             <button 
-                                onClick={(e) => handleClick(e)}
+                                onClick={(e) => handleCategory(e)}
                                 className="border border-purple-500 text-purple-400
                                 px-3 py-2 mt-7 w-full rounded hover:cursor-pointer"
                             >
@@ -331,9 +415,9 @@ export default function Products() {
                                     <div className="px-3 pb-3">
                                         <div className="mb-1 mt-1">
                                             <span className="text-yellow-300 mr-1">
-                                                {generateStars(getSpecifiedProductAverageStars(product.id))}
+                                                {generateStars(getProductAverageStars(product.id))}
                                             </span>
-                                            <span className="text-gray-400 text-[0.9rem]">(4.8)</span>
+                                            <span className="text-gray-400 text-[0.9rem]">({getProductReview(product.id).length})</span>
                                         </div>
                                         
                                         <h2 className="text-gray-50 font-semibold mb-3 text-[0.9rem]">{product.name}</h2>
