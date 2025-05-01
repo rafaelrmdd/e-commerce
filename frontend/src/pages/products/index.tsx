@@ -1,9 +1,10 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
-import { ProductsContext, ReviewsContext } from "@/context/ContextProvider"
+import { ProductProps, ProductsContext, ReviewsContext } from "@/context/ContextProvider"
 import { useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
+import { set } from "react-hook-form";
 
 export default function Products() {
 
@@ -72,6 +73,53 @@ export default function Products() {
     const [priceRange, setPriceRange] = useState("")
     const [starsFilter, setStarsFilter] = useState(0);
 
+    // const [starsFilteredProducts, setStarsFilteredProducts] = useState<ProductProps[]>([])
+    const productStars = new Map<string, number[]>();
+    const productAverages = new Map<string, number>();
+
+    //Get keys 
+    // productAverages.keys()
+    //Get values
+    // productAverages.values()
+
+    useEffect(() => {
+        reviews.forEach((review) => {
+            const productId = review.productId;
+            const products = productStars.get(productId) || [];
+
+            productStars.set(productId, [...products, review.stars])
+    
+        })
+
+        for (const [key, value] of productStars){
+            const sum = value.reduce((acc, value) => acc + value, 0);
+            const average = sum / value.length;
+
+            productAverages.set(key, average);
+            console.log('new: ', productAverages);
+            
+        }
+    })
+
+
+    console.log(productAverages);
+
+    const filteredReviews = reviews.filter((review) => {
+        const starsAverage = productAverages.get(review.productId);
+
+        if(starsAverage) {
+            return starsAverage >= starsFilter
+        }
+
+        return reviews;
+    })
+
+    //Remove duplicates and changes Set back to Array by using spread operator 
+    const productIds = [...new Set(filteredReviews.map((review) => review.productId))]
+
+    const starsFilteredProductsToShow = products.filter((product) => productIds.includes(String(product.id)))
+    console.log(starsFilteredProductsToShow)
+
     const [isElectronicsCategoryActive, setIsElectronicsCategoryActive] = useState(false);
     const [isFashionCategoryActive, setIsFashionCategoryActive] = useState(false);
     const [isSportsCategoryActive, setIsSportsCategoryActive] = useState(false);
@@ -82,6 +130,7 @@ export default function Products() {
     const [isThreeOrMoreStarsActive, setIsThreeOrMoreStarsActive] = useState(false);
     const [isTwoOrMoreStarsActive, setIsTwoOrMoreStarsActive] = useState(false);
     const [isOneOrMoreStarsActive, setIsOneOrMoreStarsActive] = useState(false);
+
 
     //Avoid multiple categories active at the same time
     useEffect(() => {
