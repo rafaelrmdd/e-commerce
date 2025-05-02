@@ -73,52 +73,51 @@ export default function Products() {
     const [priceRange, setPriceRange] = useState("")
     const [starsFilter, setStarsFilter] = useState(0);
 
-    // const [starsFilteredProducts, setStarsFilteredProducts] = useState<ProductProps[]>([])
+
+    // const [productAverage, setProductAverage] = useState<[string, number][]>([]);
+    // const [productAverage, setProductAverage] = useState<Map<string, number>>();
     const productStars = new Map<string, number[]>();
-    const productAverages = new Map<string, number>();
+    const productAverages = new Map<string, number>()
 
-    //Get keys 
-    // productAverages.keys()
-    //Get values
-    // productAverages.values()
+    // const [productIdsToFilter, setProductIdsToFilter] = useState([]);
 
-    useEffect(() => {
-        reviews.forEach((review) => {
-            const productId = review.productId;
-            const products = productStars.get(productId) || [];
+    reviews.forEach((review) => {
+        const productId = review.productId;
+        const products = productStars.get(productId) || [];
 
-            productStars.set(productId, [...products, review.stars])
-    
-        })
+        productStars.set(productId, [...products, review.stars])
 
-        for (const [key, value] of productStars){
-            const sum = value.reduce((acc, value) => acc + value, 0);
-            const average = sum / value.length;
+    })
 
-            productAverages.set(key, average);
-            console.log('new: ', productAverages);
-            
+    for (const [key, value] of productStars){
+        const sum = value.reduce((acc, value) => acc + value, 0);
+        const average = sum / value.length;
+
+        productAverages.set(key, average);    
+    }
+
+    const productIds = new Set();
+
+    reviews.map((review) => {
+        const hasId = productAverages.has(review.productId);
+
+        if (hasId){
+            productIds.add(review.productId);
         }
     })
 
+    const productsToShow = products.filter((product) => {
+        const hasId = productIds.has(product.id)
+        const thisProductStarsAverage = productAverages.get(String(product.id));
+        
+        if(thisProductStarsAverage){  
+            const isStarsGreaterThanFilter = thisProductStarsAverage >= starsFilter;
 
-    console.log(productAverages);
-
-    const filteredReviews = reviews.filter((review) => {
-        const starsAverage = productAverages.get(review.productId);
-
-        if(starsAverage) {
-            return starsAverage >= starsFilter
+            if(hasId && isStarsGreaterThanFilter){    
+                return true;
+            }
         }
-
-        return reviews;
     })
-
-    //Remove duplicates and changes Set back to Array by using spread operator 
-    const productIds = [...new Set(filteredReviews.map((review) => review.productId))]
-
-    const starsFilteredProductsToShow = products.filter((product) => productIds.includes(String(product.id)))
-    console.log(starsFilteredProductsToShow)
 
     const [isElectronicsCategoryActive, setIsElectronicsCategoryActive] = useState(false);
     const [isFashionCategoryActive, setIsFashionCategoryActive] = useState(false);
@@ -130,7 +129,6 @@ export default function Products() {
     const [isThreeOrMoreStarsActive, setIsThreeOrMoreStarsActive] = useState(false);
     const [isTwoOrMoreStarsActive, setIsTwoOrMoreStarsActive] = useState(false);
     const [isOneOrMoreStarsActive, setIsOneOrMoreStarsActive] = useState(false);
-
 
     //Avoid multiple categories active at the same time
     useEffect(() => {
@@ -196,7 +194,6 @@ export default function Products() {
         setSearchKeyword("");
         setTemporarySearchKeyword("");
         setPriceRange("2500")
-        console.log("pricerange: ", priceRange);
     }
 
     const convertCategoryToNumber = (category : string) => {
@@ -236,7 +233,10 @@ export default function Products() {
         const hasCategory = categoryNumber !== null;
         const hasKeyword = searchKeyword.trim() !== "";
         const hasPriceRange = priceRange !== "";
-
+        const hasStarsFilter = starsFilter !== 0;
+        const hasId = productIds.has(product.id)
+        const thisProductStarsAverage = productAverages.get(String(product.id));
+        
         if(hasCategory && hasKeyword && hasPriceRange) {
             return product.categoryId === categoryNumber && 
                    product.name.toLowerCase().includes(searchKeyword.toLowerCase()) && 
@@ -254,6 +254,15 @@ export default function Products() {
         }
         else if(hasPriceRange) {
             return product.price <= priceRange;
+        }
+        else if(hasStarsFilter){
+            if(thisProductStarsAverage){
+                const isStarsGreaterThanFilter = thisProductStarsAverage >= starsFilter;
+    
+                if(hasId){    
+                    return isStarsGreaterThanFilter;
+                }
+            }
         }
         
         return true;
