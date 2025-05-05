@@ -1,10 +1,9 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
-import { ProductProps, ProductsContext, ReviewsContext } from "@/context/ContextProvider"
+import { ProductsContext, ReviewsContext } from "@/context/ContextProvider"
 import { useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
-import { set } from "react-hook-form";
 
 export default function Products() {
 
@@ -106,18 +105,18 @@ export default function Products() {
         }
     })
 
-    const productsToShow = products.filter((product) => {
-        const hasId = productIds.has(product.id)
-        const thisProductStarsAverage = productAverages.get(String(product.id));
+    // const productsToShow = products.filter((product) => {
+    //     const hasId = productIds.has(product.id)
+    //     const thisProductStarsAverage = productAverages.get(String(product.id));
         
-        if(thisProductStarsAverage){  
-            const isStarsGreaterThanFilter = thisProductStarsAverage >= starsFilter;
+    //     if(thisProductStarsAverage){  
+    //         const isStarsGreaterThanFilter = thisProductStarsAverage >= starsFilter;
 
-            if(hasId && isStarsGreaterThanFilter){    
-                return true;
-            }
-        }
-    })
+    //         if(hasId && isStarsGreaterThanFilter){    
+    //             return true;
+    //         }
+    //     }
+    // })
 
     const [isElectronicsCategoryActive, setIsElectronicsCategoryActive] = useState(false);
     const [isFashionCategoryActive, setIsFashionCategoryActive] = useState(false);
