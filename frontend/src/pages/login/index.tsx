@@ -1,14 +1,22 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { useForm } from "react-hook-form";
 
 export default function Login() {
+
+    const { register, handleSubmit } = useForm();
+
+    const onSubmit = (data: object) => {
+        console.log(data);
+    }
+
     return (
         <div className="h-full bg-gray-900">
             <Header />
 
             <main className="mt-20 mb-36 flex justify-center">
                 <form 
-                    action=""
+                    onSubmit={handleSubmit(onSubmit)}
                     className="rounded p-8 bg-gray-800"   
                 >
                     <h1 className="text-3xl text-gray-50 text-center font-bold">Log In</h1>
@@ -23,8 +31,8 @@ export default function Login() {
                             </label>
                             <input 
                                 type="text" 
-                                name="email"  
                                 placeholder="example@example.com"
+                                {...register("email")}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
                                 placeholder:text-gray-400"
                             />
@@ -39,8 +47,8 @@ export default function Login() {
                             </label>
                             <input 
                                 type="password" 
-                                name="password" 
                                 placeholder="Enter your password"
+                                {...register("password")}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
                                 placeholder:text-gray-400"
                             />

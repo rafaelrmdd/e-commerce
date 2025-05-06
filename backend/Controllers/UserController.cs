@@ -45,12 +45,12 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("user")]
-    public async Task<IActionResult> AddUser([FromBody] UserDTO userDTO)
+    public async Task<IActionResult> RegisterUser([FromBody] UserDTO userDTO)
     {
         try
         {
             await _service.AddUserService(userDTO);
-            return Ok("User was successful added");
+            return Ok("User was successful registered");
         }
         catch (NotFoundException ex)
         {
