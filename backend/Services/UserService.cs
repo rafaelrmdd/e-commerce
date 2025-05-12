@@ -1,17 +1,25 @@
 using backend.Context;
 using backend.DTOs;
 using backend.Models;
+using backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace backend.Services;
 
 public class UserService : IUserService
 {
     private readonly ReifferceContext _context;
+    private readonly IConfiguration _configuration;
 
-    public UserService(ReifferceContext context)
+    public UserService(ReifferceContext context, IConfiguration configuration)
     {
         _context = context;
+        _configuration = configuration;
     }
 
     public async Task<IEnumerable<User>> GetUsersService()
@@ -93,6 +101,45 @@ public class UserService : IUserService
         await _context.SaveChangesAsync();
 
         return user;
+    }
+
+    public string GenerateJwtToken(string username, string password, string userId)
+    {
+        var jwtKey = _configuration["Jwt:Key"];
+        var key = Encoding.ASCII.GetBytes(jwtKey!);
+
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, username),
+            new Claim(ClaimTypes.NameIdentifier, userId),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+
+            Expires = DateTime.UtcNow.AddMinutes(1),
+            SigningCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256Signature
+            ),
+            Issuer = _configuration["Jwt:Issuer"],
+            Audience = _configuration["Jwt:Audience"]
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+
+        return tokenHandler.WriteToken(token);
+    }
+
+    private string GenerateRefreshToken()
+    {
+        Guid refreshToken = Guid.NewGuid();
+        string refreshTokenString = refreshToken.ToString();
+
+        return refreshTokenString;
     }
 
 }

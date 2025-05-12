@@ -1,8 +1,7 @@
 using backend.DTOs;
 using backend.Models;
-using Microsoft.AspNetCore.Mvc;
 
-namespace backend.Services;
+namespace backend.Services.Interfaces;
 
 public interface IUserService
 {
@@ -11,4 +10,6 @@ public interface IUserService
     public Task<User> AddUserService(UserDTO userDTO);
     public Task<User> UpdateUserService(UserDTO userDTO, Guid id);
     public Task<User> DeleteUserService(Guid id);
+    public string GenerateJwtToken();
+    public string GenerateRefreshToken();
 }
