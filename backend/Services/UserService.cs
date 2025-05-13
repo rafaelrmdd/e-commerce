@@ -134,12 +134,11 @@ public class UserService : IUserService
         return tokenHandler.WriteToken(token);
     }
 
-    private string GenerateRefreshToken()
+    public string GenerateRefreshToken()
     {
         Guid refreshToken = Guid.NewGuid();
         string refreshTokenString = refreshToken.ToString();
 
         return refreshTokenString;
     }
-
 }

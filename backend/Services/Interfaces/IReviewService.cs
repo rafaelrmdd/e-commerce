@@ -2,7 +2,7 @@ using backend.DTOs;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backend.Services;
+namespace backend.Services.Interfaces;
 
 public interface IReviewService
 {

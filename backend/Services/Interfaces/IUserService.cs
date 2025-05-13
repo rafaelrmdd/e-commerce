@@ -10,6 +10,6 @@ public interface IUserService
     public Task<User> AddUserService(UserDTO userDTO);
     public Task<User> UpdateUserService(UserDTO userDTO, Guid id);
     public Task<User> DeleteUserService(Guid id);
-    public string GenerateJwtToken();
+    public string GenerateJwtToken(string username, string password, string userId);
     public string GenerateRefreshToken();
 }
