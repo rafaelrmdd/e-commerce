@@ -50,7 +50,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            await _service.AddUserService(userDTO);
+            await _service.RegisterUserService(userDTO);
             return Ok("User was successful registered");
         }
         catch (NotFoundException ex)

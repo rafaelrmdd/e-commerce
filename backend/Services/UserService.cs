@@ -46,23 +46,57 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<User> AddUserService(UserDTO userDTO)
+    public async Task<User> RegisterUserService(UserDTO userDTO)
     {
-        if (string.IsNullOrEmpty(userDTO.Name))
+        if (string.IsNullOrEmpty(userDTO.Email))
         {
-            throw new ValidationException("User's name can't be null or empty");
+            throw new ValidationException("User's email can't be null or empty");
         }
 
+        var findUser = await _context.Users.FirstOrDefaultAsync(user => user.Email == userDTO.Email);
+
+        if (findUser is not null)
+        {
+            throw new ValidationException("This email is already registered");
+        }
+
+        var refreshToken = GenerateRefreshToken();
+
         User newUser = new User(
-            userDTO.Name,
-            userDTO.Login,
-            userDTO.Password
+            userDTO.Email,
+            userDTO.Password,
+            refreshToken
         );
 
         await _context.Users.AddAsync(newUser);
         await _context.SaveChangesAsync();
 
         return newUser;
+    }
+
+    public async Task<object> UserSessionService(UserDTO userDTO)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(user => user.Email == userDTO.Email);
+
+        if (user is null)
+        {
+            throw new ValidationException("Wrong email!");
+        }
+
+        if (user.Password != userDTO.Password)
+        {
+            throw new ValidationException("Wrong password!");
+        }
+
+        var jwt = GenerateJwtToken(userDTO);
+
+        return new
+        {
+            user.Email,
+            user.Password,
+            user.RefreshToken,
+            jwt
+        };
     }
 
     public async Task<User> UpdateUserService(UserDTO userDTO, Guid id)
@@ -74,13 +108,12 @@ public class UserService : IUserService
             throw new NotFoundException($"User with id: {id} was not found");
         }
 
-        if (string.IsNullOrEmpty(userDTO.Name))
+        if (string.IsNullOrEmpty(userDTO.Email))
         {
             throw new ValidationException("User's name can't be null or empty");
         }
 
-        user.Name = userDTO.Name;
-        user.Login = userDTO.Login;
+        user.Email = userDTO.Email;
         user.Password = userDTO.Password;
 
         await _context.SaveChangesAsync();
@@ -103,16 +136,15 @@ public class UserService : IUserService
         return user;
     }
 
-    public string GenerateJwtToken(string username, string password, string userId)
+    public string GenerateJwtToken(UserDTO userDTO)
     {
         var jwtKey = _configuration["Jwt:Key"];
         var key = Encoding.ASCII.GetBytes(jwtKey!);
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.NameIdentifier, userId),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(ClaimTypes.Email, userDTO.Email),
+            // new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor

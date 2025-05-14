@@ -1,3 +1,3 @@
 namespace backend.DTOs;
 
-public record UserDTO(string Name, string Login, string Password);
+public record UserDTO(string Email, string Password);
