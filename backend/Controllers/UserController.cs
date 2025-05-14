@@ -45,13 +45,27 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPost("user")]
+    [HttpPost("user/register")]
     public async Task<IActionResult> RegisterUser([FromBody] UserDTO userDTO)
     {
         try
         {
             await _service.RegisterUserService(userDTO);
             return Ok("User was successful registered");
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpPost("user/session")]
+    public async Task<IActionResult> UserSession([FromBody] UserDTO userDTO)
+    {
+        try
+        {
+            var response = await _service.UserSessionService(userDTO);
+            return Ok(response);
         }
         catch (NotFoundException ex)
         {
