@@ -46,11 +46,16 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<User> RegisterUserService(UserDTO userDTO)
+    public async Task<User> RegisterUserService(UserRegisterDTO userDTO)
     {
         if (string.IsNullOrEmpty(userDTO.Email))
         {
             throw new ValidationException("User's email can't be null or empty");
+        }
+
+        if (userDTO.Password != userDTO.ConfirmPassword)
+        {
+            throw new ValidationException("The passwords should be the same");
         }
 
         var findUser = await _context.Users.FirstOrDefaultAsync(user => user.Email == userDTO.Email);

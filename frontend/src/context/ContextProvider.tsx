@@ -1,4 +1,5 @@
 import { api } from "@/services/api/api";
+import { AxiosResponse } from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react"
 
 type ContextProviderProps = {
@@ -28,9 +29,7 @@ export type ReviewProps = {
 }
 
 export type UserProps = {
-    id: number
-    name: string
-    login: string
+    email: string
     password: string
 }
 
@@ -45,8 +44,8 @@ type ReviewsContextProps = {
 
 type UsersContextProps = {
     users : UserProps[]
+    signIn: (user : UserProps) => void
 }
-
 
 export const ProductsContext = createContext<ProductsContextProps>({
     products: []
@@ -57,7 +56,8 @@ export const ReviewsContext = createContext<ReviewsContextProps>({
 });
 
 export const UsersContext = createContext<UsersContextProps>({
-    users: []
+    users: [],
+    signIn: () => {}
 });
 
 export function ContextProvider({children} : ContextProviderProps) {
@@ -107,9 +107,22 @@ export function ContextProvider({children} : ContextProviderProps) {
         return () => clearTimeout(timeout)
     })
 
+    const signIn = async ({email, password} : UserProps) => {
+
+        try{
+            const response : AxiosResponse = await api.post('/user/session', {
+                email,
+                password
+            })
+
+            console.log('response: ', response);
+        }catch(error){
+            console.log(error);
+        }
+    }
 
     return (
-        <UsersContext.Provider value={{ users }}>
+        <UsersContext.Provider value={{ users, signIn }}>
             <ProductsContext.Provider value={{ products, }}>
                 <ReviewsContext.Provider value={{ reviews }}>
                     {children}

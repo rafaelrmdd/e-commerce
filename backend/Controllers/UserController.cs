@@ -46,7 +46,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("user/register")]
-    public async Task<IActionResult> RegisterUser([FromBody] UserDTO userDTO)
+    public async Task<IActionResult> RegisterUser([FromBody] UserRegisterDTO userDTO)
     {
         try
         {
@@ -100,6 +100,5 @@ public class UserController : ControllerBase
             return NotFound(ex.Message);
         }
     }
-
 
 }

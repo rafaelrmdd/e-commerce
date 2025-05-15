@@ -1,13 +1,32 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FormEvent, useState } from "react";
+import { api } from "@/services/api/api";
+import { AxiosError } from "axios";
 
 export default function Register() {
 
-    const { register, handleSubmit } = useForm();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
-    const onSubmit = (data: object) => {
-        console.log(data);
+    const onSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        try{
+            const response = await api.post('user/register', {
+                email,
+                password,
+                confirmPassword
+            })
+
+            console.log('response register: ', response);
+        }catch(e){
+            const error = e as AxiosError;
+
+            console.log('error: ', error);
+        }
+
     }
 
     return (
@@ -16,7 +35,7 @@ export default function Register() {
 
             <main className="mt-20 mb-20 flex justify-center">
                 <form 
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={onSubmit}
                     className="rounded p-8 bg-gray-800"   
                 >
                     <h1 className="text-3xl text-gray-50 text-center font-bold">Create Account</h1>
@@ -32,7 +51,7 @@ export default function Register() {
                             <input 
                                 type="text" 
                                 placeholder="example@example.com"
-                                {...register("email")}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
                                 placeholder:text-gray-400"
                             />
@@ -48,7 +67,7 @@ export default function Register() {
                             <input 
                                 type="password" 
                                 placeholder="Enter your password"
-                                {...register("password")}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
                                 placeholder:text-gray-400"
                             />
@@ -64,7 +83,7 @@ export default function Register() {
                             <input 
                                 type="password" 
                                 placeholder="Confirm your password"
-                                {...register("confirm-password")}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
                                 placeholder:text-gray-400"
                             />

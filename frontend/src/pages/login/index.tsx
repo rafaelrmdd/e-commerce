@@ -1,13 +1,24 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { useForm } from "react-hook-form";
+import { FormEvent, useContext, useState } from "react";
+import { UsersContext } from "@/context/ContextProvider";
 
-export default function Login() {
+    export default function Login() {
 
-    const { register, handleSubmit } = useForm();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-    const onSubmit = (data: object) => {
-        console.log(data);
+    const { signIn } = useContext(UsersContext);
+
+    const onSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        console.log(email, password);
+
+        signIn({
+            email,
+            password
+        });
     }
 
     return (
@@ -16,7 +27,7 @@ export default function Login() {
 
             <main className="mt-20 mb-36 flex justify-center">
                 <form 
-                    onSubmit={handleSubmit(onSubmit)}
+                    onSubmit={onSubmit}
                     className="rounded p-8 bg-gray-800"   
                 >
                     <h1 className="text-3xl text-gray-50 text-center font-bold">Log In</h1>
@@ -32,7 +43,7 @@ export default function Login() {
                             <input 
                                 type="text" 
                                 placeholder="example@example.com"
-                                {...register("email")}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
                                 placeholder:text-gray-400"
                             />
@@ -48,7 +59,7 @@ export default function Login() {
                             <input 
                                 type="password" 
                                 placeholder="Enter your password"
-                                {...register("password")}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
                                 placeholder:text-gray-400"
                             />
