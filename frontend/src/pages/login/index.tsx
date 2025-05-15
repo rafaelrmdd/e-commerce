@@ -46,7 +46,7 @@ export default function Login() {
                                 placeholder="example@example.com"
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
-                                placeholder:text-gray-400"
+                                placeholder:text-gray-400 text-gray-400"
                             />
                         </div>
 
@@ -62,7 +62,7 @@ export default function Login() {
                                 placeholder="Enter your password"
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
-                                placeholder:text-gray-400"
+                                placeholder:text-gray-400 text-gray-400"
                             />
                         </div>
 

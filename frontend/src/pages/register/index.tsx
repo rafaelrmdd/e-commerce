@@ -27,7 +27,6 @@ export default function Register() {
             router.push('/login');
         }catch(e){
             const error = e as AxiosError;
-
             console.log('error: ', error);
         }
 
@@ -57,7 +56,7 @@ export default function Register() {
                                 placeholder="example@example.com"
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
-                                placeholder:text-gray-400"
+                                placeholder:text-gray-400 text-gray-400"
                             />
                         </div>
 
@@ -73,7 +72,7 @@ export default function Register() {
                                 placeholder="Enter your password"
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
-                                placeholder:text-gray-400"
+                                placeholder:text-gray-400 text-gray-400"
                             />
                         </div>
 
@@ -89,7 +88,7 @@ export default function Register() {
                                 placeholder="Confirm your password"
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 className="w-96 px-4 py-2 bg-gray-700 rounded outline-0
-                                placeholder:text-gray-400"
+                                placeholder:text-gray-400 text-gray-400"
                             />
                         </div>
 
