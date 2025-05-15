@@ -1,6 +1,7 @@
 import { api } from "@/services/api/api";
 import { AxiosResponse } from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react"
+import { useRouter } from "next/router";
 
 type ContextProviderProps = {
     children: ReactNode
@@ -62,6 +63,8 @@ export const UsersContext = createContext<UsersContextProps>({
 
 export function ContextProvider({children} : ContextProviderProps) {
 
+    const router = useRouter();
+
     const [users, setUsers] = useState<UserProps[]>([]);
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
@@ -116,6 +119,8 @@ export function ContextProvider({children} : ContextProviderProps) {
             })
 
             console.log('response: ', response);
+
+            router.push('/home');
         }catch(error){
             console.log(error);
         }

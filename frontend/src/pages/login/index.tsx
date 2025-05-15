@@ -3,7 +3,7 @@ import { Footer } from "@/components/Footer";
 import { FormEvent, useContext, useState } from "react";
 import { UsersContext } from "@/context/ContextProvider";
 
-    export default function Login() {
+export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,6 +19,7 @@ import { UsersContext } from "@/context/ContextProvider";
             email,
             password
         });
+
     }
 
     return (

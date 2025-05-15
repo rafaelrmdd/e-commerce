@@ -3,8 +3,11 @@ import { Footer } from "@/components/Footer";
 import { FormEvent, useState } from "react";
 import { api } from "@/services/api/api";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation"
 
 export default function Register() {
+
+    const router = useRouter();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -21,6 +24,7 @@ export default function Register() {
             })
 
             console.log('response register: ', response);
+            router.push('/login');
         }catch(e){
             const error = e as AxiosError;
 
