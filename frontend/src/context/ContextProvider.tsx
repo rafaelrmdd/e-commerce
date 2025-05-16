@@ -2,6 +2,7 @@ import { api } from "@/services/api/api";
 import { AxiosResponse } from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react"
 import { useRouter } from "next/router";
+import { setCookie } from "nookies";
 
 type ContextProviderProps = {
     children: ReactNode
@@ -119,10 +120,25 @@ export function ContextProvider({children} : ContextProviderProps) {
             })
 
             console.log('response: ', response);
+            if(response.data) {
+                const { jwt, refreshToken } = response.data;
 
-            router.push('/home');
+                setCookie(undefined, 'reifferce.jwt', jwt, {
+                    maxAge: 60 * 60 * 24 * 30,
+                    path: "/" 
+                })
+
+                setCookie(undefined, 'reifferce.refreshToken', refreshToken, {
+                    maxAge: 60 * 60 * 24 * 30,
+                    path: "/" 
+                })
+
+                api.defaults.headers['Authorization'] = `Bearer ${jwt}` 
+                // router.push('/home');
+            }
+
         }catch(error){
-            console.log(error);
+            console.log('error: ', error);
         }
     }
 
