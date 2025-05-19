@@ -1,6 +1,7 @@
 using backend.DTOs;
 using backend.Services;
 using backend.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -17,6 +18,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("users")]
+    [Authorize]
     public async Task<IActionResult> GetUsers()
     {
         try
@@ -31,12 +33,43 @@ public class UserController : ControllerBase
 
     }
 
-    [HttpGet("user/{id}", Name = "GetUserById")]
-    public async Task<IActionResult> GetReviewById(Guid id)
+    [HttpGet("user/id/{id}", Name = "GetUserById")]
+    [Authorize]
+    public async Task<IActionResult> GetUserById(Guid id)
     {
         try
         {
             var user = await _service.GetUserByIdService(id);
+            return Ok(user);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpGet("user/email/{email}", Name = "GetUserByEmail")]
+    [Authorize]
+    public async Task<IActionResult> GetUserByEmail(string email)
+    {
+        try
+        {
+            var user = await _service.GetUserByEmailService(email);
+            return Ok(user);
+        }
+        catch (NotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpGet("user/refreshToken/{refreshToken}", Name = "GetUserByRefreshToken")]
+    [Authorize]
+    public async Task<IActionResult> GetUserByRefreshToken(string refreshToken)
+    {
+        try
+        {
+            var user = await _service.GetUserByRefreshTokenService(refreshToken);
             return Ok(user);
         }
         catch (NotFoundException ex)
@@ -73,7 +106,23 @@ public class UserController : ControllerBase
         }
     }
 
+    [HttpPost("user/refresh")]
+    [Authorize]
+    public async Task<IActionResult> UserRefresh([FromBody] RefreshTokenDTO refreshTokenDTO)
+    {
+        try
+        {
+            var response = await _service.UserRefresh(refreshTokenDTO);
+            return Ok(response);
+        }
+        catch (NotFoundException ex)
+        {
+            return Unauthorized(ex.Message);
+        }
+    }
+
     [HttpPut("user/{id}")]
+    [Authorize]
     public async Task<IActionResult> UpdateUser(UserDTO userDTO, Guid id)
     {
         try
@@ -88,6 +137,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("user/{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
         try
@@ -100,5 +150,4 @@ public class UserController : ControllerBase
             return NotFound(ex.Message);
         }
     }
-
 }

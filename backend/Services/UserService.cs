@@ -46,6 +46,30 @@ public class UserService : IUserService
         return user;
     }
 
+    public async Task<User> GetUserByEmailService(string email)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(user => user.Email == email);
+
+        if (user == null)
+        {
+            throw new NotFoundException($"User with email: {email} was not found");
+        }
+
+        return user;
+    }
+
+    public async Task<User> GetUserByRefreshTokenService(string refreshToken)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(user => user.RefreshToken == refreshToken);
+
+        if (user == null)
+        {
+            throw new NotFoundException($"User with refresh token: {refreshToken} was not found");
+        }
+
+        return user;
+    }
+
     public async Task<User> RegisterUserService(UserRegisterDTO userDTO)
     {
         if (string.IsNullOrEmpty(userDTO.Email))
@@ -104,6 +128,43 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<object> UserRefresh(RefreshTokenDTO refreshTokenDTO)
+    {
+        if (string.IsNullOrEmpty(refreshTokenDTO.RefreshToken))
+        {
+            throw new ValidationException("Refresh token is necessary");
+        }
+
+        var user = await _context.Users.FirstOrDefaultAsync(user => user.RefreshToken == refreshTokenDTO.RefreshToken);
+
+        if (user is null)
+        {
+            throw new ValidationException($"No user with refreshToken: {refreshTokenDTO.RefreshToken} was found");
+        }
+
+        var newRefreshToken = GenerateRefreshToken();
+        user.RefreshToken = newRefreshToken;
+
+        if (user == null)
+        {
+            throw new ValidationException("Invalid refresh token");
+        }
+
+        UserDTO userDTO = new
+        (
+            user.Email,
+            user.Password
+        );
+
+        var jwt = GenerateJwtToken(userDTO);
+
+        return new
+        {
+            jwt,
+            newRefreshToken,
+        };
+    }
+
     public async Task<User> UpdateUserService(UserDTO userDTO, Guid id)
     {
         var user = await _context.Users.FindAsync(id);
@@ -143,7 +204,7 @@ public class UserService : IUserService
 
     public string GenerateJwtToken(UserDTO userDTO)
     {
-        var jwtKey = _configuration["Jwt:Key"];
+        var jwtKey = _configuration["JWT:Key"];
         var key = Encoding.ASCII.GetBytes(jwtKey!);
 
         var claims = new[]
@@ -156,13 +217,13 @@ public class UserService : IUserService
         {
             Subject = new ClaimsIdentity(claims),
 
-            Expires = DateTime.UtcNow.AddMinutes(1),
+            Expires = DateTime.UtcNow.AddSeconds(20),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature
             ),
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"]
+            Issuer = _configuration["JWT:Issuer"],
+            Audience = _configuration["JWT:Audience"]
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();

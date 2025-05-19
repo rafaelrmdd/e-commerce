@@ -18,26 +18,33 @@ export const api : AxiosInstance = axios.create({
 })
 
 api.interceptors.response.use(response => {
+    console.log('api response: ', response);
     return response;
+    
 }, (error : AxiosError) => {
+    console.log('error response: ', error);
+    
     if (error.response?.status === 401) {
         if (error.response.statusText === 'Unauthorized') {
             cookies = parseCookies();
 
             const { 'auth.refreshToken': refreshToken } = cookies;
+            console.log('chegou aqui');
             const originalConfig = error.config;
+            console.log('isrefrehing: ', isRefreshing);
 
             if (!isRefreshing) {
+                console.log('Attempting token refresh...');
                 isRefreshing = true;
 
                 api.post('/user/refresh', {
                     refreshToken: refreshToken,
-                }).then(response => {
+                }).then(response => {   
                     console.log('resposta: ', response);
                     const { jwt } = response.data;
                 
                     setCookie(undefined, 'reifferce.jwt', jwt, {
-                        maxAge: 60 * 60 * 24 * 30, // 30 days
+                        maxAge: 60 * 60 * 24 * 30,
                         path: "/"
                     });
         
@@ -50,10 +57,13 @@ api.interceptors.response.use(response => {
 
                     failedRequestsQueue.forEach(request => request.onSuccess(jwt))
                     failedRequestsQueue = []
+
+                    console.log('Token refresh successful');
                 }).catch(err => {
                     failedRequestsQueue.forEach(request => request.onFailure(err))
                     failedRequestsQueue = []
                 }).finally(() => {
+                    console.log('chegou aqui tbm')
                     isRefreshing = false;
                 })
             }

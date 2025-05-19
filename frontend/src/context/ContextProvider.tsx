@@ -2,7 +2,7 @@ import { api } from "@/services/api/api";
 import { AxiosResponse } from "axios";
 import { createContext, ReactNode, useEffect, useState } from "react"
 import { useRouter } from "next/router";
-import { setCookie } from "nookies";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
 
 type ContextProviderProps = {
     children: ReactNode
@@ -35,7 +35,6 @@ export type UserProps = {
     password: string
 }
 
-
 type ProductsContextProps = {
     products : ProductProps[]
 }
@@ -47,6 +46,7 @@ type ReviewsContextProps = {
 type UsersContextProps = {
     users : UserProps[]
     signIn: (user : UserProps) => void
+    user: UserProps
 }
 
 export const ProductsContext = createContext<ProductsContextProps>({
@@ -59,8 +59,13 @@ export const ReviewsContext = createContext<ReviewsContextProps>({
 
 export const UsersContext = createContext<UsersContextProps>({
     users: [],
-    signIn: () => {}
+    signIn: () => {},
+    user: {
+        email: "",
+        password: ""
+    }
 });
+
 
 export function ContextProvider({children} : ContextProviderProps) {
 
@@ -69,6 +74,10 @@ export function ContextProvider({children} : ContextProviderProps) {
     const [users, setUsers] = useState<UserProps[]>([]);
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
+    const [user, setUser] = useState<UserProps>({
+        email: "",
+        password: ""
+    });
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -111,6 +120,24 @@ export function ContextProvider({children} : ContextProviderProps) {
         return () => clearTimeout(timeout)
     })
 
+    useEffect(() => {
+        const { 'reifferce.jwt': jwt } = parseCookies();
+        const { 'reifferce.refreshToken': refreshToken } = parseCookies();
+
+        if(refreshToken && jwt) {
+            api.get(`/user/refreshToken/${refreshToken}`).then(response => {
+                const { email, password } = response.data;
+
+                setUser({
+                    email,
+                    password
+                })
+            }).catch(() => {
+                signOut();
+            })
+        }
+    }, [])
+
     const signIn = async ({email, password} : UserProps) => {
 
         try{
@@ -119,9 +146,13 @@ export function ContextProvider({children} : ContextProviderProps) {
                 password
             })
 
-            console.log('response: ', response);
             if(response.data) {
                 const { jwt, refreshToken } = response.data;
+
+                setUser({
+                    email,
+                    password
+                })
 
                 setCookie(undefined, 'reifferce.jwt', jwt, {
                     maxAge: 60 * 60 * 24 * 30,
@@ -134,7 +165,8 @@ export function ContextProvider({children} : ContextProviderProps) {
                 })
 
                 api.defaults.headers['Authorization'] = `Bearer ${jwt}` 
-                // router.push('/home');
+
+                router.push('/home');
             }
 
         }catch(error){
@@ -142,8 +174,15 @@ export function ContextProvider({children} : ContextProviderProps) {
         }
     }
 
+    const signOut = () => {
+        destroyCookie(undefined, 'reifferce.jwt');
+        destroyCookie(undefined, 'reifferce.refreshToken');
+
+        router.push('/login');  
+    }
+
     return (
-        <UsersContext.Provider value={{ users, signIn }}>
+        <UsersContext.Provider value={{ users, signIn, user }}>
             <ProductsContext.Provider value={{ products, }}>
                 <ReviewsContext.Provider value={{ reviews }}>
                     {children}
