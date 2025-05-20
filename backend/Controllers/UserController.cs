@@ -107,7 +107,6 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("user/refresh")]
-    [Authorize]
     public async Task<IActionResult> UserRefresh([FromBody] RefreshTokenDTO refreshTokenDTO)
     {
         try

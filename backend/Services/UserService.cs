@@ -145,10 +145,7 @@ public class UserService : IUserService
         var newRefreshToken = GenerateRefreshToken();
         user.RefreshToken = newRefreshToken;
 
-        if (user == null)
-        {
-            throw new ValidationException("Invalid refresh token");
-        }
+        await _context.SaveChangesAsync();
 
         UserDTO userDTO = new
         (

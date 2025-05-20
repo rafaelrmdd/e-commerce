@@ -18,7 +18,6 @@ export const api : AxiosInstance = axios.create({
 })
 
 api.interceptors.response.use(response => {
-    console.log('api response: ', response);
     return response;
     
 }, (error : AxiosError) => {
@@ -28,42 +27,41 @@ api.interceptors.response.use(response => {
         if (error.response.statusText === 'Unauthorized') {
             cookies = parseCookies();
 
-            const { 'auth.refreshToken': refreshToken } = cookies;
-            console.log('chegou aqui');
+            const { 'reifferce.refreshToken': refreshToken } = cookies;
             const originalConfig = error.config;
-            console.log('isrefrehing: ', isRefreshing);
 
             if (!isRefreshing) {
-                console.log('Attempting token refresh...');
                 isRefreshing = true;
 
                 api.post('/user/refresh', {
                     refreshToken: refreshToken,
                 }).then(response => {   
                     console.log('resposta: ', response);
-                    const { jwt } = response.data;
+                    const { jwt, newRefreshToken } = response.data;
                 
                     setCookie(undefined, 'reifferce.jwt', jwt, {
                         maxAge: 60 * 60 * 24 * 30,
                         path: "/"
                     });
+
+                    console.log("chegou aqui 1", cookies['reifferce.jwt']);
         
-                    setCookie(undefined, 'reifferce.refreshToken', response.data.newRefreshToken, {
+                    setCookie(undefined, 'reifferce.refreshToken', newRefreshToken, {
                         maxAge: 60 * 60 * 24 * 30, 
                         path: "/"
                     });
-    
+
+                    console.log("chegou aqui 2", cookies['reifferce.refreshToken']);
+
                     api.defaults.headers['Authorization'] = `Bearer ${jwt}`
 
                     failedRequestsQueue.forEach(request => request.onSuccess(jwt))
                     failedRequestsQueue = []
 
-                    console.log('Token refresh successful');
                 }).catch(err => {
                     failedRequestsQueue.forEach(request => request.onFailure(err))
                     failedRequestsQueue = []
                 }).finally(() => {
-                    console.log('chegou aqui tbm')
                     isRefreshing = false;
                 })
             }
