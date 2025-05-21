@@ -19,10 +19,7 @@ export const api : AxiosInstance = axios.create({
 
 api.interceptors.response.use(response => {
     return response;
-    
 }, (error : AxiosError) => {
-    console.log('error response: ', error);
-    
     if (error.response?.status === 401) {
         if (error.response.statusText === 'Unauthorized') {
             cookies = parseCookies();
@@ -36,28 +33,26 @@ api.interceptors.response.use(response => {
                 api.post('/user/refresh', {
                     refreshToken: refreshToken,
                 }).then(response => {   
-                    console.log('resposta: ', response);
-                    const { jwt, newRefreshToken } = response.data;
-                
-                    setCookie(undefined, 'reifferce.jwt', jwt, {
-                        maxAge: 60 * 60 * 24 * 30,
-                        path: "/"
-                    });
+                    if(response && response.data) {
+                        const { jwt, newRefreshToken } = response.data;
+                    
+                        setCookie(undefined, 'reifferce.jwt', jwt, {
+                            maxAge: 60 * 60 * 24 * 30,
+                            path: "/"
+                        });
+            
+                        setCookie(undefined, 'reifferce.refreshToken', newRefreshToken, {
+                            maxAge: 60 * 60 * 24 * 30, 
+                            path: "/"
+                        });
 
-                    console.log("chegou aqui 1", cookies['reifferce.jwt']);
-        
-                    setCookie(undefined, 'reifferce.refreshToken', newRefreshToken, {
-                        maxAge: 60 * 60 * 24 * 30, 
-                        path: "/"
-                    });
+                        api.defaults.headers['Authorization'] = `Bearer ${jwt}`
 
-                    console.log("chegou aqui 2", cookies['reifferce.refreshToken']);
-
-                    api.defaults.headers['Authorization'] = `Bearer ${jwt}`
-
-                    failedRequestsQueue.forEach(request => request.onSuccess(jwt))
-                    failedRequestsQueue = []
-
+                        failedRequestsQueue.forEach(request => request.onSuccess(jwt))
+                        failedRequestsQueue = []
+                    }else {
+                        console.error("error: response.data is undefined");
+                    }
                 }).catch(err => {
                     failedRequestsQueue.forEach(request => request.onFailure(err))
                     failedRequestsQueue = []

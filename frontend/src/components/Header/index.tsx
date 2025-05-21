@@ -5,7 +5,8 @@ import { FaUserCircle } from "react-icons/fa";
 
 export function Header() {
 
-    const { user } = useContext(UsersContext);
+    const { user, isUserLogged } = useContext(UsersContext);
+    console.log('isuserlogged: ', isUserLogged);
 
     return (
         <header className="flex justify-between items-center px-4 py-4 bg-gray-800">
@@ -19,10 +20,15 @@ export function Header() {
             </nav>
 
             <div className="flex gap-6 items-center">
+                {isUserLogged ? 
+                    <span className="text-gray-50">{user.email}</span>
+                    : null
+                }
                 <FaUserCircle 
                     className="hover:cursor-pointer"
                     color="white" 
-                    size={24}/>
+                    size={24}
+                />
             </div>
         </header>
     )

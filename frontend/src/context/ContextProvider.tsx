@@ -47,6 +47,7 @@ type UsersContextProps = {
     users : UserProps[]
     signIn: (user : UserProps) => void
     user: UserProps
+    isUserLogged: boolean
 }
 
 export const ProductsContext = createContext<ProductsContextProps>({
@@ -63,9 +64,9 @@ export const UsersContext = createContext<UsersContextProps>({
     user: {
         email: "",
         password: ""
-    }
+    },
+    isUserLogged: false
 });
-
 
 export function ContextProvider({children} : ContextProviderProps) {
 
@@ -79,64 +80,58 @@ export function ContextProvider({children} : ContextProviderProps) {
         password: ""
     });
 
+    const [isUserLogged, setIsUserLogged] = useState(false);
+
+    const REFRESH_INTERVAL = 5000;
     useEffect(() => {
-        const fetchUsers = async () => {
-            const response = await api.get("users");
-        
-            const { data } = response;
+        const fetchData = async () => {
+            try {
+                const [usersResponse, productsResponse, reviewsResponse] = await Promise.all([
+                    api.get('users'),
+                    api.get('products'),
+                    api.get('reviews')
+                ])
 
-            if(data) {
-                setUsers(data);
+                setUsers(usersResponse.data);
+                setProducts(productsResponse.data);
+                setReviews(reviewsResponse.data);
+
+            }catch(e)
+            {
+                console.log('error: ', e);
             }
         }
 
-        const fetchProducts = async () => {
-            const response = await api.get("products");
-        
-            const { data } = response;
+        fetchData();
 
-            if(data) {
-                setProducts(data);
-            }
-        }
+        const intervalId = setInterval(fetchData, REFRESH_INTERVAL);
 
-        const fetchReviews = async () => {
-            const response = await api.get("reviews");
-        
-            const { data } = response;
-
-            if(data) {
-                setReviews(data);
-            }
-        }
-
-        const timeout = setTimeout(() => 
-        {
-            fetchUsers()
-            fetchProducts()
-            fetchReviews()
-        }, 5000);
-
-        return () => clearTimeout(timeout)
-    })
-
-    useEffect(() => {
-        const { 'reifferce.jwt': jwt } = parseCookies();
-        const { 'reifferce.refreshToken': refreshToken } = parseCookies();
-
-        if(refreshToken && jwt) {
-            api.get(`/user/refreshToken/${refreshToken}`).then(response => {
-                const { email, password } = response.data;
-
-                setUser({
-                    email,
-                    password
-                })
-            }).catch(() => {
-                signOut();
-            })
+        return () => {
+            clearInterval(intervalId);
         }
     }, [])
+
+    // const { 'reifferce.jwt': jwt } = parseCookies();
+    // const { 'reifferce.refreshToken': refreshToken } = parseCookies();
+
+    // if(refreshToken && jwt) {
+    //     api.get(`/user/refreshToken/${refreshToken}`).then(response => {
+    //         const { email, password } = response.data;
+
+    //         setUser({
+    //             email,
+    //             password
+    //         })
+
+    //         console.log('chegou no if');
+    //         setIsUserLogged(true);
+
+    //     }).catch(() => {
+    //         setIsUserLogged(false);
+    //         signOut();
+    //         console.log('chegou no catch');
+    //     })
+    // }
 
     const signIn = async ({email, password} : UserProps) => {
 
@@ -182,7 +177,7 @@ export function ContextProvider({children} : ContextProviderProps) {
     }
 
     return (
-        <UsersContext.Provider value={{ users, signIn, user }}>
+        <UsersContext.Provider value={{ users, signIn, user, isUserLogged }}>
             <ProductsContext.Provider value={{ products, }}>
                 <ReviewsContext.Provider value={{ reviews }}>
                     {children}
