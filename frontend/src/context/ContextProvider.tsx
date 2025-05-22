@@ -46,7 +46,7 @@ type ReviewsContextProps = {
 type UsersContextProps = {
     users : UserProps[]
     signIn: (user : UserProps) => void
-    user: UserProps
+    user: UserProps | undefined
     isUserLogged: boolean
 }
 
@@ -75,12 +75,9 @@ export function ContextProvider({children} : ContextProviderProps) {
     const [users, setUsers] = useState<UserProps[]>([]);
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
-    const [user, setUser] = useState<UserProps>({
-        email: "",
-        password: ""
-    });
+    const [user, setUser] = useState<UserProps>();
 
-    const [isUserLogged, setIsUserLogged] = useState(false);
+    const isUserLogged = !!user;
 
     const REFRESH_INTERVAL = 5000;
     useEffect(() => {
@@ -111,27 +108,24 @@ export function ContextProvider({children} : ContextProviderProps) {
         }
     }, [])
 
-    // const { 'reifferce.jwt': jwt } = parseCookies();
-    // const { 'reifferce.refreshToken': refreshToken } = parseCookies();
+    useEffect(() => {
+        const { 'reifferce.jwt': jwt } = parseCookies();
+        const { 'reifferce.refreshToken': refreshToken } = parseCookies();
 
-    // if(refreshToken && jwt) {
-    //     api.get(`/user/refreshToken/${refreshToken}`).then(response => {
-    //         const { email, password } = response.data;
+        if(refreshToken && jwt) {
+            api.get(`/user/refreshToken/${refreshToken}`).then(response => {
+                const { email, password } = response.data;
 
-    //         setUser({
-    //             email,
-    //             password
-    //         })
+                setUser({
+                    email,
+                    password
+                })
 
-    //         console.log('chegou no if');
-    //         setIsUserLogged(true);
-
-    //     }).catch(() => {
-    //         setIsUserLogged(false);
-    //         signOut();
-    //         console.log('chegou no catch');
-    //     })
-    // }
+            }).catch(() => {
+                signOut();
+            })
+        }
+    }, [])
 
     const signIn = async ({email, password} : UserProps) => {
 
