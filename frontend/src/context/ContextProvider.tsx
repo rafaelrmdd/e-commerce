@@ -46,6 +46,7 @@ type ReviewsContextProps = {
 type UsersContextProps = {
     users : UserProps[]
     signIn: (user : UserProps) => void
+    signOut: () => void
     user: UserProps | undefined
     isUserLogged: boolean
 }
@@ -61,6 +62,7 @@ export const ReviewsContext = createContext<ReviewsContextProps>({
 export const UsersContext = createContext<UsersContextProps>({
     users: [],
     signIn: () => {},
+    signOut: () => {},
     user: {
         email: "",
         password: ""
@@ -171,7 +173,7 @@ export function ContextProvider({children} : ContextProviderProps) {
     }
 
     return (
-        <UsersContext.Provider value={{ users, signIn, user, isUserLogged }}>
+        <UsersContext.Provider value={{ users, signIn, signOut, user, isUserLogged }}>
             <ProductsContext.Provider value={{ products, }}>
                 <ReviewsContext.Provider value={{ reviews }}>
                     {children}

@@ -1,9 +1,23 @@
 import { Header } from "@/components/Header";
-import { FormEvent, useState } from "react";
+import { UsersContext } from "@/context/ContextProvider";
+import { FormEvent, useContext, useEffect, useState } from "react";
 
 export default function Account(){
 
-    const [section, setSection] = useState("");
+    const { signOut } = useContext(UsersContext);
+
+    const [section, setSection] = useState("Account Data");
+    const [isAccountDataButtonActive, setIsAccountDataButtonActive] = useState(true);
+    const [isChangePasswordButtonActive, setIsChangePasswordButtonActive] = useState(false);
+    const [isConfigurationsButtonActive, setIsConfigurationsButtonActive] = useState(false);
+    // const [isLogoutButtonActive, setIsLogoutButtonActive] = useState(false);
+
+    useEffect(() => {
+        setIsAccountDataButtonActive(section === "Account Data");
+        setIsChangePasswordButtonActive(section === "Change Password");
+        setIsConfigurationsButtonActive(section === "Configurations");
+        // setIsLogoutButtonActive(section === "Log Out");
+    }, [section])
 
     const handleSubmit = (e : FormEvent) => {
         e.preventDefault();
@@ -30,7 +44,7 @@ export default function Account(){
                     onSubmit={handleSubmit}
                     className=""
                 >
-                    <div>
+                    <div className="mb-4">
                         <label
                             className="text-gray-50 mb-1"
                             htmlFor="password"
@@ -39,7 +53,7 @@ export default function Account(){
                         </label>
 
                         <input 
-                            className="block mb-2 bg-gray-700 rounded outline-0 px-3 py-2
+                            className="block mb-2 mt-2 bg-gray-700 rounded outline-0 px-3 py-2
                             placeholder:text-gray-400 w-80"
                             name="password"
                             type="password" 
@@ -47,7 +61,7 @@ export default function Account(){
                         />
                     </div>
 
-                    <div>
+                    <div className="mb-4">
                         <label
                             className="text-gray-50 mb-1"
                             htmlFor="newPassword"
@@ -56,26 +70,28 @@ export default function Account(){
                         </label>
 
                         <input 
-                            className="block mb-2 bg-gray-700 rounded outline-0 px-3 py-2
+                            className="block mb-2 mt-2 bg-gray-700 rounded outline-0 px-3 py-2
                             placeholder:text-gray-400 w-80"
                             name="newPassword"
                             type="password" 
+                            placeholder="Enter your new password"
                         />
                     </div>
 
-                    <div>
+                    <div className="mb-4">
                         <label
-                            className="text-gray-50 mb-1"
+                            className="text-gray-50"
                             htmlFor="confirmNewPassword"
                         >
                             Confirm New Password
                         </label>
 
                         <input 
-                            className="block mb-2 bg-gray-700 rounded outline-0 px-3 py-2
+                            className="block mb-2 mt-2 bg-gray-700 rounded outline-0 px-3 py-2
                             placeholder:text-gray-400 w-80"
                             name="confirmNewPassword"
                             type="password" 
+                            placeholder="Confirm your new password"
                         />
                     </div>
 
@@ -96,26 +112,89 @@ export default function Account(){
     
     const configurations = () => {
         return (
-            <div>
+            <>
+                <h1 className="text-2xl text-gray-50 font-semibold mb-4">Configurations</h1>
 
-            </div>
+                <div>
+                    <h2 className="text-gray-50 font-semibold mb-2">Notifications</h2>
+
+                    <div>
+                        <div className="flex justify-between">
+                            <h2 className="text-gray-50">Promotional Emails</h2>
+                            <input type="checkbox" />
+                        </div>
+                        <div className="flex justify-between">
+                            <h2 className="text-gray-50">Promotional Emails</h2>
+                            <input type="checkbox" />
+                        </div>
+                        <div className="flex justify-between">
+                            <h2 className="text-gray-50">Promotional Emails</h2>
+                            <input type="checkbox" />
+                        </div>
+                    </div>
+
+                    <div className="border-b border-gray-500 mt-4 mb-4"></div>
+
+                    <div>
+                        <h2 className="text-gray-50 font-semibold mb-2">Privacy</h2>
+
+                        <div className="flex justify-between">
+                            <h2 className="text-gray-50">Promotional Emails</h2>
+                            <input type="checkbox" />
+                        </div>
+                        <div className="flex justify-between">
+                            <h2 className="text-gray-50">Promotional Emails</h2>
+                            <input type="checkbox" />
+                        </div>
+                    </div>
+
+                    <div className="border-b border-gray-500 mt-4 mb-4"></div>
+
+                    <div>
+                        <h2 className="text-gray-50 mb-2">Idiom and Region</h2>
+
+                        <div className="flex gap-x-2">
+                            <select 
+                                className="w-[50%] outline-0 text-gray-50 bg-gray-700 rounded
+                                px-3 py-2"
+                                name="languages" 
+                            >
+                                <option value="teste">PT-BR</option>
+                                <option value="teste">EN-US</option>
+                            </select>
+
+                            <select 
+                                className="w-[50%] outline-0 text-gray-50 bg-gray-700 rounded
+                                px-3 py-2"
+                                name="currency" 
+                            >
+                                <option value="teste">Real</option>
+                                <option value="teste">Dolar</option>
+                            </select>
+                        </div>
+
+                        <button className="px-3 py-2 bg-purple-500 hover:bg-purple-400
+                        hover:cursor-pointer text-gray-950 font-semibold rounded mt-6 ">Save Configurations</button>
+                    </div>
+                </div>
+            </>
         )
     }
 
-    const logOut = () => {
-        return (
-            <div>
+    // const logOut = () => {
+    //     return (
+    //         <div>
 
-            </div>
-        )
-    }
+    //         </div>
+    //     )
+    // }
 
     const switchSection = () => {
         switch(section){
             case "Account Data": return accountData();
             case "Change Password": return changePassword();
             case "Configurations": return configurations();
-            case "Log out": return logOut();
+            // case "Log Out": return logOutSection();
         }
     }
 
@@ -139,29 +218,42 @@ export default function Account(){
 
                     <div className="flex flex-col">
                         <button 
-                            onClick={() => setSection("Account Data")}
-                            className="rounded px-3 py-2 mb-2 text-gray-400"
+                            onClick={() => {
+                                setSection("Account Data")
+                                setIsAccountDataButtonActive(!isAccountDataButtonActive);
+                            }}
+                            className={`rounded px-3 py-2 mb-2 text-gray-300 hover:bg-purple-500
+                            transition duration-300 ${isAccountDataButtonActive ? "bg-purple-500" : ""}`}
                         >
                             Dados da Conta
                         </button>
 
                         <button 
-                            onClick={() => setSection("Change Password")}
-                            className="rounded px-3 py-2 mb-2 text-gray-400"
+                            onClick={() => {
+                                setSection("Change Password")
+                                setIsChangePasswordButtonActive(!isChangePasswordButtonActive);
+                            }}
+                            className={`rounded px-3 py-2 mb-2 text-gray-300 hover:bg-purple-500
+                            transition duration-300 ${isChangePasswordButtonActive ? "bg-purple-500" : ""}`}
                         >
                             Alterar Senha
                         </button>
 
                         <button 
-                            onClick={() => setSection("Configurations")}
-                            className="rounded px-3 py-2 mb-2 text-gray-400"
+                            onClick={() => {
+                                setSection("Configurations")
+                                setIsConfigurationsButtonActive(!isConfigurationsButtonActive);
+                            }}
+                            className={`rounded px-3 py-2 mb-2 text-gray-300 hover:bg-purple-500
+                            transition duration-300 ${isConfigurationsButtonActive ? "bg-purple-500" : ""}`}
                         >
                             Configurações
                         </button>
 
                         <button 
-                            onClick={() => setSection("Log out")}
-                            className="rounded px-3 py-2 mb-2 text-gray-400"
+                            onClick={() => signOut()}
+                            className="rounded px-3 py-2 mb-2 text-gray-300 hover:cursor-pointer
+                            transition duration-300"
                         >
                             Sair da Conta
                         </button>
