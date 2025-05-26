@@ -23,11 +23,14 @@ export function Header() {
                     <span className="text-gray-50">{user?.email}</span>
                     : null
                 }
-                <FaUserCircle 
-                    className="hover:cursor-pointer"
-                    color="white" 
-                    size={24}
-                />
+                <Link href={"/account"}>
+                    <FaUserCircle 
+                        className="hover:cursor-pointer"
+                        color="white" 
+                        size={24}
+                    />
+                </Link>
+
             </div>
         </header>
     )

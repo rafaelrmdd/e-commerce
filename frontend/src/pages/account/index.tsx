@@ -1,6 +1,8 @@
 import { Header } from "@/components/Header";
 import { UsersContext } from "@/context/ContextProvider";
 import { FormEvent, useContext, useEffect, useState } from "react";
+import { HiLogout } from "react-icons/hi";
+import { IoLogInOutline } from "react-icons/io5";
 
 export default function Account(){
 
@@ -10,13 +12,13 @@ export default function Account(){
     const [isAccountDataButtonActive, setIsAccountDataButtonActive] = useState(true);
     const [isChangePasswordButtonActive, setIsChangePasswordButtonActive] = useState(false);
     const [isConfigurationsButtonActive, setIsConfigurationsButtonActive] = useState(false);
-    // const [isLogoutButtonActive, setIsLogoutButtonActive] = useState(false);
+    const [isLogoutButtonActive, setIsLogoutButtonActive] = useState(false);
 
     useEffect(() => {
         setIsAccountDataButtonActive(section === "Account Data");
         setIsChangePasswordButtonActive(section === "Change Password");
         setIsConfigurationsButtonActive(section === "Configurations");
-        // setIsLogoutButtonActive(section === "Log Out");
+        setIsLogoutButtonActive(section === "Log Out");
     }, [section])
 
     const handleSubmit = (e : FormEvent) => {
@@ -27,9 +29,12 @@ export default function Account(){
         return (
             <>
                 <div className="flex justify-between">
-                    <h1 className="text-gray-50 text-2xl ">Dados da Conta</h1>
+                    <h1 className="text-gray-50 text-2xl ">Account Data</h1>
 
-                    <button className="rounded px-3 py-2 mb-2 text-gray-950 bg-purple-500">Editar</button>
+                    <button className="rounded px-3 py-2 mb-2 text-gray-950 bg-purple-500
+                    font-semibold">
+                        Editar
+                    </button>
                 </div>
             </>
         )
@@ -98,7 +103,7 @@ export default function Account(){
                     <div>
                         <button 
                             className="px-3 py-2 rounded bg-purple-500 hover:bg-purple-400
-                            hover:cursor-pointer"
+                            hover:cursor-pointer font-semibold mt-4"
                         >
                             Change Password
                         </button>
@@ -181,20 +186,47 @@ export default function Account(){
         )
     }
 
-    // const logOut = () => {
-    //     return (
-    //         <div>
+    const logOutPage = () => {
+        return (
+            <>
+                <div className="flex justify-center items-center flex-col">
+                    <HiLogout 
+                        className="h-24 w-24 text-red-500"
+                    />
 
-    //         </div>
-    //     )
-    // }
+                    <div className="mt-4">
+                        <h2 className="text-gray-50 block mb-2 text-center
+                        text-4xl font-bold"
+                        >
+                            Log Out
+                        </h2>
+
+                        <h3 
+                            className="text-gray-50 text-center"
+                        >
+                            Are you sure you want to log out from your account?
+                        </h3>
+                    </div>
+
+                    <button
+                        onClick={() => signOut()}
+                        className="px-3 py-2 bg-red-500 rounded font-semibold
+                        text-gray-950 mt-6 hover:bg-red-400 hover:cursor-pointer "
+                    >
+                        Confirm Log Out
+                    </button>
+
+                </div>
+            </>
+        )
+    }
 
     const switchSection = () => {
         switch(section){
             case "Account Data": return accountData();
             case "Change Password": return changePassword();
             case "Configurations": return configurations();
-            // case "Log Out": return logOutSection();
+            case "Log Out": return logOutPage();
         }
     }
 
@@ -251,11 +283,14 @@ export default function Account(){
                         </button>
 
                         <button 
-                            onClick={() => signOut()}
-                            className="rounded px-3 py-2 mb-2 text-gray-300 hover:cursor-pointer
-                            transition duration-300"
+                            onClick={() => {
+                                setSection("Log Out")
+                                setIsLogoutButtonActive(!isLogoutButtonActive);
+                            }}
+                            className={`rounded px-3 py-2 mb-2 text-gray-300 hover:bg-purple-500
+                            transition duration-300 ${isConfigurationsButtonActive ? "bg-purple-500" : ""}`}
                         >
-                            Sair da Conta
+                            Log Out
                         </button>
                     </div>
                 </aside>
