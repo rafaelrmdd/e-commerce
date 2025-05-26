@@ -36,6 +36,86 @@ export default function Account(){
                         Editar
                     </button>
                 </div>
+
+                {/* Each one of these divs is one row with 2 inputs of the same size */}
+                <div className="flex gap-x-4 mb-6">
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-full outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                            disabled
+                        />
+                    </div>
+
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-[100%] outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                            disabled
+                        />
+                    </div>
+                </div>         
+
+                <div className="flex gap-x-4 mb-6">
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-full outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                            disabled
+                        />
+                    </div>
+
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-[100%] outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                            disabled
+                        />
+                    </div>
+                </div>      
+
+                                <div className="flex gap-x-4 mb-6">
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-full outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                            disabled
+                        />
+                    </div>
+
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-[100%] outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                            disabled
+                        />
+                    </div>
+                </div>  
+
             </>
         )
     }
