@@ -259,14 +259,15 @@ export default function Account(){
                         </div>
 
                         <button className="px-3 py-2 bg-purple-500 hover:bg-purple-400
-                        hover:cursor-pointer text-gray-950 font-semibold rounded mt-6 ">Save Configurations</button>
+                        hover:cursor-pointer text-gray-950 font-semibold rounded mt-6
+                        transition duration-300">Save Configurations</button>
                     </div>
                 </div>
             </>
         )
     }
 
-    const logOutPage = () => {
+    const logOut = () => {
         return (
             <>
                 <div className="flex justify-center items-center flex-col">
@@ -306,7 +307,7 @@ export default function Account(){
             case "Account Data": return accountData();
             case "Change Password": return changePassword();
             case "Configurations": return configurations();
-            case "Log Out": return logOutPage();
+            case "Log Out": return logOut();
         }
     }
 
@@ -314,7 +315,7 @@ export default function Account(){
         <div className="h-screen bg-gray-900">
             <Header />
 
-            <div className="flex px-20 mt-10">
+            <div className="flex items-start px-20 mt-10">
                 <aside className="bg-gray-800 rounded p-4 mr-8">
                     <div className="flex">
                         <div className="rounded-full bg-pink-400 w-14 h-14 mr-3"></div>
@@ -367,8 +368,8 @@ export default function Account(){
                                 setSection("Log Out")
                                 setIsLogoutButtonActive(!isLogoutButtonActive);
                             }}
-                            className={`rounded px-3 py-2 mb-2 text-gray-300 hover:bg-purple-500
-                            transition duration-300 ${isConfigurationsButtonActive ? "bg-purple-500" : ""}`}
+                            className={`rounded px-3 py-2 mb-2 text-gray-300 hover:bg-red-500
+                            transition duration-300 ${isLogoutButtonActive ? "bg-red-500" : ""}`}
                         >
                             Log Out
                         </button>
