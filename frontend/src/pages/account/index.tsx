@@ -5,7 +5,7 @@ import { HiLogout } from "react-icons/hi";
 
 export default function Account(){
 
-    const { signOut } = useContext(UsersContext);
+    const { signOut, user } = useContext(UsersContext);
 
     const [section, setSection] = useState("Account Data");
     const [isAccountDataButtonActive, setIsAccountDataButtonActive] = useState(true);
@@ -14,7 +14,7 @@ export default function Account(){
     const [isLogoutButtonActive, setIsLogoutButtonActive] = useState(false);
 
     useEffect(() => {
-        setIsAccountDataButtonActive(section === "Account Data");
+        setIsAccountDataButtonActive(section === "Account Data" || section === "Edit Account Data");
         setIsChangePasswordButtonActive(section === "Change Password");
         setIsConfigurationsButtonActive(section === "Configurations");
         setIsLogoutButtonActive(section === "Log Out");
@@ -30,10 +30,13 @@ export default function Account(){
                 <div className="flex justify-between">
                     <h1 className="text-gray-50 text-2xl ">Account Data</h1>
 
-                    <button className="rounded px-3 py-2 mb-2 text-gray-950 bg-purple-500
-                    font-semibold hover:bg-purple-400 hover:cursor-pointer 
-                    transition duration-300">
-                        Editar
+                    <button 
+                        className="rounded px-3 py-2 mb-2 text-gray-950 bg-purple-500
+                        font-semibold hover:bg-purple-400 hover:cursor-pointer 
+                        transition duration-300"
+                        onClick={() => setSection("Edit Account Data")}
+                    >
+                        Edit
                     </button>
                 </div>
 
@@ -52,11 +55,11 @@ export default function Account(){
                     </div>
 
                     <div className="w-[50%]">
-                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <label htmlFor="email" className="text-gray-50">Email</label>
                         <input 
                             className="block mt-1 bg-gray-700 rounded px-3 py-2
                             placeholder:text-gray-400 w-[100%] outline-0"
-                            name="full-name"
+                            name="email"
                             type="text" 
                             placeholder="Rafael R"
                             disabled
@@ -66,13 +69,13 @@ export default function Account(){
 
                 <div className="flex gap-x-4 mb-6">
                     <div className="w-[50%]">
-                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <label htmlFor="password" className="text-gray-50">Password</label>
                         <input 
                             className="block mt-1 bg-gray-700 rounded px-3 py-2
                             placeholder:text-gray-400 w-full outline-0"
-                            name="full-name"
-                            type="text" 
-                            placeholder="Rafael R"
+                            name="password"
+                            type="password" 
+                            placeholder="1234"
                             disabled
                         />
                     </div>
@@ -90,7 +93,7 @@ export default function Account(){
                     </div>
                 </div>      
 
-                                <div className="flex gap-x-4 mb-6">
+                <div className="flex gap-x-4 mb-6">
                     <div className="w-[50%]">
                         <label htmlFor="full-name" className="text-gray-50">Full Name</label>
                         <input 
@@ -116,6 +119,110 @@ export default function Account(){
                     </div>
                 </div>  
 
+            </>
+        )
+    }
+
+    const [isDisabled, setIsDisabled] = useState(false);
+
+    const editAccountData = () => {
+        return (
+            <>
+                <div className="flex justify-between">
+                    <h1 className="text-gray-50 text-2xl ">Account Data</h1>
+
+                    <button 
+                        className="rounded px-3 py-2 mb-2 text-gray-950 bg-purple-500
+                        font-semibold hover:bg-purple-400 hover:cursor-pointer 
+                        transition duration-300"
+                        onClick={() => setSection("Account Data")}
+                    >
+                        Back
+                    </button>
+                </div>
+
+                {/* Each one of these divs is one row with 2 inputs of the same size */}
+                <div className="flex gap-x-4 mb-6">
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-full outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                        />
+                    </div>
+
+                    <div className="w-[50%]">
+                        <label htmlFor="email" className="text-gray-50">Email</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-[100%] outline-0"
+                            name="email"
+                            type="text" 
+                            placeholder={user?.email}
+                        />
+                    </div>
+                </div>         
+
+                <div className="flex gap-x-4 mb-6">
+                    <div className="w-[50%]">
+                        <label htmlFor="password" className="text-gray-50">Password</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-full outline-0 hover:cursor-pointer"
+                            name="password"
+                            type="password" 
+                            placeholder="1234"
+                            onMouseOver={() => {
+                                setIsChangePasswordButtonActive(true)
+                                setIsDisabled(false);
+                            }}
+                            onMouseOut={() => {
+                                setIsChangePasswordButtonActive(false)
+                                setIsDisabled(true);
+                            }}
+                            onClick={() => setSection("Change Password")}
+                            disabled={isDisabled}
+                        />
+                    </div>
+
+                    <div className="w-[50%]">
+                        <label htmlFor="date-birth" className="text-gray-50">Date Of Birth</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-[100%] outline-0"
+                            name="date-birth"
+                            type="text" 
+                            placeholder="17/01/2004"
+                        />
+                    </div>
+                </div>      
+
+                <div className="flex gap-x-4 mb-6">
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-full outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                        />
+                    </div>
+
+                    <div className="w-[50%]">
+                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <input 
+                            className="block mt-1 bg-gray-700 rounded px-3 py-2
+                            placeholder:text-gray-400 w-[100%] outline-0"
+                            name="full-name"
+                            type="text" 
+                            placeholder="Rafael R"
+                        />
+                    </div>
+                </div> 
             </>
         )
     }
@@ -305,6 +412,7 @@ export default function Account(){
     const switchSection = () => {
         switch(section){
             case "Account Data": return accountData();
+            case "Edit Account Data": return editAccountData();
             case "Change Password": return changePassword();
             case "Configurations": return configurations();
             case "Log Out": return logOut();
@@ -333,7 +441,7 @@ export default function Account(){
                         <button 
                             onClick={() => {
                                 setSection("Account Data")
-                                setIsAccountDataButtonActive(!isAccountDataButtonActive);
+                                setIsAccountDataButtonActive(true);
                             }}
                             className={`rounded px-3 py-2 mb-2 text-gray-300 hover:bg-purple-500
                             transition duration-300 ${isAccountDataButtonActive ? "bg-purple-500" : ""}`}
