@@ -2,7 +2,6 @@ import { Header } from "@/components/Header";
 import { UsersContext } from "@/context/ContextProvider";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { HiLogout } from "react-icons/hi";
-import { IoLogInOutline } from "react-icons/io5";
 
 export default function Account(){
 
@@ -32,7 +31,8 @@ export default function Account(){
                     <h1 className="text-gray-50 text-2xl ">Account Data</h1>
 
                     <button className="rounded px-3 py-2 mb-2 text-gray-950 bg-purple-500
-                    font-semibold">
+                    font-semibold hover:bg-purple-400 hover:cursor-pointer 
+                    transition duration-300">
                         Editar
                     </button>
                 </div>
