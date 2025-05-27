@@ -5,7 +5,11 @@ import { HiLogout } from "react-icons/hi";
 
 export default function Account(){
 
-    const { signOut, user } = useContext(UsersContext);
+    const { signOut, user, verifyIfUserIsLogged } = useContext(UsersContext);
+
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
 
     const [section, setSection] = useState("Account Data");
     const [isAccountDataButtonActive, setIsAccountDataButtonActive] = useState(true);
@@ -81,12 +85,12 @@ export default function Account(){
                     </div>
 
                     <div className="w-[50%]">
-                        <label htmlFor="full-name" className="text-gray-50">Full Name</label>
+                        <label htmlFor="date-birth" className="text-gray-50">Date Of Birth</label>
                         <input 
                             className="block mt-1 bg-gray-700 rounded px-3 py-2
                             placeholder:text-gray-400 w-[100%] outline-0"
-                            name="full-name"
-                            type="text" 
+                            name="date-birth"
+                            type="password" 
                             placeholder="Rafael R"
                             disabled
                         />
@@ -118,13 +122,11 @@ export default function Account(){
                         />
                     </div>
                 </div>  
-
             </>
         )
     }
 
     const [isDisabled, setIsDisabled] = useState(false);
-
     const editAccountData = () => {
         return (
             <>
