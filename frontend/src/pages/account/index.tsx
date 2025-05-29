@@ -5,12 +5,6 @@ import { HiLogout } from "react-icons/hi";
 
 export default function Account(){
 
-    const { signOut, user, verifyIfUserIsLogged } = useContext(UsersContext);
-
-    useEffect(() => {
-        verifyIfUserIsLogged();
-    }, [verifyIfUserIsLogged])
-
     const [section, setSection] = useState("Account Data");
     const [isAccountDataButtonActive, setIsAccountDataButtonActive] = useState(true);
     const [isChangePasswordButtonActive, setIsChangePasswordButtonActive] = useState(false);

@@ -2,8 +2,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css"; 
 
 import { Header } from "@/components/Header"
-import { useContext } from "react";
-import { ProductsContext } from "@/context/ContextProvider";
+import { useContext, useEffect } from "react";
+import { ProductsContext, UsersContext } from "@/context/ContextProvider";
 
 import Slider from "react-slick"
 import Link from "next/link";
@@ -11,6 +11,12 @@ import { Footer } from "@/components/Footer";
 
 
 export default function Home() {
+    
+    const { verifyIfUserIsLogged } = useContext(UsersContext);
+
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
 
     const { products } = useContext(ProductsContext);
 

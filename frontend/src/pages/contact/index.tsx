@@ -1,8 +1,17 @@
 import { Footer } from "@/components/Footer"
 import { Header } from "@/components/Header"
+import { UsersContext } from "@/context/ContextProvider";
+import { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form"
 
 export default function Contact() {
+
+    const { verifyIfUserIsLogged } = useContext(UsersContext);
+
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
+    
 
     const { register, handleSubmit } = useForm()
 

@@ -3,6 +3,8 @@ import { Header } from "@/components/Header";
 
 export default function Offers() {
 
+    
+
     return (
         <div className="bg-gray-900 ">
             <Header />

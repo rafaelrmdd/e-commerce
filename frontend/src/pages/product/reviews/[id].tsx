@@ -2,9 +2,15 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export default function ProductReviewsPage() {
+
+    const { verifyIfUserIsLogged } = useContext(UsersContext);
+
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
 
     const router = useRouter();
     const productId = router.query.id;

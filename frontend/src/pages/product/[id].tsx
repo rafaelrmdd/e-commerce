@@ -6,6 +6,8 @@ import Link from "next/link";
 
 export default function ProductPage() {
 
+    
+
     const router = useRouter();
     const productId = router.query.id;
 

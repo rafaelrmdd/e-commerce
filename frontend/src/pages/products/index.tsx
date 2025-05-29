@@ -1,11 +1,17 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
-import { ProductsContext, ReviewsContext } from "@/context/ContextProvider"
+import { ProductsContext, ReviewsContext, UsersContext } from "@/context/ContextProvider"
 import { useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
 
 export default function Products() {
+
+    const { verifyIfUserIsLogged } = useContext(UsersContext);
+
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
 
     const searchParams = useSearchParams();
     const categoryFromHome = searchParams.get("category");
@@ -71,7 +77,6 @@ export default function Products() {
     const [temporarySearchKeyword, setTemporarySearchKeyword] = useState("");
     const [priceRange, setPriceRange] = useState("")
     const [starsFilter, setStarsFilter] = useState(0);
-
 
     // const [productAverage, setProductAverage] = useState<[string, number][]>([]);
     // const [productAverage, setProductAverage] = useState<Map<string, number>>();
