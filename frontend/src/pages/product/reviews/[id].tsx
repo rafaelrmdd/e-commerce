@@ -49,7 +49,7 @@ export default function ProductReviewsPage() {
             return "User not found";
         }
 
-        return user.name;
+        return user.email;
     }
 
     const dateFormat = Intl.DateTimeFormat('pt-BR', {

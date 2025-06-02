@@ -1,12 +1,16 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
 import Link from "next/link";
 
 export default function ProductPage() {
 
-    
+    const { verifyIfUserIsLogged } = useContext(UsersContext);
+
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
 
     const router = useRouter();
     const productId = router.query.id;
@@ -39,7 +43,7 @@ export default function ProductPage() {
             return "User not found";
         }
 
-        return user.name;
+        return user.email;
     }
 
     const dateFormat = Intl.DateTimeFormat('pt-BR', {

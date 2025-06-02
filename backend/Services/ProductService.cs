@@ -48,6 +48,7 @@ public class ProductService : IProductService
 
         if (productDto.Price < 1)
         {
+
             throw new ValidationException("Product's price can't be lower than $1");
         }
 
@@ -55,6 +56,7 @@ public class ProductService : IProductService
             productDto.Name,
             productDto.Description,
             productDto.Price,
+            productDto.ImageURL,
             productDto.CategoryId,
             productDto.SubCategoryId
         );
@@ -87,8 +89,8 @@ public class ProductService : IProductService
         product.Name = productDto.Name;
         product.Description = productDto.Description;
         product.Price = productDto.Price;
+        product.ImageURL = productDto.ImageURL;
         product.CategoryId = productDto.CategoryId;
-        //Colocar em minúsculo depois "Sub C ategory" para "Sub c ategory"
         product.SubCategoryId = productDto.SubCategoryId;
 
         await _context.SaveChangesAsync();

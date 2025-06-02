@@ -121,6 +121,7 @@ public class UserService : IUserService
 
         return new
         {
+            user.Id,
             user.Email,
             user.Password,
             user.RefreshToken,

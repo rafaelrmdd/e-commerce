@@ -5,6 +5,8 @@ import { useContext, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
 
+import Image from "next/image";
+
 export default function Products() {
 
     const { verifyIfUserIsLogged } = useContext(UsersContext);
@@ -469,8 +471,19 @@ export default function Products() {
                                     key={product.id}
                                     className="rounded bg-gray-800 w-[23.79%] h-[374px]">
                                     {/* Image */}
-                                    <div className="bg-gray-950 w-full h-1/2 rounded-t">
-
+                                    <div className="relative w-full h-1/2 rounded-t">
+                                        {product.imageURL ? <Image
+                                            className="rounded"
+                                            src={product.imageURL}
+                                            alt="Product's Image"
+                                            fill      
+                                        /> : 
+                                        <h2 
+                                            className="text-center text-gray-50 absolute top-24 left-20"
+                                        >
+                                            No Image
+                                        </h2>
+                                        }
                                     </div>
 
                                     {/* Informations */}

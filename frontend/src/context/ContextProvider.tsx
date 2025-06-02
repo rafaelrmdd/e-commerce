@@ -13,7 +13,7 @@ export type ProductProps = {
     name: string
     description: string
     price: string
-    image: string
+    imageURL: string
     isBestSeller: boolean
     isFeatured: boolean
     categoryId: number
@@ -31,8 +31,9 @@ export type ReviewProps = {
 }
 
 export type UserProps = {
+    id: string
     email: string
-    password: string
+    password: string 
 }
 
 type ProductsContextProps = {
@@ -65,6 +66,7 @@ export const UsersContext = createContext<UsersContextProps>({
     signIn: () => {},
     signOut: () => {},
     user: {
+        id: "",
         email: "",
         password: ""
     },
@@ -118,9 +120,10 @@ export function ContextProvider({children} : ContextProviderProps) {
 
         if(refreshToken && jwt) {
             api.get(`/user/refreshToken/${refreshToken}`).then(response => {
-                const { email, password } = response.data;
+                const { id, email, password } = response.data;
 
                 setUser({
+                    id,
                     email,
                     password
                 })
@@ -143,6 +146,7 @@ export function ContextProvider({children} : ContextProviderProps) {
                 const { jwt, refreshToken } = response.data;
 
                 setUser({
+                    id: response.data.id,
                     email,
                     password
                 })

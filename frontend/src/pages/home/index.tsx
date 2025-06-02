@@ -4,11 +4,11 @@ import "slick-carousel/slick/slick-theme.css";
 import { Header } from "@/components/Header"
 import { useContext, useEffect } from "react";
 import { ProductsContext, UsersContext } from "@/context/ContextProvider";
+import { Footer } from "@/components/Footer";
 
 import Slider from "react-slick"
 import Link from "next/link";
-import { Footer } from "@/components/Footer";
-
+import Image from "next/image";
 
 export default function Home() {
     
@@ -33,6 +33,7 @@ export default function Home() {
 
     const productsBestSellers = products.filter(p => p.isBestSeller);
     const productsFeatureds = products.filter(p => p.isFeatured);
+    console.log('bestsellers: ', productsBestSellers);
 
     return (
         <div className="h-screen bg-gray-900">
@@ -73,10 +74,15 @@ export default function Home() {
                                     >
                                         
                                         {/* Image */}
-                                        <div className="bg-black w-full h-56 rounded mb-2">
-                                            
+                                        <div className="relative w-full h-56 rounded mb-2">
+                                            <Image 
+                                                className="rounded"
+                                                src={product.imageURL}
+                                                alt="Product's Image"
+                                                fill
+                                            />
                                         </div>
-
+                                    
                                         {/* Product Informations */}
                                         <div className="">
                                             <h2 className="text-white font-semibold mb-2">{product.name}</h2>
