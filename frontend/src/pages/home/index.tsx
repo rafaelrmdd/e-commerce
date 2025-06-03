@@ -41,7 +41,7 @@ export default function Home() {
             
             <section className="flex justify-center py-20 w-full bg-gray-950">
                 <div className="text-center">
-                    <h1 className="text-4xl text-white font-bold mb-4">The Best Products with the Best Prices</h1>
+                    <h1 className="text-4xl text-gray-50 font-bold mb-4">The Best Products with the Best Prices</h1>
                     <h3 className="text-lg mb-16 text-gray-300">Discover our exclusive products collection with up to 50% discount this week</h3>
 
                     <Link
@@ -58,7 +58,7 @@ export default function Home() {
                 <div className="py-16 px-8">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-52"/>
-                        <h2 className="font-bold text-white text-2xl">BEST SELLERS</h2>
+                        <h2 className="font-bold text-gray-50 text-2xl">BEST SELLERS</h2>
                         <hr className="text-gray-600 w-52"/>
                     </div>
 
@@ -70,7 +70,8 @@ export default function Home() {
                                     <Link
                                         href={`/product/${product.id}`}
                                         className="bg-gray-700 p-2.5 rounded-lg w-96 
-                                        hover:cursor-pointer block"
+                                        hover:cursor-pointer block hover:bg-gray-600
+                                        transition duration-300"
                                     >
                                         
                                         {/* Image */}
@@ -85,7 +86,7 @@ export default function Home() {
                                     
                                         {/* Product Informations */}
                                         <div className="">
-                                            <h2 className="text-white font-semibold mb-2">{product.name}</h2>
+                                            <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                             <span className="text-purple-400 text-2xl block mb-4 font-bold">${product.price}</span>
                                             <button 
                                                 className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold
@@ -105,7 +106,7 @@ export default function Home() {
                 <section className="px-8">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-52"/>
-                        <h2 className="font-bold text-white text-2xl">CATEGORIES</h2>
+                        <h2 className="font-bold text-gray-50 text-2xl">CATEGORIES</h2>
                         <hr className="text-gray-600 w-52"/>
                     </div>
 
@@ -150,17 +151,26 @@ export default function Home() {
                 <section className="mt-16 px-8 mb-20">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-40"/>
-                        <h2 className="font-bold text-white text-2xl">FEATURED THIS WEEK</h2>
+                        <h2 className="font-bold text-gray-50 text-2xl">FEATURED THIS WEEK</h2>
                         <hr className="text-gray-600 w-40"/>
                     </div>
 
                     {/* Featured Items */}
                     <div className="flex justify-between mt-16 bg-gray-800 rounded">
                         {productsFeatureds.map((product) => (
-                            <div className=" w-[24%] bg-gray-800 min-h-[500px] rounded p-4" key={product.id}>
+                            <div 
+                                className="w-[24%] bg-gray-800 min-h-[500px] rounded p-4
+                                hover:bg-gray-700 transition duration-300" 
+                                key={product.id}
+                            >
                                 {/* Image */}
-                                <div className="bg-gray-600 rounded w-full h-[280px]">
-
+                                <div className="relative bg-gray-600 rounded w-full h-[280px]">
+                                    <Image 
+                                        className="rounded"
+                                        src={product.imageURL}
+                                        alt="Product's Image"
+                                        fill
+                                    />
                                 </div>
 
                                 {/* Information */}

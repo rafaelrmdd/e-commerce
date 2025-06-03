@@ -9,13 +9,41 @@ export function Header() {
 
     return (
         <header className="flex justify-between items-center px-4 py-4 bg-gray-800">
-            <h1 className="text-purple-400 text-2xl font-bold hover:cursor-pointer">e-commerce</h1>
+            <Link 
+                className="text-purple-400 text-2xl font-bold hover:cursor-pointer"
+                href={"/home"}
+            >
+                Reifferce
+            </Link>
 
-            <nav className="flex gap-8 text-white ">
-                <Link href={"/home"}>Home</Link>
-                <Link href={"/products"}>Products</Link>
-                <Link href={"/offers"}>Offers</Link>
-                <Link href={"/contact"}>Contact</Link>
+            <nav className="text-gray-50">
+                <Link 
+                    className="hover:bg-gray-700 transition duration-300 rounded px-4 py-2" 
+                    href={"/home"}
+                >
+                    Home
+                </Link>
+
+                <Link 
+                    className="hover:bg-gray-700 transition duration-300 rounded px-4 py-2"
+                    href={"/products"}
+                >
+                    Products
+                </Link>
+
+                <Link 
+                    className="hover:bg-gray-700 transition duration-300 rounded px-4 py-2"
+                    href={"/offers"}
+                >
+                    Offers
+                </Link>
+
+                <Link 
+                    className="hover:bg-gray-700 transition duration-300 rounded px-4 py-2"
+                    href={"/contact"}
+                >
+                    Contact
+                </Link>
             </nav>
 
             <div className="flex gap-6 items-center">
@@ -23,14 +51,17 @@ export function Header() {
                     <span className="text-gray-50">{user?.email}</span>
                     : null
                 }
-                <Link href={"/account"}>
+                <Link
+                    className="flex justify-center items-center rounded-full w-8 h-8
+                    hover:bg-gray-600 transition duration-200"
+                    href={"/account"}
+                >
                     <FaUserCircle 
                         className="hover:cursor-pointer"
                         color="white" 
                         size={24}
                     />
                 </Link>
-
             </div>
         </header>
     )

@@ -349,28 +349,32 @@ export default function Products() {
                                 <ul className="text-gray-50 flex flex-col gap-y-1">
                                     <button 
                                         onClick={(e) => handleCategory(e)}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left
+                                        hover:cursor-pointer transition duration-300
                                         ${isElectronicsCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Electronics
                                     </button>
                                     <button 
                                         onClick={(e) => handleCategory(e)}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left
+                                        hover:cursor-pointer transition duration-300
                                         ${isFashionCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Fashion
                                     </button>
                                     <button 
                                         onClick={(e) => handleCategory(e)}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left 
+                                        hover:cursor-pointer transition duration-300
                                         ${isHouseDecorationCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         House & Decoration
                                     </button>
                                     <button 
                                         onClick={(e) => handleCategory(e)}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-left
+                                        hover:cursor-pointer transition duration-300
                                         ${isSportsCategoryActive ? "bg-gray-700" : ""}`}
                                     >
                                         Sports
@@ -403,7 +407,8 @@ export default function Products() {
                                             setStarsFilter(5);
                                             handleStarsFilter(5)
                                         }}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400
+                                        text-left hover:cursor-pointer transition duration-300
                                         ${isFiveStarsActive ? "bg-gray-700" : ""}`}
                                     >
                                         ★★★★★
@@ -413,7 +418,8 @@ export default function Products() {
                                             setStarsFilter(4);
                                             handleStarsFilter(4)
                                         }}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400
+                                        text-left hover:cursor-pointer transition duration-300
                                         ${isFourOrMoreStarsActive ? "bg-gray-700" : ""}`}
                                     >
                                         ★★★★☆ <span className="text-gray-300">ou mais</span>
@@ -423,7 +429,8 @@ export default function Products() {
                                             setStarsFilter(3);
                                             handleStarsFilter(3)
                                         }}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400
+                                        text-left hover:cursor-pointer transition duration-300
                                         ${isThreeOrMoreStarsActive ? "bg-gray-700" : ""}`}
                                     >
                                         ★★★☆☆ <span className="text-gray-300">ou mais</span>
@@ -433,7 +440,8 @@ export default function Products() {
                                             setStarsFilter(2);
                                             handleStarsFilter(2)
                                         }}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400
+                                        text-left hover:cursor-pointer transition duration-300
                                         ${isTwoOrMoreStarsActive ? "bg-gray-700" : ""}`}
                                     >
                                         ★★☆☆☆ <span className="text-gray-300">ou mais</span>
@@ -443,7 +451,8 @@ export default function Products() {
                                             setStarsFilter(1);
                                             handleStarsFilter(1)
                                         }}
-                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400 text-left hover:cursor-pointer
+                                        className={`py-2 px-1 rounded hover:bg-gray-700 text-yellow-400
+                                        text-left hover:cursor-pointer transition duration-300
                                         ${isOneOrMoreStarsActive ? "bg-gray-700" : ""}`}
                                     >
                                         ★☆☆☆☆ <span className="text-gray-300">ou mais</span>
@@ -453,8 +462,9 @@ export default function Products() {
 
                             <button 
                                 onClick={(e) => handleCategory(e)}
-                                className="border border-purple-500 text-purple-400
-                                px-3 py-2 mt-7 w-full rounded hover:cursor-pointer"
+                                className="bg-purple-500 text-gray-50 hover:bg-purple-400
+                                px-3 py-2 mt-7 w-full rounded hover:cursor-pointer
+                                transition duration-300 "
                             >
                                 Reset Filters
                             </button>
@@ -500,7 +510,8 @@ export default function Products() {
 
                                         <button 
                                             className="bg-purple-500 px-3 py-2 text-gray-950 font-semibold
-                                            rounded block mt-5 w-full hover:bg-purple-400 hover:cursor-pointer "
+                                            rounded block mt-5 w-full hover:bg-purple-400 hover:cursor-pointer
+                                            transition duration-300"
                                         >
                                             Add To Cart
                                         </button>
