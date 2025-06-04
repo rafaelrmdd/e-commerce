@@ -19,14 +19,15 @@ export default function Offers() {
         handleCategory,
         handleStarsFilter,
         handleKeyPress,
-        getProductAverageStars,
-        generateStars,
         setStarsFilter,
-        handleSearch,
         setTemporarySearchKeyword,
         setPriceRange,
+        getProductAverageStars,
+        generateStars,
+        handleSearch,
         getProductReview,
-        priceRange,
+        setProductsPerPage,
+        setInitialValue,
         filteredProducts,
         isElectronicsCategoryActive,
         isFashionCategoryActive,
@@ -36,7 +37,10 @@ export default function Offers() {
         isFourOrMoreStarsActive,
         isThreeOrMoreStarsActive,
         isTwoOrMoreStarsActive,
-        isOneOrMoreStarsActive       
+        isOneOrMoreStarsActive,
+        priceRange,
+        productsPerPage,      
+        initialValue,
     } = useFilterLogic(null);
 
     return (
@@ -248,10 +252,26 @@ export default function Offers() {
                         
 
                         <div className="mt-6 w-full flex gap-x-1 justify-center">
-                            <div className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer">
+                            <div 
+                                className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
+                                onClick={() => {
+                                    if (initialValue !== 0){
+                                        setInitialValue((initialValue) => initialValue - 8)
+                                        setProductsPerPage((productsPerPage) => productsPerPage - 8)
+                                    }
+                                }}
+                            >
                                 <span className="text-gray-400">&lt;</span>
                             </div>
-                            <div className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer">
+                            <div 
+                                className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
+                                onClick={() => {
+                                    if(initialValue < filteredProducts.length){
+                                        setInitialValue((initialValue) => initialValue + 8)
+                                        setProductsPerPage((productsPerPage) => productsPerPage + 8)
+                                    }
+                                }}
+                            >
                                 <span className="text-gray-400">&gt;</span>
                             </div>
                         </div>
