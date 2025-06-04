@@ -23,15 +23,15 @@ export default function Products() {
         handleCategory,
         handleStarsFilter,
         handleKeyPress,
-        getProductAverageStars,
-        generateStars,
-        setStarsFilter,
         handleSearch,
+        setStarsFilter,
         setTemporarySearchKeyword,
         setPriceRange,
+        setProductsPerPage,
+        setInitialValue,
+        getProductAverageStars,
         getProductReview,
-        priceRange,
-        filteredProducts,
+        generateStars,
         isElectronicsCategoryActive,
         isFashionCategoryActive,
         isSportsCategoryActive,
@@ -40,7 +40,11 @@ export default function Products() {
         isFourOrMoreStarsActive,
         isThreeOrMoreStarsActive,
         isTwoOrMoreStarsActive,
-        isOneOrMoreStarsActive       
+        isOneOrMoreStarsActive,       
+        priceRange,
+        filteredProducts,
+        initialValue,
+        productsPerPage
     } = useFilterLogic(categoryFromHome);
        
     //Subcategories
@@ -304,10 +308,26 @@ export default function Products() {
                         
 
                         <div className="mt-6 w-full flex gap-x-1 justify-center">
-                            <div className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer">
+                            <div 
+                                className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
+                                onClick={() => {
+                                    if (initialValue !== 0){
+                                        setInitialValue((initialValue) => initialValue - 8)
+                                        setProductsPerPage((productsPerPage) => productsPerPage - 8)
+                                    }
+                                }}
+                            >
                                 <span className="text-gray-400">&lt;</span>
                             </div>
-                            <div className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer">
+                            <div 
+                                onClick={() => {
+                                    if(initialValue < filteredProducts.length){
+                                        setInitialValue((initialValue) => initialValue + 8)
+                                        setProductsPerPage((productsPerPage) => productsPerPage + 8)
+                                    }
+                                }}
+                                className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
+                            >
                                 <span className="text-gray-400">&gt;</span>
                             </div>
                         </div>

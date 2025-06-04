@@ -11,12 +11,8 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
     const [priceRange, setPriceRange] = useState("")
     const [starsFilter, setStarsFilter] = useState(0);
 
-    // const [productAverage, setProductAverage] = useState<[string, number][]>([]);
-    // const [productAverage, setProductAverage] = useState<Map<string, number>>();
     const productStars = new Map<string, number[]>();
     const productAverages = new Map<string, number>()
-
-    // const [productIdsToFilter, setProductIdsToFilter] = useState([]);
 
     reviews.forEach((review) => {
         const productId = review.productId;
@@ -34,7 +30,6 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
     }
 
     const productIds = new Set();
-
     reviews.map((review) => {
         const hasId = productAverages.has(review.productId);
 
@@ -42,19 +37,6 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
             productIds.add(review.productId);
         }
     })
-
-    // const productsToShow = products.filter((product) => {
-    //     const hasId = productIds.has(product.id)
-    //     const thisProductStarsAverage = productAverages.get(String(product.id));
-        
-    //     if(thisProductStarsAverage){  
-    //         const isStarsGreaterThanFilter = thisProductStarsAverage >= starsFilter;
-
-    //         if(hasId && isStarsGreaterThanFilter){    
-    //             return true;
-    //         }
-    //     }
-    // })
 
     const [isElectronicsCategoryActive, setIsElectronicsCategoryActive] = useState(false);
     const [isFashionCategoryActive, setIsFashionCategoryActive] = useState(false);
@@ -166,6 +148,9 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         }
     } 
 
+    const [productsPerPage, setProductsPerPage] = useState(8);
+    const [initialValue, setInitialValue] = useState(0)
+
     const filteredProducts = products.filter((product) => {
         const categoryNumber = convertCategoryToNumber(category);
         const hasCategory = categoryNumber !== null;
@@ -205,7 +190,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         }
         
         return true;
-    })
+    }).slice(initialValue, productsPerPage)
 
     const getProductAverageStars = (id : number) => {
         const productReviews = getProductReview(id);
@@ -250,15 +235,15 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         handleCategory,
         handleStarsFilter,
         handleKeyPress,
-        getProductAverageStars,
-        generateStars,
         setStarsFilter,
         setPriceRange,
         setTemporarySearchKeyword,
-        handleSearch,
+        setProductsPerPage,
+        setInitialValue,
+        getProductAverageStars,
         getProductReview,
-        priceRange,
-        filteredProducts,
+        generateStars,
+        handleSearch,
         isElectronicsCategoryActive,
         isFashionCategoryActive,
         isSportsCategoryActive,
@@ -267,6 +252,10 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         isFourOrMoreStarsActive,
         isThreeOrMoreStarsActive,
         isTwoOrMoreStarsActive,
-        isOneOrMoreStarsActive
+        isOneOrMoreStarsActive,
+        initialValue,
+        productsPerPage,
+        priceRange,
+        filteredProducts
     }
 }
