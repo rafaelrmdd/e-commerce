@@ -2,6 +2,7 @@ import { UsersContext } from "@/context/ContextProvider";
 import Link from "next/link";
 import { useContext } from "react";
 import { FaUserCircle } from "react-icons/fa";
+import { FaCartShopping } from "react-icons/fa6";
 
 export function Header() {
 
@@ -51,17 +52,33 @@ export function Header() {
                     <span className="text-gray-50">{user?.email}</span>
                     : null
                 }
-                <Link
-                    className="flex justify-center items-center rounded-full w-8 h-8
-                    hover:bg-gray-600 transition duration-200"
-                    href={"/account"}
-                >
+                
+                <div className="flex gap-x-2">      
+                    <Link
+                        className="flex justify-center items-center rounded-full w-8 h-8
+                        hover:bg-gray-600 transition duration-200"
+                        href={"/cart"}
+                    >
+                        <FaCartShopping 
+                            className="hover:cursor-pointer"
+                            color="white" 
+                            size={24}
+                        />
+                    </Link>
+                    
+                    <Link
+                        className="flex justify-center items-center rounded-full w-8 h-8
+                        hover:bg-gray-600 transition duration-200"
+                        href={"/account"}
+                    >
                     <FaUserCircle 
                         className="hover:cursor-pointer"
                         color="white" 
                         size={24}
                     />
-                </Link>
+                    </Link>
+                </div>
+
             </div>
         </header>
     )

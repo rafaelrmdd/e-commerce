@@ -44,7 +44,7 @@ export default function Products() {
         priceRange,
         filteredProducts,
         initialValue,
-        productsPerPage
+        productsPerPage,
     } = useFilterLogic(categoryFromHome);
        
     //Subcategories
