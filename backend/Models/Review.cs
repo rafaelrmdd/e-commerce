@@ -10,7 +10,7 @@ public class Review
     public int Id { get; set; }
 
     [JsonIgnore]
-    public virtual User User { get; set; }
+    public virtual User? User { get; set; }
 
     [DefaultValue("")]
     public Guid UserId { get; set; }

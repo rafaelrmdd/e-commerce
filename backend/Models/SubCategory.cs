@@ -9,6 +9,7 @@ public class SubCategory
 
     [JsonIgnore]
     public virtual ICollection<Product>? Products { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
     public SubCategory(string name)
     {

@@ -17,12 +17,14 @@ public class Product
     [JsonIgnore]
     public virtual Category? Category { get; set; }
     public int SubCategoryId { get; set; }
+    public virtual IEnumerable<Cart>? Carts { get; set; }
 
     [JsonIgnore]
     public virtual SubCategory? SubCategory { get; set; }
 
     [JsonIgnore]
     public virtual ICollection<Review>? Reviews { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
     public Product(string name, string description, decimal price, string imageUrl, int categoryId, int subCategoryId)
     {

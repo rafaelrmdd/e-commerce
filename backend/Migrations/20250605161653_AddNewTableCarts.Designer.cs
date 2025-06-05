@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using backend.Context;
@@ -11,9 +12,11 @@ using backend.Context;
 namespace backend.Migrations
 {
     [DbContext(typeof(ReifferceContext))]
-    partial class ReifferceContextModelSnapshot : ModelSnapshot
+    [Migration("20250605161653_AddNewTableCarts")]
+    partial class AddNewTableCarts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,6 +41,8 @@ namespace backend.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
@@ -195,15 +200,15 @@ namespace backend.Migrations
             modelBuilder.Entity("backend.Models.Cart", b =>
                 {
                     b.HasOne("backend.Models.Product", "Product")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("backend.Models.User", "User")
-                        .WithMany("Carts")
+                        .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -256,8 +261,6 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.Product", b =>
                 {
-                    b.Navigation("Carts");
-
                     b.Navigation("Reviews");
                 });
 
@@ -268,8 +271,6 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Models.User", b =>
                 {
-                    b.Navigation("Carts");
-
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

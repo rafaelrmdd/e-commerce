@@ -9,6 +9,7 @@ public class Category
 
     [JsonIgnore]
     public virtual ICollection<Product>? Products { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
     public Category(string name)
     {

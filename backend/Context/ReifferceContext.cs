@@ -46,6 +46,17 @@ public class ReifferceContext : DbContext
             .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        modelBuilder.Entity<Cart>()
+            .HasOne(c => c.User)
+            .WithMany(u => u.Carts)
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<Cart>()
+            .HasOne(c => c.Product)
+            .WithMany(p => p.Carts)
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 
     public DbSet<Product> Products { get; set; }
@@ -53,4 +64,5 @@ public class ReifferceContext : DbContext
     public DbSet<SubCategory> SubCategories { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<Cart> Carts { get; set; }
 }
