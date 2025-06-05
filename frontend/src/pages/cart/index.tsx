@@ -1,8 +1,15 @@
 import { Header } from "@/components/Header"
 import { FaTrash } from "react-icons/fa";
-import Image from "next/image"
+import { useContext, useEffect } from "react";
+import { UsersContext } from "@/context/ContextProvider";
 
 export default function Cart() {
+    const { verifyIfUserIsLogged } = useContext(UsersContext);
+
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
+
     return (
         <div className="h-screen bg-gray-900">
             <Header />
@@ -14,7 +21,11 @@ export default function Cart() {
                     <div className="mt-4">
                         <div className="flex bg-gray-700 p-4 rounded gap-x-4">
                             <div className="w-20 bg-gray-400 rounded">
-                                {/* Image */}
+                                {/* <Image
+                                    src={}
+                                    fill
+                                    alt="Product's Image"
+                                /> */}
                             </div>
 
                             <div className="w-[57%]">

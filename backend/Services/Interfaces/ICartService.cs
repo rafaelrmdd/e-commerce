@@ -1,14 +1,13 @@
 using backend.DTOs;
 using backend.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Services.Interfaces;
 
 public interface ICartService
 {
-    public Task<IEnumerable<Cart>> GetCartsService();
-    public Task<Cart> GetCartByIdService(Guid id);
-    public Task<Cart> AddCartService(CartDTO cartDto);
-    public Task<Cart> UpdateCartService(CartDTO cartDto, Guid id);
-    public Task<Cart> DeleteCartService(Guid id);
+    public Task<IEnumerable<CartItem>> GetCartItemsService();
+    public Task<CartItem> GetCartItemByIdService(Guid id);
+    public Task<CartItem> AddCartItemService(CartDTO cartDto);
+    public Task<CartItem> UpdateCartItemService(CartDTO cartDto, Guid id);
+    public Task<CartItem> DeleteCartItemService(Guid id);
 }

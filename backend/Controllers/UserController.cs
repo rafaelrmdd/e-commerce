@@ -32,7 +32,7 @@ public class UserController : ControllerBase
 
     }
 
-    [HttpGet("user/id/{id}", Name = "GetUserById")]
+    [HttpGet("user/id/{id}")]
     [Authorize]
     public async Task<IActionResult> GetUserById(Guid id)
     {

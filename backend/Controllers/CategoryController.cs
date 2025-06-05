@@ -1,5 +1,4 @@
 using backend.DTOs;
-using backend.Services;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +30,7 @@ public class CategoryController : ControllerBase
 
     }
 
-    [HttpGet("category/{id}", Name = "GetCategoryById")]
+    [HttpGet("category/{id}")]
     public async Task<IActionResult> GetCategoryById(int id)
     {
         try

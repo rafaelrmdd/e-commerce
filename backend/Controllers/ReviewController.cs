@@ -30,7 +30,7 @@ public class ReviewController : ControllerBase
 
     }
 
-    [HttpGet("review/{id}", Name = "GetReviewById")]
+    [HttpGet("review/{id}")]
     public async Task<IActionResult> GetReviewById(int id)
     {
         try

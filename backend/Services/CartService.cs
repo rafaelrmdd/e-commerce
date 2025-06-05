@@ -15,9 +15,9 @@ public class CartService : ICartService
         _context = context;
     }
 
-    public async Task<IEnumerable<Cart>> GetCartsService()
+    public async Task<IEnumerable<CartItem>> GetCartItemsService()
     {
-        var carts = await _context.Carts.ToListAsync();
+        var carts = await _context.CartItems.ToListAsync();
 
         if (carts.Count < 1)
         {
@@ -27,9 +27,9 @@ public class CartService : ICartService
         return carts;
     }
 
-    public async Task<Cart> GetCartByIdService(Guid id)
+    public async Task<CartItem> GetCartItemByIdService(Guid id)
     {
-        var cart = await _context.Carts.FindAsync(id);
+        var cart = await _context.CartItems.FindAsync(id);
 
         if (cart == null)
         {
@@ -39,7 +39,7 @@ public class CartService : ICartService
         return cart;
     }
 
-    public async Task<Cart> AddCartService(CartDTO cartDto)
+    public async Task<CartItem> AddCartItemService(CartDTO cartDto)
     {
         if (cartDto.UserId == null)
         {
@@ -51,20 +51,20 @@ public class CartService : ICartService
             throw new NotFoundException($"Cart's ProductId can't be empty");
         }
 
-        Cart newCart = new Cart(
+        CartItem newCart = new CartItem(
             Guid.Parse(cartDto.ProductId),
             Guid.Parse(cartDto.UserId)
         );
 
-        await _context.Carts.AddAsync(newCart);
+        await _context.CartItems.AddAsync(newCart);
         await _context.SaveChangesAsync();
 
         return newCart;
     }
 
-    public async Task<Cart> UpdateCartService(CartDTO cartDto, Guid id)
+    public async Task<CartItem> UpdateCartItemService(CartDTO cartDto, Guid id)
     {
-        var cart = await _context.Carts.FindAsync(id);
+        var cart = await _context.CartItems.FindAsync(id);
 
         if (cart == null)
         {
@@ -89,16 +89,16 @@ public class CartService : ICartService
         return cart;
     }
 
-    public async Task<Cart> DeleteCartService(Guid id)
+    public async Task<CartItem> DeleteCartItemService(Guid id)
     {
-        var cart = await _context.Carts.FindAsync(id);
+        var cart = await _context.CartItems.FindAsync(id);
 
         if (cart == null)
         {
             throw new NotFoundException($"Cart with id: {id} was not found");
         }
 
-        _context.Carts.Remove(cart);
+        _context.CartItems.Remove(cart);
         await _context.SaveChangesAsync();
 
         return cart;

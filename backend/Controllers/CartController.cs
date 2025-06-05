@@ -20,7 +20,7 @@ public class CartController : ControllerBase
     {
         try
         {
-            var carts = await _service.GetCartsService();
+            var carts = await _service.GetCartItemsService();
             return Ok(carts);
         }
         catch (NotFoundException ex)
@@ -30,12 +30,12 @@ public class CartController : ControllerBase
 
     }
 
-    [HttpGet("carts/{id}", Name = "GetCartsById")]
-    public async Task<IActionResult> GetCartById(Guid id)
+    [HttpGet("carts/{id}")]
+    public async Task<IActionResult> GetCartItemById(Guid id)
     {
         try
         {
-            var cart = await _service.GetCartByIdService(id);
+            var cart = await _service.GetCartItemByIdService(id);
             return Ok(cart);
         }
         catch (NotFoundException ex)
@@ -45,11 +45,11 @@ public class CartController : ControllerBase
     }
 
     [HttpPost("cart")]
-    public async Task<IActionResult> AddCategory(CartDTO cartDto)
+    public async Task<IActionResult> AddCartItem(CartDTO cartDto)
     {
         try
         {
-            await _service.AddCartService(cartDto);
+            await _service.AddCartItemService(cartDto);
             return Ok("Cart was successful added");
         }
         catch (NotFoundException ex)
@@ -59,11 +59,11 @@ public class CartController : ControllerBase
     }
 
     [HttpPut("cart/{id}")]
-    public async Task<IActionResult> UpdateCart(CartDTO cartDto, Guid id)
+    public async Task<IActionResult> UpdateCartItem(CartDTO cartDto, Guid id)
     {
         try
         {
-            await _service.UpdateCartService(cartDto, id);
+            await _service.UpdateCartItemService(cartDto, id);
             return Ok("Specified cart was updated");
         }
         catch (NotFoundException ex)
@@ -73,11 +73,11 @@ public class CartController : ControllerBase
     }
 
     [HttpDelete("cart/{id}")]
-    public async Task<IActionResult> DeleteCart(Guid id)
+    public async Task<IActionResult> DeleteCartItem(Guid id)
     {
         try
         {
-            await _service.DeleteCartService(id);
+            await _service.DeleteCartItemService(id);
             return Ok("Specified category was deleted");
         }
         catch (NotFoundException ex)

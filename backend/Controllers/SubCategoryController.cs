@@ -30,7 +30,7 @@ public class SubCategoryController : ControllerBase
 
     }
 
-    [HttpGet("subcategory/{id}", Name = "GetSubCategoryById")]
+    [HttpGet("subcategory/{id}")]
     public async Task<IActionResult> GetSubCategoryById(int id)
     {
         try

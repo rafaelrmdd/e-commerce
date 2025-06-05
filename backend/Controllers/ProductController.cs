@@ -30,7 +30,7 @@ public class ProductController : ControllerBase
 
     }
 
-    [HttpGet("product/{id}", Name = "GetProductById")]
+    [HttpGet("product/{id}")]
     public async Task<IActionResult> GetProductById(Guid id)
     {
         try

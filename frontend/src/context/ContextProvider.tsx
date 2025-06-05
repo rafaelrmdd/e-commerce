@@ -95,6 +95,8 @@ export function ContextProvider({children} : ContextProviderProps) {
                     api.get('reviews')
                 ])
 
+                console.log('users: ', usersResponse.data);
+
                 setUsers(usersResponse.data);
                 setProducts(productsResponse.data);
                 setReviews(reviewsResponse.data);
