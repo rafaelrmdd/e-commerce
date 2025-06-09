@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services;
 
-public class CartService : ICartService
+public class CartItemService : ICartItemService
 {
     private readonly ReifferceContext _context;
 
-    public CartService(ReifferceContext context)
+    public CartItemService(ReifferceContext context)
     {
         _context = context;
     }
@@ -39,21 +39,31 @@ public class CartService : ICartService
         return cart;
     }
 
-    public async Task<CartItem> AddCartItemService(CartDTO cartDto)
+    public async Task<CartItem> AddCartItemService(CartItemDTO cartItemDto, Guid userId)
     {
-        if (cartDto.UserId == null)
+        if (cartItemDto.UserId == null)
         {
             throw new NotFoundException($"Cart's UserId can't be empty");
         }
 
-        if (cartDto.ProductId == null)
+        if (cartItemDto.ProductId == null)
         {
             throw new NotFoundException($"Cart's ProductId can't be empty");
         }
 
+        var cartItem = await _context.CartItems
+            .Where(item => item.UserId == userId && item.ProductId == Guid.Parse(cartItemDto.ProductId))
+            .FirstOrDefaultAsync();
+
+        if (cartItem != null)
+        {
+            cartItem.Quantity++;
+        }
+
         CartItem newCart = new CartItem(
-            Guid.Parse(cartDto.ProductId),
-            Guid.Parse(cartDto.UserId)
+            Guid.Parse(cartItemDto.ProductId),
+            Guid.Parse(cartItemDto.UserId),
+            cartItemDto.Quantity
         );
 
         await _context.CartItems.AddAsync(newCart);
@@ -62,7 +72,7 @@ public class CartService : ICartService
         return newCart;
     }
 
-    public async Task<CartItem> UpdateCartItemService(CartDTO cartDto, Guid id)
+    public async Task<CartItem> UpdateCartItemService(CartItemDTO cartItemDto, Guid id)
     {
         var cart = await _context.CartItems.FindAsync(id);
 
@@ -71,18 +81,24 @@ public class CartService : ICartService
             throw new NotFoundException($"Cart with id: {id} was not found");
         }
 
-        if (cartDto.UserId == null)
+        if (cartItemDto.UserId == null)
         {
             throw new NotFoundException($"Cart's UserId can't be empty");
         }
 
-        if (cartDto.ProductId == null)
+        if (cartItemDto.ProductId == null)
         {
             throw new NotFoundException($"Cart's ProductId can't be empty");
         }
 
-        cart.UserId = Guid.Parse(cartDto.UserId);
-        cart.ProductId = Guid.Parse(cartDto.ProductId);
+
+        if (cartItemDto.Quantity < 1)
+        {
+            throw new NotFoundException($"Cart's Quantity can't be less than 1");
+        }
+
+        cart.UserId = Guid.Parse(cartItemDto.UserId);
+        cart.ProductId = Guid.Parse(cartItemDto.ProductId);
 
         await _context.SaveChangesAsync();
 

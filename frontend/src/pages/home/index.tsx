@@ -9,6 +9,7 @@ import { Footer } from "@/components/Footer";
 import Slider from "react-slick"
 import Link from "next/link";
 import Image from "next/image";
+import { api } from "@/services/api/api";
 
 export default function Home() {
     
@@ -19,6 +20,8 @@ export default function Home() {
     }, [verifyIfUserIsLogged])
 
     const { products } = useContext(ProductsContext);
+    const productsBestSellers = products.filter(p => p.isBestSeller);
+    const productsFeatureds = products.filter(p => p.isFeatured);
 
     const settings = {
         dots: true,
@@ -31,9 +34,19 @@ export default function Home() {
         adaptiveHeight: true
     }
 
-    const productsBestSellers = products.filter(p => p.isBestSeller);
-    const productsFeatureds = products.filter(p => p.isFeatured);
-    console.log('bestsellers: ', productsBestSellers);
+    const { user } = useContext(UsersContext);
+
+    const handleAddProductToCart = async (productId : number) => {
+        try{
+            await api.post('/cart', {
+                productId: productId,
+                userId: user.id,
+                quantity: 1
+            });
+        }catch(error){
+            console.log('error: ', error);
+        }
+    }
 
     return (
         <div className="h-screen bg-gray-900">
@@ -89,6 +102,7 @@ export default function Home() {
                                             <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                             <span className="text-purple-400 text-2xl block mb-4 font-bold">${product.price}</span>
                                             <button 
+                                                onClick={() => handleAddProductToCart(product.id)}
                                                 className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold
                                                 rounded w-full hover:cursor-pointer hover:bg-purple-400 transition duration-300"
                                             >

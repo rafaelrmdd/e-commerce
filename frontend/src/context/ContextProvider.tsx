@@ -48,7 +48,7 @@ type UsersContextProps = {
     users : UserProps[]
     signIn: (user : UserProps) => void
     signOut: () => void
-    user: UserProps | undefined
+    user: UserProps
     isUserLogged: boolean
     verifyIfUserIsLogged: () => void
 }
@@ -81,7 +81,11 @@ export function ContextProvider({children} : ContextProviderProps) {
     const [users, setUsers] = useState<UserProps[]>([]);
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
-    const [user, setUser] = useState<UserProps>();
+    const [user, setUser] = useState<UserProps>({
+        id: '',
+        email: '',
+        password: ''
+    });
 
     const isUserLogged = !!user;
 

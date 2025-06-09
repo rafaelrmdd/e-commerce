@@ -22,9 +22,10 @@ public class CartItem
     public int Quantity { get; set; } = 1;
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
-    public CartItem(Guid productId, Guid userId)
+    public CartItem(Guid productId, Guid userId, int quantity)
     {
         ProductId = productId;
         UserId = userId;
+        Quantity = quantity;
     }
 }

@@ -6,11 +6,11 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("/api/reifferce")]
-public class CartController : ControllerBase
+public class CartItemController : ControllerBase
 {
-    private readonly ICartService _service;
+    private readonly ICartItemService _service;
 
-    public CartController(ICartService service)
+    public CartItemController(ICartItemService service)
     {
         _service = service;
     }
@@ -45,11 +45,11 @@ public class CartController : ControllerBase
     }
 
     [HttpPost("cart")]
-    public async Task<IActionResult> AddCartItem(CartDTO cartDto)
+    public async Task<IActionResult> AddCartItem(CartItemDTO cartItemDto, Guid userId)
     {
         try
         {
-            await _service.AddCartItemService(cartDto);
+            await _service.AddCartItemService(cartItemDto, userId);
             return Ok("Cart was successful added");
         }
         catch (NotFoundException ex)
@@ -59,11 +59,11 @@ public class CartController : ControllerBase
     }
 
     [HttpPut("cart/{id}")]
-    public async Task<IActionResult> UpdateCartItem(CartDTO cartDto, Guid id)
+    public async Task<IActionResult> UpdateCartItem(CartItemDTO cartItemDto, Guid id)
     {
         try
         {
-            await _service.UpdateCartItemService(cartDto, id);
+            await _service.UpdateCartItemService(cartItemDto, id);
             return Ok("Specified cart was updated");
         }
         catch (NotFoundException ex)
