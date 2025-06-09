@@ -38,7 +38,7 @@ export default function Home() {
 
     const handleAddProductToCart = async (productId : number) => {
         try{
-            await api.post('/cart', {
+            await api.post(`/cart/${user.id}`, {
                 productId: productId,
                 userId: user.id,
                 quantity: 1

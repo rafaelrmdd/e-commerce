@@ -27,13 +27,19 @@ export type ReviewProps = {
     stars: number
     title: string
     comment: string
-    timestamp: string
 }
 
 export type UserProps = {
     id: string
     email: string
     password: string 
+}
+
+export type CartItemsProps = {
+    id: number
+    productId: string
+    userId : string
+    quantity: number
 }
 
 type ProductsContextProps = {
@@ -51,6 +57,10 @@ type UsersContextProps = {
     user: UserProps
     isUserLogged: boolean
     verifyIfUserIsLogged: () => void
+}
+
+type CartItemsContextProps = {
+    cartItems: CartItemsProps[]
 }
 
 export const ProductsContext = createContext<ProductsContextProps>({
@@ -74,6 +84,10 @@ export const UsersContext = createContext<UsersContextProps>({
     verifyIfUserIsLogged: () => {}
 });
 
+export const CartItemsContext = createContext<CartItemsContextProps>({
+    cartItems: []
+});
+
 export function ContextProvider({children} : ContextProviderProps) {
 
     const router = useRouter();
@@ -81,6 +95,7 @@ export function ContextProvider({children} : ContextProviderProps) {
     const [users, setUsers] = useState<UserProps[]>([]);
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
+    const [cartItems, setCartItems] = useState<CartItemsProps[]>([]);
     const [user, setUser] = useState<UserProps>({
         id: '',
         email: '',
@@ -93,17 +108,19 @@ export function ContextProvider({children} : ContextProviderProps) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [usersResponse, productsResponse, reviewsResponse] = await Promise.all([
+                const [usersResponse, productsResponse, reviewsResponse, cartItemsResponse] = await Promise.all([
                     api.get('users'),
                     api.get('products'),
-                    api.get('reviews')
+                    api.get('reviews'),
+                    api.get('carts')
                 ])
 
-                console.log('users: ', usersResponse.data);
+                console.log('carts: ', cartItemsResponse.data);
 
                 setUsers(usersResponse.data);
                 setProducts(productsResponse.data);
                 setReviews(reviewsResponse.data);
+                setCartItems(cartItemsResponse.data);
 
             }catch(e)
             {
@@ -194,7 +211,9 @@ export function ContextProvider({children} : ContextProviderProps) {
         <UsersContext.Provider value={{ users, signIn, signOut, user, isUserLogged, verifyIfUserIsLogged }}>
             <ProductsContext.Provider value={{ products, }}>
                 <ReviewsContext.Provider value={{ reviews }}>
-                    {children}
+                    <CartItemsContext.Provider value={{ cartItems }}>
+                        {children}
+                    </CartItemsContext.Provider>
                 </ReviewsContext.Provider>
             </ProductsContext.Provider>
         </UsersContext.Provider>

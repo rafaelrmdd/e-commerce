@@ -1,10 +1,25 @@
 import { Header } from "@/components/Header"
 import { FaTrash } from "react-icons/fa";
-import { useContext, useEffect } from "react";
-import { UsersContext } from "@/context/ContextProvider";
+import { useContext, useEffect, useState } from "react";
+import { CartItemsContext, ProductProps, ProductsContext, UsersContext } from "@/context/ContextProvider";
 
 export default function Cart() {
-    const { verifyIfUserIsLogged } = useContext(UsersContext);
+
+    const { verifyIfUserIsLogged, user } = useContext(UsersContext);
+    const { cartItems } = useContext(CartItemsContext);
+    const { products } = useContext(ProductsContext);
+
+    const [productsToShow, setProductsToShow] = useState<ProductProps[]>([]);
+
+    useEffect(() => {
+        const userCartItems = cartItems.filter(item => item.userId === user.id);
+        
+        const productsInCart = userCartItems.map(cartItem => 
+            products.find(product => product.id.toString() === cartItem.productId)
+        ).filter(product => product !== undefined) as ProductProps[];
+        
+        setProductsToShow(productsInCart);
+    }, [cartItems, products, user.id]);
 
     useEffect(() => {
         verifyIfUserIsLogged();
@@ -18,7 +33,7 @@ export default function Cart() {
                 <section className="w-[67%] bg-gray-800 rounded p-6">
                     <h2 className="text-gray-50 font-semibold text-xl">Cart Items</h2>
 
-                    <div className="mt-4">
+                    <div className="mt-4 flex flex-col gap-y-4">
                         <div className="flex bg-gray-700 p-4 rounded gap-x-4">
                             <div className="w-20 bg-gray-400 rounded">
                                 {/* <Image
@@ -44,6 +59,37 @@ export default function Cart() {
                                 />  
                             </div>
                         </div>
+
+                        {productsToShow.map((item) => (
+                            <div 
+                                className="flex bg-gray-700 p-4 rounded gap-x-4"
+                                key={item.id}
+                            >
+                                <div className="w-20 bg-gray-400 rounded">
+                                    {/* <Image
+                                        src={}
+                                        fill
+                                        alt="Product's Image"
+                                    /> */}
+                                </div>
+
+                                <div className="w-[57%]">
+                                    <h2 className="text-gray-50 font-semibold">{item.name}</h2>
+                                    <h3 className="text-gray-400 text-[0.8rem] truncate">{item.description}</h3>
+                                    <span className="block text-gray-50  mt-2">${item.price}</span>
+                                </div>
+
+                                <div className="flex ml-auto items-center gap-x-8">
+                                    <span className="text-gray-400 text-xl hover:cursor-pointer">-</span>
+                                    <span className="text-gray-50 text-xl font-semibold">3</span>
+                                    <span className="text-gray-400 text-xl hover:cursor-pointer">+</span>
+
+                                    <FaTrash 
+                                        className="text-red-400 hover:cursor-pointer text-xl "    
+                                    />  
+                                </div>
+                            </div>
+                        ))}
 
                         <hr className="text-gray-600 mt-6 mb-6"></hr>
 

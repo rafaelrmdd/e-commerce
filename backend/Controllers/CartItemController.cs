@@ -44,7 +44,7 @@ public class CartItemController : ControllerBase
         }
     }
 
-    [HttpPost("cart")]
+    [HttpPost("cart/{userId}")]
     public async Task<IActionResult> AddCartItem(CartItemDTO cartItemDto, Guid userId)
     {
         try
