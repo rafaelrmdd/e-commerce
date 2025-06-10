@@ -30,15 +30,15 @@ export type ReviewProps = {
 }
 
 export type UserProps = {
-    id: string
+    id: number
     email: string
     password: string 
 }
 
 export type CartItemsProps = {
     id: number
-    productId: string
-    userId : string
+    productId: number
+    userId : number
     quantity: number
 }
 
@@ -76,7 +76,7 @@ export const UsersContext = createContext<UsersContextProps>({
     signIn: () => {},
     signOut: () => {},
     user: {
-        id: "",
+        id: 0,
         email: "",
         password: ""
     },
@@ -97,14 +97,14 @@ export function ContextProvider({children} : ContextProviderProps) {
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
     const [cartItems, setCartItems] = useState<CartItemsProps[]>([]);
     const [user, setUser] = useState<UserProps>({
-        id: '',
+        id: 0,
         email: '',
         password: ''
     });
 
     const isUserLogged = !!user;
 
-    const REFRESH_INTERVAL = 5000;
+    const REFRESH_INTERVAL = 10000;
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -127,8 +127,6 @@ export function ContextProvider({children} : ContextProviderProps) {
                 console.log('error: ', e);
             }
         }
-
-        fetchData();
 
         const intervalId = setInterval(fetchData, REFRESH_INTERVAL);
 
@@ -158,6 +156,11 @@ export function ContextProvider({children} : ContextProviderProps) {
     }, [])
 
     const signIn = async ({email, password} : UserProps) => {
+        setUser({
+            id: 0,
+            email,
+            password
+        })
 
         try{
             const response : AxiosResponse = await api.post('/user/session', {

@@ -14,7 +14,6 @@ export default function Offers() {
         verifyIfUserIsLogged();
     }, [verifyIfUserIsLogged])
 
-
     const {
         handleCategory,
         handleStarsFilter,
@@ -256,8 +255,8 @@ export default function Offers() {
                                 className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
                                 onClick={() => {
                                     if (initialValue !== 0){
-                                        setInitialValue((initialValue) => initialValue - 8)
-                                        setProductsPerPage((productsPerPage) => productsPerPage - 8)
+                                        setInitialValue(initialValue - 8)
+                                        setProductsPerPage(productsPerPage - 8)
                                     }
                                 }}
                             >
@@ -267,8 +266,8 @@ export default function Offers() {
                                 className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
                                 onClick={() => {
                                     if(initialValue < filteredProducts.length){
-                                        setInitialValue((initialValue) => initialValue + 8)
-                                        setProductsPerPage((productsPerPage) => productsPerPage + 8)
+                                        setInitialValue(initialValue + 8)
+                                        setProductsPerPage(productsPerPage + 8)
                                     }
                                 }}
                             >

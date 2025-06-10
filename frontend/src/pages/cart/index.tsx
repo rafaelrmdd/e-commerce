@@ -2,6 +2,7 @@ import { Header } from "@/components/Header"
 import { FaTrash } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import { CartItemsContext, ProductProps, ProductsContext, UsersContext } from "@/context/ContextProvider";
+import { api } from "@/services/api/api";
 
 export default function Cart() {
 
@@ -10,20 +11,37 @@ export default function Cart() {
     const { products } = useContext(ProductsContext);
 
     const [productsToShow, setProductsToShow] = useState<ProductProps[]>([]);
-
+    
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
+    
     useEffect(() => {
         const userCartItems = cartItems.filter(item => item.userId === user.id);
         
         const productsInCart = userCartItems.map(cartItem => 
-            products.find(product => product.id.toString() === cartItem.productId)
-        ).filter(product => product !== undefined) as ProductProps[];
+            products.find(product => product.id === cartItem.productId)
+        ).filter(product => product !== undefined)
         
         setProductsToShow(productsInCart);
     }, [cartItems, products, user.id]);
 
-    useEffect(() => {
-        verifyIfUserIsLogged();
-    }, [verifyIfUserIsLogged])
+
+    const findProductId = (productId : number) => {
+        const userCartItems = cartItems.filter(item => item.userId === user.id);
+
+        const product = userCartItems.find((product) => product.productId === productId)
+
+        return product?.id;
+    }
+
+    const handleDeleteProductFromCart = async (productId : number | undefined) => {
+        try {
+            await api.delete(`/cart/${productId}`)
+        }catch(error){
+            console.log('delete error: ', error)
+        }
+    }
 
     return (
         <div className="h-screen bg-gray-900">
@@ -60,10 +78,10 @@ export default function Cart() {
                             </div>
                         </div>
 
-                        {productsToShow.map((item) => (
+                        {productsToShow.map((product) => (
                             <div 
                                 className="flex bg-gray-700 p-4 rounded gap-x-4"
-                                key={item.id}
+                                key={Math.random()}
                             >
                                 <div className="w-20 bg-gray-400 rounded">
                                     {/* <Image
@@ -74,9 +92,9 @@ export default function Cart() {
                                 </div>
 
                                 <div className="w-[57%]">
-                                    <h2 className="text-gray-50 font-semibold">{item.name}</h2>
-                                    <h3 className="text-gray-400 text-[0.8rem] truncate">{item.description}</h3>
-                                    <span className="block text-gray-50  mt-2">${item.price}</span>
+                                    <h2 className="text-gray-50 font-semibold">{product.name}</h2>
+                                    <h3 className="text-gray-400 text-[0.8rem] truncate">{product.description}</h3>
+                                    <span className="block text-gray-50  mt-2">${product.price}</span>
                                 </div>
 
                                 <div className="flex ml-auto items-center gap-x-8">
@@ -85,6 +103,7 @@ export default function Cart() {
                                     <span className="text-gray-400 text-xl hover:cursor-pointer">+</span>
 
                                     <FaTrash 
+                                        onClick={() => handleDeleteProductFromCart(findProductId(product.id))}
                                         className="text-red-400 hover:cursor-pointer text-xl "    
                                     />  
                                 </div>

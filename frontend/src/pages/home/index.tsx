@@ -5,21 +5,24 @@ import { Header } from "@/components/Header"
 import { useContext, useEffect } from "react";
 import { ProductsContext, UsersContext } from "@/context/ContextProvider";
 import { Footer } from "@/components/Footer";
+import { api } from "@/services/api/api";
+
+import { useRouter } from "next/router";
 
 import Slider from "react-slick"
 import Link from "next/link";
 import Image from "next/image";
-import { api } from "@/services/api/api";
 
 export default function Home() {
-    
-    const { verifyIfUserIsLogged } = useContext(UsersContext);
+    const router = useRouter();
+
+    const { products } = useContext(ProductsContext);
+    const { user, verifyIfUserIsLogged } = useContext(UsersContext);
 
     useEffect(() => {
         verifyIfUserIsLogged();
     }, [verifyIfUserIsLogged])
 
-    const { products } = useContext(ProductsContext);
     const productsBestSellers = products.filter(p => p.isBestSeller);
     const productsFeatureds = products.filter(p => p.isFeatured);
 
@@ -33,8 +36,6 @@ export default function Home() {
         centerMode: false,
         adaptiveHeight: true
     }
-
-    const { user } = useContext(UsersContext);
 
     const handleAddProductToCart = async (productId : number) => {
         try{
@@ -80,15 +81,17 @@ export default function Home() {
                         <Slider {...settings}>
                             {productsBestSellers.map((product) => (
                                 <div className="p-3" key={product.id}>
-                                    <Link
-                                        href={`/product/${product.id}`}
+                                    <div
                                         className="bg-gray-700 p-2.5 rounded-lg w-96 
                                         hover:cursor-pointer block hover:bg-gray-600
                                         transition duration-300"
                                     >
                                         
                                         {/* Image */}
-                                        <div className="relative w-full h-56 rounded mb-2">
+                                        <div 
+                                            onClick={() => router.push(`/product/${product.id}`)}
+                                            className="relative w-full h-56 rounded mb-2"
+                                        >
                                             <Image 
                                                 className="rounded"
                                                 src={product.imageURL}
@@ -102,14 +105,17 @@ export default function Home() {
                                             <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                             <span className="text-purple-400 text-2xl block mb-4 font-bold">${product.price}</span>
                                             <button 
-                                                onClick={() => handleAddProductToCart(product.id)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleAddProductToCart(product.id)
+                                                }}
                                                 className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold
                                                 rounded w-full hover:cursor-pointer hover:bg-purple-400 transition duration-300"
                                             >
                                                 Add to Cart
                                             </button>
                                         </div>       
-                                    </Link>      
+                                    </div>      
                                 </div>
                             ))}
                         </Slider>
