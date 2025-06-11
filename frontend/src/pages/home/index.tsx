@@ -1,24 +1,25 @@
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css"; 
 
 import { Header } from "@/components/Header"
 import { useContext, useEffect } from "react";
 import { ProductsContext, UsersContext } from "@/context/ContextProvider";
 import { Footer } from "@/components/Footer";
-import { api } from "@/services/api/api";
-
 import { useRouter } from "next/router";
+import { useCart } from "@/hooks/useCart";
 
 import Slider from "react-slick"
 import Link from "next/link";
 import Image from "next/image";
 
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css"; 
+
 export default function Home() {
     const router = useRouter();
-
+    
     const { products } = useContext(ProductsContext);
-    const { user, verifyIfUserIsLogged } = useContext(UsersContext);
-
+    const { verifyIfUserIsLogged } = useContext(UsersContext);
+    const { handleAddProductToCart } = useCart();
+    
     useEffect(() => {
         verifyIfUserIsLogged();
     }, [verifyIfUserIsLogged])
@@ -35,18 +36,6 @@ export default function Home() {
         variableWidth: false,
         centerMode: false,
         adaptiveHeight: true
-    }
-
-    const handleAddProductToCart = async (productId : number) => {
-        try{
-            await api.post(`/cart/${user.id}`, {
-                productId: productId,
-                userId: user.id,
-                quantity: 1
-            });
-        }catch(error){
-            console.log('error: ', error);
-        }
     }
 
     return (
@@ -105,10 +94,7 @@ export default function Home() {
                                             <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                             <span className="text-purple-400 text-2xl block mb-4 font-bold">${product.price}</span>
                                             <button 
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleAddProductToCart(product.id)
-                                                }}
+                                                onClick={() => handleAddProductToCart(product.id)}
                                                 className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold
                                                 rounded w-full hover:cursor-pointer hover:bg-purple-400 transition duration-300"
                                             >

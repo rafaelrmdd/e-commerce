@@ -3,28 +3,27 @@ import { Header } from "@/components/Header";
 import { useContext, useEffect } from "react";
 import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
 import Link from "next/link";
+import { useCart } from "@/hooks/useCart";
 
 export default function ProductPage() {
 
+    const { handleAddProductToCart } = useCart();
     const { verifyIfUserIsLogged } = useContext(UsersContext);
+    const { products } = useContext(ProductsContext);
+    const { reviews } = useContext(ReviewsContext);
+    const { users } = useContext(UsersContext); 
+
+    const router = useRouter();
+    const productIdString = router.query.id;
+    const productIdNumber = Number(productIdString);
 
     useEffect(() => {
         verifyIfUserIsLogged();
     }, [verifyIfUserIsLogged])
 
-    const router = useRouter();
-    const productId = router.query.id;
-
-    const { products } = useContext(ProductsContext);
-    const { reviews } = useContext(ReviewsContext);
-    const { users } = useContext(UsersContext); 
-
-    console.log("reviews: ", reviews);
-
-    const thisProduct = products.find((p) => String(p.id) === productId);
+    const thisProduct = products.find((p) => p.id === productIdNumber);
     const relatedProducts = products.filter((p) => p.subCategoryId === thisProduct?.subCategoryId).slice(0, 3);
-
-    const totalReviews = reviews.filter((r) => r.productId === productId).length;
+    const totalReviews = reviews.filter((r) => r.productId === productIdNumber).length;
 
     const generateStars = (quantity : number) => {
         const stars = [];
@@ -126,7 +125,8 @@ export default function ProductPage() {
                             >
                                 BUY NOW
                             </button>
-                            <button     
+                            <button
+                                onClick={() => handleAddProductToCart(productIdNumber)}
                                 className="w-full bg-gray-800 px-4 py-4 text-gray-50 font-bold text-xl 
                                 rounded hover:cursor-pointer hover:bg-gray-700 transition duration-300"
                             >
@@ -291,7 +291,15 @@ export default function ProductPage() {
                                     >
                                         <div className="flex justify-between">
                                             <span className="text-yellow-400">{generateStars(review.stars)}</span>
-                                            <span className="text-gray-500 text-[0.9rem] font-semibold">{dateFormat.format(new Date(review.timestamp))}</span>
+                                            <span className="text-gray-500 text-[0.9rem] font-semibold">
+
+                                                {/* ----------------------------- */}
+                                                {/* Fix timestamp later */}
+                                                {/* ----------------------------- */}
+
+                                                {/* {dateFormat.format(new Date(review.timestamp))} */}
+                                                
+                                            </span>
                                         </div>
 
                                         <div>
@@ -304,7 +312,7 @@ export default function ProductPage() {
 
                                 <div className="py-6">
                                     <Link 
-                                        href={`/product/reviews/${productId}`}
+                                        href={`/product/reviews/${productIdNumber}`}
                                         className="hover:cursor-pointer text-purple-400 font-semibold"
                                     >
                                         Ver todas as {totalReviews} avaliações

@@ -22,7 +22,7 @@ export type ProductProps = {
 
 export type ReviewProps = {
     id: number
-    productId: string
+    productId: number
     userId: string
     stars: number
     title: string

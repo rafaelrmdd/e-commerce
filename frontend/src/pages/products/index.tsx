@@ -5,11 +5,11 @@ import { useContext, useEffect } from "react"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
 import { useFilterLogic } from "@/hooks/useFilterLogic";
+import { useCart } from "@/hooks/useCart";
 
 import Image from "next/image";
 
 export default function Products() {
-
     const { verifyIfUserIsLogged } = useContext(UsersContext);
 
     useEffect(() => {
@@ -46,6 +46,8 @@ export default function Products() {
         initialValue,
         productsPerPage,
     } = useFilterLogic(categoryFromHome);
+
+    const { handleAddProductToCart } = useCart();
        
     //Subcategories
     // [
@@ -123,7 +125,6 @@ export default function Products() {
                     </div>
                 </div>
                 
-
                 <div className="flex gap-x-8 h-full">
                     <aside className="w-1/5">
                         <div className="bg-gray-800 p-4 rounded w-full min-h-96">
@@ -295,6 +296,7 @@ export default function Products() {
                                         <span className="text-purple-400 font-semibold text-xl">${product.price}</span>
 
                                         <button 
+                                            onClick={() => handleAddProductToCart(product.id)}
                                             className="bg-purple-500 px-3 py-2 text-gray-950 font-semibold
                                             rounded block mt-5 w-full hover:bg-purple-400 hover:cursor-pointer
                                             transition duration-300"
@@ -312,8 +314,8 @@ export default function Products() {
                                 className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
                                 onClick={() => {
                                     if (initialValue !== 0){
-                                        setInitialValue((initialValue) => initialValue - 8)
-                                        setProductsPerPage((productsPerPage) => productsPerPage - 8)
+                                        setInitialValue(initialValue - 8)
+                                        setProductsPerPage(productsPerPage - 8)
                                     }
                                 }}
                             >
@@ -322,8 +324,8 @@ export default function Products() {
                             <div 
                                 onClick={() => {
                                     if(initialValue < filteredProducts.length){
-                                        setInitialValue((initialValue) => initialValue + 8)
-                                        setProductsPerPage((productsPerPage) => productsPerPage + 8)
+                                        setInitialValue(initialValue + 8)
+                                        setProductsPerPage(productsPerPage + 8)
                                     }
                                 }}
                                 className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"

@@ -4,11 +4,10 @@ import { FormEvent, useContext, useState } from "react";
 import { UsersContext } from "@/context/ContextProvider";
 
 export default function Login() {
+    const { signIn } = useContext(UsersContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const { signIn } = useContext(UsersContext);
 
     const onSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -16,12 +15,12 @@ export default function Login() {
         console.log(email, password);
 
         signIn({
+            id: 0,
             email,
             password
         });
 
     }
-
     return (
         <div className="h-full bg-gray-900">
             <Header />

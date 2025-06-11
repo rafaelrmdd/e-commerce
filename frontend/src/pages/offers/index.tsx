@@ -5,15 +5,12 @@ import { useFilterLogic } from "@/hooks/useFilterLogic";
 import { useContext, useEffect } from "react";
 import { SlMagnifier } from "react-icons/sl";
 import Image from "next/image";
+import { useCart } from "@/hooks/useCart";
 
 export default function Offers() {
 
     const { verifyIfUserIsLogged } = useContext(UsersContext);
-
-    useEffect(() => {
-        verifyIfUserIsLogged();
-    }, [verifyIfUserIsLogged])
-
+    const { handleAddProductToCart } = useCart();
     const {
         handleCategory,
         handleStarsFilter,
@@ -41,6 +38,10 @@ export default function Offers() {
         productsPerPage,      
         initialValue,
     } = useFilterLogic(null);
+
+    useEffect(() => {
+        verifyIfUserIsLogged();
+    }, [verifyIfUserIsLogged])
 
     return (
         <div className="h-full bg-gray-900">
@@ -238,6 +239,7 @@ export default function Offers() {
                                         <span className="text-purple-400 font-semibold text-xl">${product.price}</span>
 
                                         <button 
+                                            onClick={() => handleAddProductToCart(product.id)}
                                             className="bg-purple-500 px-3 py-2 text-gray-950 font-semibold
                                             rounded block mt-5 w-full hover:bg-purple-400 hover:cursor-pointer
                                             transition duration-300"
