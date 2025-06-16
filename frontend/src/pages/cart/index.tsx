@@ -3,15 +3,18 @@ import { FaTrash } from "react-icons/fa";
 import { useContext, useEffect, useState } from "react";
 import { CartItemsContext, ProductProps, ProductsContext, UsersContext } from "@/context/ContextProvider";
 import { api } from "@/services/api/api";
+import { Footer } from "@/components/Footer";
+
+import Image from "next/image";
 
 export default function Cart() {
 
     const { verifyIfUserIsLogged, user } = useContext(UsersContext);
     const { cartItems } = useContext(CartItemsContext);
     const { products } = useContext(ProductsContext);
-
-    const [productsToShow, setProductsToShow] = useState<ProductProps[]>([]);
     
+    const [productsToShow, setProductsToShow] = useState<ProductProps[]>([]);
+
     useEffect(() => {
         verifyIfUserIsLogged();
     }, [verifyIfUserIsLogged])
@@ -26,8 +29,7 @@ export default function Cart() {
         setProductsToShow(productsInCart);
     }, [cartItems, products, user.id]);
 
-
-    const findProductId = (productId : number) => {
+    const findCartProductId = (productId : number) => {
         const userCartItems = cartItems.filter(item => item.userId === user.id);
 
         const product = userCartItems.find((product) => product.productId === productId)
@@ -43,52 +45,41 @@ export default function Cart() {
         }
     }
 
+    const usDolarFormat = Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD"
+    }) 
+
+    const subtotal = productsToShow.reduce((sum, product) => sum + Number(product.price), 0);
+    const shipping = 0;
+    const tax = 0;
+    const total = subtotal- shipping - tax;
+
+    const subtotalFormatted = usDolarFormat.format(subtotal);
+    const shippingFormatted = usDolarFormat.format(shipping);
+    const taxFormatted = usDolarFormat.format(tax);
+    const totalFormatted = usDolarFormat.format(total);
+
     return (
-        <div className="h-screen bg-gray-900">
+        <div className="h-full bg-gray-900">
             <Header />
 
-            <main className="flex px-32 mt-8 rounded justify-between items-start">
+            <main className="flex px-32 mt-8 rounded justify-between items-start mb-24">
                 <section className="w-[67%] bg-gray-800 rounded p-6">
                     <h2 className="text-gray-50 font-semibold text-xl">Cart Items</h2>
 
                     <div className="mt-4 flex flex-col gap-y-4">
-                        <div className="flex bg-gray-700 p-4 rounded gap-x-4">
-                            <div className="w-20 bg-gray-400 rounded">
-                                {/* <Image
-                                    src={}
-                                    fill
-                                    alt="Product's Image"
-                                /> */}
-                            </div>
-
-                            <div className="w-[57%]">
-                                <h2 className="text-gray-50 font-semibold">Wireless Headphones</h2>
-                                <h3 className="text-gray-400 text-[0.8rem] truncate">High-quality wireless headphones</h3>
-                                <span className="block text-gray-50  mt-2">$89.90</span>
-                            </div>
-
-                            <div className="flex ml-auto items-center gap-x-8">
-                                <span className="text-gray-400 text-xl hover:cursor-pointer">-</span>
-                                <span className="text-gray-50 text-xl font-semibold">3</span>
-                                <span className="text-gray-400 text-xl hover:cursor-pointer">+</span>
-
-                                <FaTrash 
-                                    className="text-red-400 hover:cursor-pointer text-xl "    
-                                />  
-                            </div>
-                        </div>
-
                         {productsToShow.map((product) => (
                             <div 
                                 className="flex bg-gray-700 p-4 rounded gap-x-4"
                                 key={Math.random()}
                             >
-                                <div className="w-20 bg-gray-400 rounded">
-                                    {/* <Image
-                                        src={}
+                                <div className="w-24 bg-gray-400 rounded relative"> 
+                                    <Image 
+                                        src={product.imageURL}
+                                        alt="Product's image"
                                         fill
-                                        alt="Product's Image"
-                                    /> */}
+                                    />
                                 </div>
 
                                 <div className="w-[57%]">
@@ -103,7 +94,7 @@ export default function Cart() {
                                     <span className="text-gray-400 text-xl hover:cursor-pointer">+</span>
 
                                     <FaTrash 
-                                        onClick={() => handleDeleteProductFromCart(findProductId(product.id))}
+                                        onClick={() => handleDeleteProductFromCart(findCartProductId(product.id))}
                                         className="text-red-400 hover:cursor-pointer text-xl "    
                                     />  
                                 </div>
@@ -130,24 +121,32 @@ export default function Cart() {
                     <div className="mt-4">
                         <div className="flex justify-between">
                             <h3 className="text-gray-400 mb-2">Subtotal</h3>
-                            <span className="text-gray-50">$89.90</span>
+                            <span className="text-gray-50">{subtotalFormatted}</span>
                         </div>
                         
                         <div className="flex justify-between">
                             <h3 className="text-gray-400 mb-2">Shipping</h3>
-                            <span className="text-gray-50">$0.00</span>
+                            <span 
+                                className={`text-gray-50 ${shipping == 0 ? "text-green-300" : null}`}
+                            >
+                                {shipping == 0 ? "Free" : shippingFormatted}
+                            </span>
                         </div>
 
                         <div className="flex justify-between">
                             <h3 className="text-gray-400 mb-2">Tax</h3>
-                            <span className="text-gray-50">$27.35</span>
+                            <span 
+                                className={`text-gray-50 ${tax == 0 ? "text-green-300" : null}`}
+                            >
+                                {tax == 0 ? "Free" : taxFormatted}
+                            </span>
                         </div>
 
                         <hr className="text-gray-600 mt-3 mb-3"></hr>
 
                         <div className="flex justify-between">
                             <h3 className="text-gray-50 font-semibold text-xl">Total</h3>
-                            <span className="text-gray-50 font-semibold text-xl">$89.90</span>
+                            <span className="text-gray-50 font-semibold text-xl">{totalFormatted}</span>
                         </div>
                     </div>
 
@@ -167,6 +166,8 @@ export default function Cart() {
                     </div>
                 </aside>
             </main>
+
+            <Footer />
         </div>
     )
 }
