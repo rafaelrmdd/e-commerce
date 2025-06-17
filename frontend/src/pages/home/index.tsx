@@ -17,12 +17,12 @@ export default function Home() {
     const router = useRouter();
     
     const { products } = useContext(ProductsContext);
-    const { verifyIfUserIsLogged } = useContext(UsersContext);
+    // const { verifyIfUserIsLogged } = useContext(UsersContext);
     const { handleAddProductToCart } = useCart();
     
-    useEffect(() => {
-        verifyIfUserIsLogged();
-    }, [verifyIfUserIsLogged])
+    // useEffect(() => {
+    //     verifyIfUserIsLogged();
+    // }, [verifyIfUserIsLogged])
 
     const productsBestSellers = products.filter(p => p.isBestSeller);
     const productsFeatureds = products.filter(p => p.isFeatured);

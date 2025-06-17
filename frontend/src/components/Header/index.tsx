@@ -7,6 +7,7 @@ import { FaCartShopping } from "react-icons/fa6";
 export function Header() {
 
     const { user, isUserLogged } = useContext(UsersContext);
+    console.log('isUserLogged: ', isUserLogged);
 
     return (
         <header className="flex justify-between items-center px-4 py-4 bg-gray-800">
@@ -49,36 +50,37 @@ export function Header() {
 
             <div className="flex gap-6 items-center">
                 {isUserLogged ? 
-                    <span className="text-gray-50">{user?.email}</span>
-                    : null
-                }
-                
-                <div className="flex gap-x-2">      
-                    <Link
-                        className="flex justify-center items-center rounded-full w-8 h-8
-                        hover:bg-gray-600 transition duration-200"
-                        href={"/cart"}
-                    >
-                        <FaCartShopping 
+                    <div className="flex gap-x-2">      
+                        <Link
+                            className="flex justify-center items-center rounded-full w-8 h-8
+                            hover:bg-gray-600 transition duration-200"
+                            href={"/cart"}
+                        >
+                            <FaCartShopping 
+                                className="hover:cursor-pointer"
+                                color="white" 
+                                size={24}
+                            />
+                        </Link>
+                        
+                        <Link
+                            className="flex justify-center items-center rounded-full w-8 h-8
+                            hover:bg-gray-600 transition duration-200"
+                            href={"/account"}
+                        >
+                        <FaUserCircle 
                             className="hover:cursor-pointer"
                             color="white" 
                             size={24}
                         />
-                    </Link>
-                    
-                    <Link
-                        className="flex justify-center items-center rounded-full w-8 h-8
-                        hover:bg-gray-600 transition duration-200"
-                        href={"/account"}
-                    >
-                    <FaUserCircle 
-                        className="hover:cursor-pointer"
-                        color="white" 
-                        size={24}
-                    />
-                    </Link>
-                </div>
+                        </Link>
+                    </div>
+                    : 
+                    <>
+                        <span className="text-gray-50">teste</span>
+                    </>
 
+                }
             </div>
         </header>
     )

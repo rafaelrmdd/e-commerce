@@ -1,6 +1,6 @@
 import { api } from "@/services/api/api";
 import { AxiosResponse } from "axios";
-import { createContext, ReactNode, useEffect, useState } from "react"
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 
@@ -54,7 +54,7 @@ type UsersContextProps = {
     users : UserProps[]
     signIn: (user : UserProps) => void
     signOut: () => void
-    user: UserProps
+    user: UserProps | undefined
     isUserLogged: boolean
     verifyIfUserIsLogged: () => void
 }
@@ -75,11 +75,7 @@ export const UsersContext = createContext<UsersContextProps>({
     users: [],
     signIn: () => {},
     signOut: () => {},
-    user: {
-        id: 0,
-        email: "",
-        password: ""
-    },
+    user: undefined,
     isUserLogged: false,
     verifyIfUserIsLogged: () => {}
 });
@@ -96,15 +92,14 @@ export function ContextProvider({children} : ContextProviderProps) {
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
     const [cartItems, setCartItems] = useState<CartItemsProps[]>([]);
-    const [user, setUser] = useState<UserProps>({
-        id: 0,
-        email: '',
-        password: ''
-    });
+    const [user, setUser] = useState<UserProps | undefined>();
 
     const isUserLogged = !!user;
 
     const REFRESH_INTERVAL = 10000;
+
+    //Update the users, products, reviews and carts data every specified interval
+    //Verify if cookies data exists and if not, signOut the user
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -128,40 +123,51 @@ export function ContextProvider({children} : ContextProviderProps) {
             }
         }
 
-        const intervalId = setInterval(fetchData, REFRESH_INTERVAL);
+        const keepUserUpdated = async () => {
+            const { 'reifferce.jwt': jwt } = parseCookies();
+            const { 'reifferce.refreshToken': refreshToken } = parseCookies();
+
+            if(!jwt || !refreshToken){
+                signOut();
+                return;
+            }
+
+            try{
+                const response : AxiosResponse = await api.get(`/user/refreshToken/${refreshToken}`)
+
+                if (!response.data) {
+                    signOut();
+                    return;
+                }
+
+                const { id, email, password } = response.data;
+                setUser({
+                    id,
+                    email,
+                    password
+                })
+            }catch(e){
+                console.log('error: ', e)
+                signOut();
+            }
+        }
+
+        //Executes one time at the first render
+        fetchData();
+        keepUserUpdated();
+
+        //Keeps executing each REFRESH_INTERVAL interval
+        const intervalId = setInterval(() => {
+            fetchData();
+            keepUserUpdated();
+        }, REFRESH_INTERVAL);
 
         return () => {
             clearInterval(intervalId);
         }
     }, [])
 
-    useEffect(() => {
-        const { 'reifferce.jwt': jwt } = parseCookies();
-        const { 'reifferce.refreshToken': refreshToken } = parseCookies();
-
-        if(refreshToken && jwt) {
-            api.get(`/user/refreshToken/${refreshToken}`).then(response => {
-                const { id, email, password } = response.data;
-
-                setUser({
-                    id,
-                    email,
-                    password
-                })
-
-            }).catch(() => {
-                signOut();
-            })
-        }
-    }, [])
-
     const signIn = async ({email, password} : UserProps) => {
-        setUser({
-            id: 0,
-            email,
-            password
-        })
-
         try{
             const response : AxiosResponse = await api.post('/user/session', {
                 email,
@@ -200,6 +206,8 @@ export function ContextProvider({children} : ContextProviderProps) {
     const signOut = () => {
         destroyCookie(undefined, 'reifferce.jwt');
         destroyCookie(undefined, 'reifferce.refreshToken');
+
+        setUser(undefined);
 
         router.push('/login');  
     }
