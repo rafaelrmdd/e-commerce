@@ -7,8 +7,7 @@ import { FaCartShopping } from "react-icons/fa6";
 export function Header() {
 
     const { user, isUserLogged } = useContext(UsersContext);
-    console.log('isUserLogged: ', isUserLogged);
-
+    
     return (
         <header className="flex justify-between items-center px-4 py-4 bg-gray-800">
             <Link 
@@ -50,7 +49,8 @@ export function Header() {
 
             <div className="flex gap-6 items-center">
                 {isUserLogged ? 
-                    <div className="flex gap-x-2">      
+                    <div className="flex gap-x-2"> 
+                        <h2 className="text-gray-50">{user?.email}</h2>     
                         <Link
                             className="flex justify-center items-center rounded-full w-8 h-8
                             hover:bg-gray-600 transition duration-200"

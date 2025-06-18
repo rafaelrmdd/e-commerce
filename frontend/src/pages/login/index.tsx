@@ -12,8 +12,6 @@ export default function Login() {
     const onSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
-        console.log(email, password);
-
         signIn({
             id: 0,
             email,

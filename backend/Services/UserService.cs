@@ -208,7 +208,6 @@ public class UserService : IUserService
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, userDTO.Email),
-            // new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor

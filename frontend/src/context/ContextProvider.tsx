@@ -1,6 +1,6 @@
 import { api } from "@/services/api/api";
 import { AxiosResponse } from "axios";
-import { createContext, ReactNode, useCallback, useEffect, useState } from "react"
+import { createContext, ReactNode, useEffect, useState } from "react"
 import { useRouter } from "next/router";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 
@@ -30,7 +30,7 @@ export type ReviewProps = {
 }
 
 export type UserProps = {
-    id: number
+    id: number 
     email: string
     password: string 
 }
@@ -98,8 +98,9 @@ export function ContextProvider({children} : ContextProviderProps) {
 
     const REFRESH_INTERVAL = 10000;
 
-    //Update the users, products, reviews and carts data every specified interval
-    //Verify if cookies data exists and if not, signOut the user
+    //Updates the users, products, reviews and carts data every specified interval
+    //Keeps the user variable updated for its using through the application
+    //Verifies if cookies data exists and if not, signOut the user
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -110,19 +111,17 @@ export function ContextProvider({children} : ContextProviderProps) {
                     api.get('carts')
                 ])
 
-                console.log('carts: ', cartItemsResponse.data);
-
                 setUsers(usersResponse.data);
                 setProducts(productsResponse.data);
                 setReviews(reviewsResponse.data);
                 setCartItems(cartItemsResponse.data);
-
             }catch(e)
             {
-                console.log('error: ', e);
+                console.log('error fetching data: ', e);
             }
         }
 
+        //Think a better name
         const keepUserUpdated = async () => {
             const { 'reifferce.jwt': jwt } = parseCookies();
             const { 'reifferce.refreshToken': refreshToken } = parseCookies();
@@ -147,7 +146,7 @@ export function ContextProvider({children} : ContextProviderProps) {
                     password
                 })
             }catch(e){
-                console.log('error: ', e)
+                console.log('error keeping user updated: ', e)
                 signOut();
             }
         }
@@ -156,10 +155,9 @@ export function ContextProvider({children} : ContextProviderProps) {
         fetchData();
         keepUserUpdated();
 
-        //Keeps executing each REFRESH_INTERVAL interval
         const intervalId = setInterval(() => {
             fetchData();
-            keepUserUpdated();
+            // keepUserUpdated();
         }, REFRESH_INTERVAL);
 
         return () => {
@@ -174,8 +172,12 @@ export function ContextProvider({children} : ContextProviderProps) {
                 password
             })
 
+            console.log('usuario retornado: ', response);
+
             if(response.data) {
                 const { jwt, refreshToken } = response.data;
+                console.log('jwt do usuario retornado: ', jwt);
+                console.log('refreshToken do usuario retornado: ', refreshToken);
 
                 setUser({
                     id: response.data.id,
@@ -193,13 +195,15 @@ export function ContextProvider({children} : ContextProviderProps) {
                     path: "/" 
                 })
 
+                console.log('setando authorization header...');
                 api.defaults.headers['Authorization'] = `Bearer ${jwt}` 
+                console.log('authorization header setado: ', api.defaults.headers['Authorization'])
 
                 router.push('/home');
             }
 
         }catch(error){
-            console.log('error: ', error);
+            console.log('error in signIn: ', error);
         }
     }
 
