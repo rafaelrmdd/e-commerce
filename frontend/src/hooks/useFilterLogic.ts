@@ -11,8 +11,8 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
     const [priceRange, setPriceRange] = useState("")
     const [starsFilter, setStarsFilter] = useState(0);
 
-    const productStars = new Map<string, number[]>();
-    const productAverages = new Map<string, number>()
+    const productStars = new Map<number, number[]>();
+    const productAverages = new Map<number, number>()
 
     reviews.forEach((review) => {
         const productId = review.productId;
@@ -158,8 +158,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         const hasPriceRange = priceRange !== "";
         const hasStarsFilter = starsFilter !== 0;
         const hasId = productIds.has(product.id)
-        const thisProductStarsAverage = productAverages.get(String(product.id));
-        console.log('thisproductstarsaverage: ', thisProductStarsAverage);
+        const thisProductStarsAverage = productAverages.get(product.id);
         
         if(hasCategory && hasKeyword && hasPriceRange) {
             return product.categoryId === categoryNumber && 
@@ -207,7 +206,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
     }
 
     const getProductReview = (id : number) => {
-        const productReviews = reviews.filter((review) => review.productId === String(id));
+        const productReviews = reviews.filter((review) => review.productId === id);
 
         return productReviews;
     }

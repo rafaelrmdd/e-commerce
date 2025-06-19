@@ -96,7 +96,7 @@ export function ContextProvider({children} : ContextProviderProps) {
 
     const isUserLogged = !!user;
 
-    const REFRESH_INTERVAL = 10000;
+    const REFRESH_INTERVAL = 5000;
 
     //Updates the users, products, reviews and carts data every specified interval
     //Keeps the user variable updated for its using through the application
@@ -173,10 +173,10 @@ export function ContextProvider({children} : ContextProviderProps) {
             })
 
             if(response.data) {
-                const { jwt, refreshToken } = response.data;
+                const { jwt, refreshToken, id } = response.data;
 
                 setUser({
-                    id: response.data.id,
+                    id,
                     email,
                     password
                 })
@@ -191,9 +191,7 @@ export function ContextProvider({children} : ContextProviderProps) {
                     path: "/" 
                 })
 
-                console.log('setando authorization header...');
                 api.defaults.headers['Authorization'] = `Bearer ${jwt}` 
-                console.log('authorization header setado: ', api.defaults.headers['Authorization'])
 
                 router.push('/home');
             }

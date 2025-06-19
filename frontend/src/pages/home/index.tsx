@@ -1,11 +1,13 @@
 
 import { Header } from "@/components/Header"
-import { useContext, useEffect } from "react";
-import { ProductsContext, UsersContext } from "@/context/ContextProvider";
+import { useContext } from "react";
+import { ProductsContext } from "@/context/ContextProvider";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/router";
 import { useCart } from "@/hooks/useCart";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
+import 'react-toastify/dist/ReactToastify.css';
 import Slider from "react-slick"
 import Link from "next/link";
 import Image from "next/image";
@@ -19,6 +21,18 @@ export default function Home() {
     const { products } = useContext(ProductsContext);
     // const { verifyIfUserIsLogged } = useContext(UsersContext);
     const { handleAddProductToCart } = useCart();
+
+    const notifyCart = () => toast("Product sucessfull added to cart!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+    });
     
     // useEffect(() => {
     //     verifyIfUserIsLogged();
@@ -94,7 +108,10 @@ export default function Home() {
                                             <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                             <span className="text-purple-400 text-2xl block mb-4 font-bold">${product.price}</span>
                                             <button 
-                                                onClick={() => handleAddProductToCart(product.id)}
+                                                onClick={() => {
+                                                    handleAddProductToCart(product.id)
+                                                    notifyCart();
+                                                }}
                                                 className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold
                                                 rounded w-full hover:cursor-pointer hover:bg-purple-400 transition duration-300"
                                             >
@@ -107,7 +124,6 @@ export default function Home() {
                         </Slider>
                     </div>
                 </div>
-                
                 {/* Categories */}
                 <section className="px-8">
                     <div className="flex justify-center items-center gap-4">
@@ -200,6 +216,9 @@ export default function Home() {
 
                 <Footer />
             </main>
+
+
+        <ToastContainer/>
         </div>
     )
 }

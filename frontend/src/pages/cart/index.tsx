@@ -20,17 +20,17 @@ export default function Cart() {
     }, [verifyIfUserIsLogged])
     
     useEffect(() => {
-        const userCartItems = cartItems.filter(item => item.userId === user.id);
+        const userCartItems = cartItems.filter(item => item.userId === user?.id);
         
         const productsInCart = userCartItems.map(cartItem => 
             products.find(product => product.id === cartItem.productId)
         ).filter(product => product !== undefined)
         
         setProductsToShow(productsInCart);
-    }, [cartItems, products, user.id]);
+    }, [cartItems, products, user?.id]);
 
     const findCartProductId = (productId : number) => {
-        const userCartItems = cartItems.filter(item => item.userId === user.id);
+        const userCartItems = cartItems.filter(item => item.userId === user?.id);
 
         const product = userCartItems.find((product) => product.productId === productId)
 
