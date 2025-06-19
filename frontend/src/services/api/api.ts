@@ -14,13 +14,15 @@ export const api : AxiosInstance = axios.create({
     baseURL: "http://localhost:5241/api/reifferce/",
     headers: {
         Authorization: `Bearer ${cookies['reifferce.jwt']}`
+    },
+    validateStatus: function (status) {
+        return status < 400 || status === 401
     }
 })
 
-api.interceptors.response.use(response => {
-    return response;
-    
-}, (error : AxiosError) => {
+api.interceptors.response.use(
+    response => response, 
+    (error : AxiosError) => {
     if (error.response?.status === 401) {
         cookies = parseCookies();
 
@@ -29,7 +31,7 @@ api.interceptors.response.use(response => {
 
         if (!isRefreshing) {
             isRefreshing = true;
-
+        
             api.post('/user/refresh', {
                 refreshToken: refreshToken,
             }).then(response => {   
@@ -55,11 +57,11 @@ api.interceptors.response.use(response => {
                     console.error("error: response.data is undefined");
                 }
             }).catch(err => {
-                console.log('Erro ao renovar token');
+                console.log('error renewing token. returning to login page...');
                 
-                // destroyCookie(undefined, 'reifferce.jwt');
-                // destroyCookie(undefined, 'reifferce.refreshToken');
-                // window.location.href = "/login";
+                destroyCookie(undefined, 'reifferce.jwt');
+                destroyCookie(undefined, 'reifferce.refreshToken');
+                window.location.href = "/login";
 
                 failedRequestsQueue.forEach(request => request.onFailure(err))
                 failedRequestsQueue = []

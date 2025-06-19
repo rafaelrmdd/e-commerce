@@ -172,12 +172,8 @@ export function ContextProvider({children} : ContextProviderProps) {
                 password
             })
 
-            console.log('usuario retornado: ', response);
-
             if(response.data) {
                 const { jwt, refreshToken } = response.data;
-                console.log('jwt do usuario retornado: ', jwt);
-                console.log('refreshToken do usuario retornado: ', refreshToken);
 
                 setUser({
                     id: response.data.id,
