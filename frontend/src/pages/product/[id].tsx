@@ -14,16 +14,15 @@ export default function ProductPage() {
     const { users } = useContext(UsersContext); 
 
     const router = useRouter();
-    const productIdString = router.query.id;
-    const productIdNumber = Number(productIdString);
+    const productId = router.query.id as string;
 
     useEffect(() => {
         verifyIfUserIsLogged();
     }, [verifyIfUserIsLogged])
 
-    const thisProduct = products.find((p) => p.id === productIdNumber);
+    const thisProduct = products.find((p) => p.id === productId);
     const relatedProducts = products.filter((p) => p.subCategoryId === thisProduct?.subCategoryId).slice(0, 3);
-    const totalReviews = reviews.filter((r) => r.productId === productIdNumber).length;
+    const totalReviews = reviews.filter((r) => r.productId === productId).length;
 
     const generateStars = (quantity : number) => {
         const stars = [];
@@ -32,11 +31,16 @@ export default function ProductPage() {
             stars.push("★")
         }
 
+        console.log('thisProduct: ', thisProduct);
         return stars;
     } 
 
     const searchUser = (review : ReviewProps) => {
-        const user : UserProps | undefined = users.find((user) => String(user.id) === review.userId);
+        if (!users || !Array.isArray(users)) {
+            return "Loading...";
+        }
+
+        const user : UserProps | undefined = users?.find((user) => user.id === review.userId);
 
         if(user == undefined){
             return "User not found";
@@ -45,11 +49,11 @@ export default function ProductPage() {
         return user.email;
     }
 
-    const dateFormat = Intl.DateTimeFormat('pt-BR', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
-    });
+    // const dateFormat = Intl.DateTimeFormat('pt-BR', {
+    //     year: 'numeric',
+    //     month: '2-digit',
+    //     day: '2-digit'
+    // });
 
     return (
         <div className="bg-gray-900 h-full">
@@ -126,7 +130,7 @@ export default function ProductPage() {
                                 BUY NOW
                             </button>
                             <button
-                                onClick={() => handleAddProductToCart(productIdNumber)}
+                                onClick={() => handleAddProductToCart(productId)}
                                 className="w-full bg-gray-800 px-4 py-4 text-gray-50 font-bold text-xl 
                                 rounded hover:cursor-pointer hover:bg-gray-700 transition duration-300"
                             >
@@ -312,7 +316,7 @@ export default function ProductPage() {
 
                                 <div className="py-6">
                                     <Link 
-                                        href={`/product/reviews/${productIdNumber}`}
+                                        href={`/product/reviews/${productId}`}
                                         className="hover:cursor-pointer text-purple-400 font-semibold"
                                     >
                                         Ver todas as {totalReviews} avaliações

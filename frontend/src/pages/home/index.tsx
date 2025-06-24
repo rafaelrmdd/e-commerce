@@ -5,38 +5,20 @@ import { ProductsContext } from "@/context/ContextProvider";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/router";
 import { useCart } from "@/hooks/useCart";
-import { Bounce, ToastContainer, toast } from "react-toastify";
 
-import 'react-toastify/dist/ReactToastify.css';
 import Slider from "react-slick"
 import Link from "next/link";
 import Image from "next/image";
 
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css"; 
+import { useToast } from "@/hooks/useToast";
 
 export default function Home() {
     const router = useRouter();
     
     const { products } = useContext(ProductsContext);
-    // const { verifyIfUserIsLogged } = useContext(UsersContext);
-    const { handleAddProductToCart } = useCart();
-
-    const notifyCart = () => toast("Product sucessfull added to cart!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-    });
-    
-    // useEffect(() => {
-    //     verifyIfUserIsLogged();
-    // }, [verifyIfUserIsLogged])
+    const { handleAddProductToCart, hasError } = useCart();
 
     const productsBestSellers = products.filter(p => p.isBestSeller);
     const productsFeatureds = products.filter(p => p.isFeatured);
@@ -51,6 +33,8 @@ export default function Home() {
         centerMode: false,
         adaptiveHeight: true
     }
+
+    const { notifyFailure, notifySuccess, Toaster } = useToast();
 
     return (
         <div className="h-screen bg-gray-900">
@@ -104,13 +88,17 @@ export default function Home() {
                                         </div>
                                     
                                         {/* Product Informations */}
-                                        <div className="">
+                                        <div>
                                             <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                             <span className="text-purple-400 text-2xl block mb-4 font-bold">${product.price}</span>
                                             <button 
                                                 onClick={() => {
                                                     handleAddProductToCart(product.id)
-                                                    notifyCart();
+                                                    if (hasError){
+                                                        notifyFailure("An error ocurred. Your product was not added to cart.");
+                                                    }else{
+                                                        notifySuccess("Product successfuly added to cart!");
+                                                    }                      
                                                 }}
                                                 className="px-4 py-2 bg-purple-500 text-gray-900 font-semibold
                                                 rounded w-full hover:cursor-pointer hover:bg-purple-400 transition duration-300"
@@ -202,6 +190,14 @@ export default function Home() {
                                     <span className="text-purple-400 text-2xl font-bold mb-4 block">${product.price}</span>
 
                                     <button 
+                                        onClick={() => {
+                                            // handleAddProductToCart(product.id)
+                                            if (hasError){
+                                                notifyFailure("An error ocurred. Your product was not added to cart.");
+                                            }else{
+                                                notifySuccess("Product successfuly added to cart!");
+                                            } 
+                                        }}
                                         className="w-full bg-purple-500 rounded py-3 text-gray-950
                                         font-semibold hover:cursor-pointer hover:bg-purple-400 transition 
                                         duration-300"
@@ -213,12 +209,10 @@ export default function Home() {
                         ))}
                     </div>
                 </section>
-
                 <Footer />
             </main>
-
-
-        <ToastContainer/>
+            
+            <Toaster />
         </div>
     )
 }

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
 import { useFilterLogic } from "@/hooks/useFilterLogic";
 import { useCart } from "@/hooks/useCart";
+import { useToast } from "@/hooks/useToast";
 
 import Image from "next/image";
 
@@ -18,6 +19,8 @@ export default function Products() {
 
     const searchParams = useSearchParams();
     const categoryFromHome = searchParams.get("category");
+    
+    const { handleAddProductToCart, hasError } = useCart();
 
     const {
         handleCategory,
@@ -47,8 +50,8 @@ export default function Products() {
         productsPerPage,
     } = useFilterLogic(categoryFromHome);
 
-    const { handleAddProductToCart } = useCart();
-       
+    const { notifyFailure, notifySuccess, Toaster } = useToast();
+    
     //Subcategories
     // [
     //     {
@@ -296,7 +299,14 @@ export default function Products() {
                                         <span className="text-purple-400 font-semibold text-xl">${product.price}</span>
 
                                         <button 
-                                            onClick={() => handleAddProductToCart(product.id)}
+                                            onClick={() => {
+                                                handleAddProductToCart(product.id)
+                                                if (hasError){
+                                                    notifyFailure("An error ocurred. Your product was not added to cart.");
+                                                }else{
+                                                    notifySuccess("Product successfuly added to cart!");
+                                                } 
+                                            }}
                                             className="bg-purple-500 px-3 py-2 text-gray-950 font-semibold
                                             rounded block mt-5 w-full hover:bg-purple-400 hover:cursor-pointer
                                             transition duration-300"
@@ -338,6 +348,8 @@ export default function Products() {
             </main>
 
             <Footer />
+
+            <Toaster />
         </div>
     )
 }

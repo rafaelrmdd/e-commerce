@@ -9,7 +9,7 @@ type ContextProviderProps = {
 }
 
 export type ProductProps = {
-    id: number
+    id: string
     name: string
     description: string
     price: string
@@ -22,7 +22,7 @@ export type ProductProps = {
 
 export type ReviewProps = {
     id: number
-    productId: number
+    productId: string
     userId: string
     stars: number
     title: string
@@ -30,15 +30,15 @@ export type ReviewProps = {
 }
 
 export type UserProps = {
-    id: number 
+    id: string 
     email: string
     password: string 
 }
 
 export type CartItemsProps = {
-    id: number
-    productId: number
-    userId : number
+    id: string
+    productId: string
+    userId : string
     quantity: number
 }
 
