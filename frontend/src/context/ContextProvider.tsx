@@ -121,8 +121,7 @@ export function ContextProvider({children} : ContextProviderProps) {
             }
         }
 
-        //Think a better name
-        const keepUserUpdated = async () => {
+        const initializeUser = async () => {
             const { 'reifferce.jwt': jwt } = parseCookies();
             const { 'reifferce.refreshToken': refreshToken } = parseCookies();
 
@@ -151,9 +150,8 @@ export function ContextProvider({children} : ContextProviderProps) {
             }
         }
 
-        //Executes one time at the first render
         fetchData();
-        keepUserUpdated();
+        initializeUser();
 
         const intervalId = setInterval(() => {
             fetchData();
