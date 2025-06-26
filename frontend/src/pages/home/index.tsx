@@ -5,6 +5,7 @@ import { ProductsContext } from "@/context/ContextProvider";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/router";
 import { useCart } from "@/hooks/useCart";
+import { useToast } from "@/hooks/useToast";
 
 import Slider from "react-slick"
 import Link from "next/link";
@@ -12,7 +13,6 @@ import Image from "next/image";
 
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css"; 
-import { useToast } from "@/hooks/useToast";
 
 export default function Home() {
     const router = useRouter();

@@ -115,9 +115,9 @@ export function ContextProvider({children} : ContextProviderProps) {
                 setProducts(productsResponse.data);
                 setReviews(reviewsResponse.data);
                 setCartItems(cartItemsResponse.data);
-            }catch(e)
+            }catch
             {
-                console.log('error fetching data: ', e);
+                console.log('Error fetching data');
             }
         }
 

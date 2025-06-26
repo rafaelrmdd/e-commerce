@@ -47,41 +47,54 @@ export function Header() {
                 </Link>
             </nav>
 
-            <div className="flex gap-6 items-center">
-                {isUserLogged ? 
-                    <div className="flex gap-x-2"> 
-                        <h2 className="text-gray-50">{user?.email}</h2>     
-                        <Link
-                            className="flex justify-center items-center rounded-full w-8 h-8
-                            hover:bg-gray-600 transition duration-200"
-                            href={"/cart"}
-                        >
-                            <FaCartShopping 
-                                className="hover:cursor-pointer"
-                                color="white" 
-                                size={24}
-                            />
-                        </Link>
-                        
-                        <Link
-                            className="flex justify-center items-center rounded-full w-8 h-8
-                            hover:bg-gray-600 transition duration-200"
-                            href={"/account"}
-                        >
+            {isUserLogged ? 
+                <div className="flex gap-x-3"> 
+                    <div className="flex justify-center items-center">
+                        <h2 className="text-purple-400 font-semibold">Hello, {user?.email}</h2>    
+                    </div> 
+                    <Link
+                        className="flex justify-center items-center rounded-full p-1
+                        hover:bg-gray-600 transition duration-200"
+                        href={"/cart"}
+                    >
+                        <FaCartShopping 
+                            className="hover:cursor-pointer"
+                            color="white" 
+                            size={24}
+                        />
+                    </Link>
+                    
+                    <Link
+                        className="flex justify-center items-center rounded-full p-1
+                        hover:bg-gray-600 transition duration-200"
+                        href={"/account"}
+                    >
                         <FaUserCircle 
                             className="hover:cursor-pointer"
                             color="white" 
                             size={24}
                         />
-                        </Link>
-                    </div>
-                    : 
-                    <>
-                        <span className="text-gray-50">teste</span>
-                    </>
-
-                }
-            </div>
+                    </Link>
+                </div>
+                : 
+                <div className="flex gap-x-3"> 
+                    <Link
+                        className="flex items-center rounded hover:bg-gray-600 transition duration-200
+                        p-1"
+                        href={"/register"}
+                        
+                    >
+                        <span className="text-gray-50">Sign Up</span>
+                    </Link>
+                    <Link
+                        className="flex items-center rounded hover:bg-gray-600 transition duration-200
+                        p-1"
+                        href={"/login"}
+                    >
+                        <span className="text-gray-50">Log In</span>
+                    </Link>
+                </div>
+            }
         </header>
     )
 }

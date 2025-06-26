@@ -29,7 +29,11 @@ api.interceptors.response.use(response => {
     const originalRequest = error.config;
     const cookies = parseCookies();
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 401 && 
+        //Prevent unecessary loops;
+        !originalRequest._retry &&  
+        !originalRequest.url?.includes('/session') &&
+        !originalRequest.url?.includes('/user/refresh')) {
 
         originalRequest._retry = true;
         try{
@@ -55,7 +59,7 @@ api.interceptors.response.use(response => {
 
             return api(originalRequest);
         }catch(error){
-            console.log('Refresh token failed: ', error)
+            console.log('Refresh token failed')
 
             destroyCookie(undefined, 'reifferce.jwt');
             destroyCookie(undefined, 'reifferce.refreshToken');

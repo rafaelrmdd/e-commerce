@@ -240,7 +240,7 @@ export default function Offers() {
 
                                         <button 
                                             onClick={() => handleAddProductToCart(product.id)}
-                                            className="bg-purple-500 px-3 py-2 text-gray-950 font-semibold
+                                            className="bg-purple-500 px-3 py-2 text-gray-50 font-semibold
                                             rounded block mt-5 w-full hover:bg-purple-400 hover:cursor-pointer
                                             transition duration-300"
                                         >

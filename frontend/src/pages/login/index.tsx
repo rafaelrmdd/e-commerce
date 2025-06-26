@@ -1,10 +1,12 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { UsersContext } from "@/context/ContextProvider";
+import { useRouter } from "next/router";
 
 export default function Login() {
-    const { signIn } = useContext(UsersContext);
+    const { signIn, isUserLogged } = useContext(UsersContext);
+    const router = useRouter();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,12 +15,18 @@ export default function Login() {
         e.preventDefault();
 
         signIn({
-            id: 0,
+            id: 'null',
             email,
             password
         });
-
     }
+
+    useEffect(() => {
+        if(isUserLogged) {
+            router.push("/home")
+        }
+    }, [isUserLogged, router])
+
     return (
         <div className="h-full bg-gray-900">
             <Header />

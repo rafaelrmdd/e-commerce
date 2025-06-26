@@ -254,7 +254,7 @@ export default function Products() {
                                 onClick={(e) => handleCategory(e)}
                                 className="bg-purple-500 text-gray-50 hover:bg-purple-400
                                 px-3 py-2 mt-7 w-full rounded hover:cursor-pointer
-                                transition duration-300 "
+                                transition duration-300 font-semibold"
                             >
                                 Reset Filters
                             </button>
@@ -307,7 +307,7 @@ export default function Products() {
                                                     notifySuccess("Product successfuly added to cart!");
                                                 } 
                                             }}
-                                            className="bg-purple-500 px-3 py-2 text-gray-950 font-semibold
+                                            className="bg-purple-500 px-3 py-2 text-gray-300 font-semibold
                                             rounded block mt-5 w-full hover:bg-purple-400 hover:cursor-pointer
                                             transition duration-300"
                                         >
