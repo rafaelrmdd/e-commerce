@@ -57,11 +57,13 @@ type UsersContextProps = {
     user: UserProps | undefined
     isUserLogged: boolean
     verifyIfUserIsLogged: () => void
+    hasCredentialsError: boolean
 }
 
 type CartItemsContextProps = {
     cartItems: CartItemsProps[]
 }
+
 
 export const ProductsContext = createContext<ProductsContextProps>({
     products: []
@@ -77,7 +79,8 @@ export const UsersContext = createContext<UsersContextProps>({
     signOut: () => {},
     user: undefined,
     isUserLogged: false,
-    verifyIfUserIsLogged: () => {}
+    verifyIfUserIsLogged: () => {},
+    hasCredentialsError: false
 });
 
 export const CartItemsContext = createContext<CartItemsContextProps>({
@@ -93,6 +96,8 @@ export function ContextProvider({children} : ContextProviderProps) {
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
     const [cartItems, setCartItems] = useState<CartItemsProps[]>([]);
     const [user, setUser] = useState<UserProps | undefined>();
+
+    const [hasCredentialsError, setHasCredentialsError] = useState(false);
 
     const isUserLogged = !!user;
 
@@ -194,8 +199,9 @@ export function ContextProvider({children} : ContextProviderProps) {
                 router.push('/home');
             }
 
-        }catch(error){
-            console.log('error in signIn: ', error);
+        }catch{
+            console.log('Login or password is incorrect')
+            setHasCredentialsError(true);
         }
     }
 
@@ -215,7 +221,9 @@ export function ContextProvider({children} : ContextProviderProps) {
     }
 
     return (
-        <UsersContext.Provider value={{ users, signIn, signOut, user, isUserLogged, verifyIfUserIsLogged }}>
+        <UsersContext.Provider 
+            value={{ users, signIn, signOut, user, isUserLogged, verifyIfUserIsLogged, hasCredentialsError }
+        }>
             <ProductsContext.Provider value={{ products, }}>
                 <ReviewsContext.Provider value={{ reviews }}>
                     <CartItemsContext.Provider value={{ cartItems }}>

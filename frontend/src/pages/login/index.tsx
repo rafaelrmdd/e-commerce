@@ -3,9 +3,10 @@ import { Footer } from "@/components/Footer";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { UsersContext } from "@/context/ContextProvider";
 import { useRouter } from "next/router";
+import { Span } from "next/dist/trace";
 
 export default function Login() {
-    const { signIn, isUserLogged } = useContext(UsersContext);
+    const { signIn, isUserLogged, hasCredentialsError } = useContext(UsersContext);
     const router = useRouter();
 
     const [email, setEmail] = useState('');
@@ -19,6 +20,7 @@ export default function Login() {
             email,
             password
         });
+
     }
 
     useEffect(() => {
@@ -38,8 +40,8 @@ export default function Login() {
                 >
                     <h1 className="text-3xl text-gray-50 text-center font-bold">Log In</h1>
 
-                    <div className="mt-6 flex flex-col gap-y-6">
-                        <div className="flex flex-col">
+                    <div className="mt-6 flex flex-col">
+                        <div className="flex flex-col mb-6">
                             <label 
                                 htmlFor="email"
                                 className="mb-1 text-gray-50"
@@ -55,7 +57,7 @@ export default function Login() {
                             />
                         </div>
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col mb-6">
                             <label 
                                 htmlFor="password"
                                 className="mb-1 text-gray-50"
@@ -71,10 +73,14 @@ export default function Login() {
                             />
                         </div>
 
+                        {hasCredentialsError ? 
+                            <span className="text-red-400 mb-2">Email or password is incorrect.</span> : null
+                        }
+
                         <button 
                             type="submit"
                             className="text-gray-950 bg-purple-500 hover:bg-purple-400
-                            transition duration-300 rounded px-4 py-2 mt-6 font-semibold hover:cursor-pointer"
+                            transition duration-300 rounded px-4 py-2 font-semibold hover:cursor-pointer"
                         >
                             Log In
                         </button>
