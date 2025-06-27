@@ -108,9 +108,23 @@ export function ContextProvider({children} : ContextProviderProps) {
     //Verifies if cookies data exists and if not, signOut the user
     useEffect(() => {
         const fetchData = async () => {
+            const { 'reifferce.jwt': jwt } = parseCookies();
+
             try {
+                if(!jwt){
+                    setUser({
+                        id: '',
+                        email: '',
+                        password: ''
+                    });
+
+                    //For now just the user, but later add the rest (products, reviews, cartItems)
+
+                    return;
+                }
+
                 const [usersResponse, productsResponse, reviewsResponse, cartItemsResponse] = await Promise.all([
-                    api.get('users'),
+                    api.get('users'), 
                     api.get('products'),
                     api.get('reviews'),
                     api.get('carts')
@@ -123,25 +137,19 @@ export function ContextProvider({children} : ContextProviderProps) {
             }catch
             {
                 console.log('Error fetching data');
+                signOut();
             }
         }
 
         const initializeUser = async () => {
-            const { 'reifferce.jwt': jwt } = parseCookies();
             const { 'reifferce.refreshToken': refreshToken } = parseCookies();
 
-            if(!jwt || !refreshToken){
-                signOut();
-                return;
-            }
-
             try{
-                const response : AxiosResponse = await api.get(`/user/refreshToken/${refreshToken}`)
-
-                if (!response.data) {
-                    signOut();
+                if(!refreshToken){
                     return;
                 }
+
+                const response : AxiosResponse = await api.get(`/user/refreshToken/${refreshToken}`)
 
                 const { id, email, password } = response.data;
                 setUser({
@@ -150,8 +158,7 @@ export function ContextProvider({children} : ContextProviderProps) {
                     password
                 })
             }catch(e){
-                console.log('error keeping user updated: ', e)
-                signOut();
+                console.log('Error keeping user updated: ', e)
             }
         }
 
@@ -160,7 +167,6 @@ export function ContextProvider({children} : ContextProviderProps) {
 
         const intervalId = setInterval(() => {
             fetchData();
-            // keepUserUpdated();
         }, REFRESH_INTERVAL);
 
         return () => {
@@ -193,8 +199,6 @@ export function ContextProvider({children} : ContextProviderProps) {
                     maxAge: 60 * 60 * 24 * 30,
                     path: "/" 
                 })
-
-                // api.defaults.headers.common['Authorization'] = `Bearer ${jwt}` 
 
                 router.push('/home');
             }

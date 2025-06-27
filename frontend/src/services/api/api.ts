@@ -1,5 +1,7 @@
+import { UsersContext } from "@/context/ContextProvider";
 import axios, { AxiosInstance } from "axios";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { useContext } from "react";
 
 const refreshApi = axios.create({
     baseURL: "http://localhost:5241/api/reifferce/",
@@ -56,7 +58,7 @@ api.interceptors.response.use(response => {
             });
 
             api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`
-
+            
             return api(originalRequest);
         }catch(error){
             console.log('Refresh token failed')
