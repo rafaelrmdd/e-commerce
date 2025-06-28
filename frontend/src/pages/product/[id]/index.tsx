@@ -8,7 +8,6 @@ import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 
 export default function ProductPage() {
-
     const { handleAddProductToCart } = useCart();
     const { products } = useContext(ProductsContext);
     const { reviews } = useContext(ReviewsContext);
@@ -257,12 +256,13 @@ export default function ProductPage() {
                                 </div>
 
                                 <div className="flex items-center">
-                                    <button 
+                                    <Link 
+                                        href={`/product/${thisProduct?.id}/review`}
                                         className="px-5 py-3 font-bold text-gray-950 bg-purple-500
                                         rounded hover:bg-purple-400 hover:cursor-pointer transition duration-300"
                                     >
-                                        AVALIAR PRODUTO
-                                    </button>
+                                        RATE PRODUCT
+                                    </Link>
                                 </div>           
                             </div>
                             
@@ -308,10 +308,10 @@ export default function ProductPage() {
 
                                 <div className="py-6">
                                     <Link 
-                                        href={`/product/reviews/${productId}`}
+                                        href={`/product/${productId}/reviews`}
                                         className="hover:cursor-pointer text-purple-400 font-semibold"
                                     >
-                                        Ver todas as {totalReviews} avaliações
+                                        See all {totalReviews} reviews
                                     </Link>
                                 </div>
                             </div>

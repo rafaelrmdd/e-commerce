@@ -8,7 +8,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
     const [category, setCategory] = useState(categoryFromHome || "");
     const [searchKeyword, setSearchKeyword] = useState("");
     const [temporarySearchKeyword, setTemporarySearchKeyword] = useState("");
-    const [priceRange, setPriceRange] = useState("")
+    const [priceRange, setPriceRange] = useState(0)
     const [starsFilter, setStarsFilter] = useState(0);
 
     const productStars = new Map<string, number[]>();
@@ -113,7 +113,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         setCategory("");
         setSearchKeyword("");
         setTemporarySearchKeyword("");
-        setPriceRange("2500")
+        setPriceRange(2500)
     }
 
     const convertCategoryToNumber = (category : string) => {
@@ -155,7 +155,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         const categoryNumber = convertCategoryToNumber(category);
         const hasCategory = categoryNumber !== null;
         const hasKeyword = searchKeyword.trim() !== "";
-        const hasPriceRange = priceRange !== "";
+        const hasPriceRange = priceRange !== 0;
         const hasStarsFilter = starsFilter !== 0;
         const hasId = productIds.has(product.id)
         const thisProductStarsAverage = productAverages.get(product.id);

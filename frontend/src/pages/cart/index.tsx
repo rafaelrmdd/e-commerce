@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { CartItemsContext, ProductProps, ProductsContext, UsersContext } from "@/context/ContextProvider";
 import { api } from "@/services/api/api";
 import { Footer } from "@/components/Footer";
-import { usDolarFormat } from "@/utils/formatters";
+import { usDolarFormatter } from "@/utils/formatters";
 
 import Image from "next/image";
 

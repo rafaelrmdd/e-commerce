@@ -27,6 +27,7 @@ export type ReviewProps = {
     stars: number
     title: string
     comment: string
+    timestamp: string
 }
 
 export type UserProps = {
