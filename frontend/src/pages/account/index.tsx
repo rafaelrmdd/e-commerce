@@ -4,6 +4,8 @@ import { FormEvent, useContext, useEffect, useState } from "react";
 import { HiLogout } from "react-icons/hi";
 
 export default function Account(){
+    const { user, signOut } = useContext(UsersContext);
+
 
     const [section, setSection] = useState("Account Data");
     const [isAccountDataButtonActive, setIsAccountDataButtonActive] = useState(true);

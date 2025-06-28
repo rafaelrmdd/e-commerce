@@ -1,14 +1,15 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
-import Link from "next/link";
+import { usDolarFormatter } from "@/utils/formatters";
 import { useCart } from "@/hooks/useCart";
+
+import Link from "next/link";
 
 export default function ProductPage() {
 
     const { handleAddProductToCart } = useCart();
-    const { verifyIfUserIsLogged } = useContext(UsersContext);
     const { products } = useContext(ProductsContext);
     const { reviews } = useContext(ReviewsContext);
     const { users } = useContext(UsersContext); 
@@ -16,13 +17,11 @@ export default function ProductPage() {
     const router = useRouter();
     const productId = router.query.id as string;
 
-    useEffect(() => {
-        verifyIfUserIsLogged();
-    }, [verifyIfUserIsLogged])
-
     const thisProduct = products.find((p) => p.id === productId);
     const relatedProducts = products.filter((p) => p.subCategoryId === thisProduct?.subCategoryId).slice(0, 3);
     const totalReviews = reviews.filter((r) => r.productId === productId).length;
+
+    const priceFormatted = usDolarFormatter(thisProduct?.price);
 
     const generateStars = (quantity : number) => {
         const stars = [];
@@ -31,7 +30,6 @@ export default function ProductPage() {
             stars.push("★")
         }
 
-        console.log('thisProduct: ', thisProduct);
         return stars;
     } 
 
@@ -48,12 +46,6 @@ export default function ProductPage() {
 
         return user.email;
     }
-
-    // const dateFormat = Intl.DateTimeFormat('pt-BR', {
-    //     year: 'numeric',
-    //     month: '2-digit',
-    //     day: '2-digit'
-    // });
 
     return (
         <div className="bg-gray-900 h-full">
@@ -87,7 +79,7 @@ export default function ProductPage() {
                     <div className="w-[48%] min-h-[380px]">
                         <h1 className="text-gray-50 text-3xl font-bold mb-2">{thisProduct?.name}</h1>
                         <span className="text-gray-300 block mb-2">4.7 (153 avalições)</span>
-                        <span className="text-purple-400 text-3xl font-bold">${thisProduct?.price}</span>
+                        <span className="text-purple-400 text-3xl font-bold">{priceFormatted}</span>
 
                         {/* Color choose */}
                         <div className="mt-6">

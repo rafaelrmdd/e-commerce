@@ -12,7 +12,7 @@ export type ProductProps = {
     id: string
     name: string
     description: string
-    price: string
+    price: number
     imageURL: string
     isBestSeller: boolean
     isFeatured: boolean
@@ -112,11 +112,7 @@ export function ContextProvider({children} : ContextProviderProps) {
 
             try {
                 if(!jwt){
-                    setUser({
-                        id: '',
-                        email: '',
-                        password: ''
-                    });
+                    setUser(undefined);
 
                     //For now just the user, but later add the rest (products, reviews, cartItems)
 

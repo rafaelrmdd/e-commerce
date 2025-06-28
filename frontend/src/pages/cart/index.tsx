@@ -4,21 +4,18 @@ import { useContext, useEffect, useState } from "react";
 import { CartItemsContext, ProductProps, ProductsContext, UsersContext } from "@/context/ContextProvider";
 import { api } from "@/services/api/api";
 import { Footer } from "@/components/Footer";
+import { usDolarFormat } from "@/utils/formatters";
 
 import Image from "next/image";
 
 export default function Cart() {
 
-    const { verifyIfUserIsLogged, user } = useContext(UsersContext);
+    const { user } = useContext(UsersContext);
     const { cartItems } = useContext(CartItemsContext);
     const { products } = useContext(ProductsContext);
     
     const [productsToShow, setProductsToShow] = useState<ProductProps[]>([]);
 
-    useEffect(() => {
-        verifyIfUserIsLogged();
-    }, [verifyIfUserIsLogged])
-    
     useEffect(() => {
         const userCartItems = cartItems.filter(item => item.userId === user?.id);
         
@@ -29,7 +26,7 @@ export default function Cart() {
         setProductsToShow(productsInCart);
     }, [cartItems, products, user?.id]);
 
-    const findCartProductId = (productId : number) => {
+    const findCartProductId = (productId: string) => {
         const userCartItems = cartItems.filter(item => item.userId === user?.id);
 
         const product = userCartItems.find((product) => product.productId === productId)
@@ -37,18 +34,13 @@ export default function Cart() {
         return product?.id;
     }
 
-    const handleDeleteProductFromCart = async (productId : number | undefined) => {
+    const handleDeleteProductFromCart = async (productId : string | undefined) => {
         try {
             await api.delete(`/cart/${productId}`)
         }catch(error){
             console.log('delete error: ', error)
         }
     }
-
-    const usDolarFormat = Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD"
-    }) 
 
     const subtotal = productsToShow.reduce((sum, product) => sum + Number(product.price), 0);
     const shipping = 0;

@@ -17,6 +17,8 @@ public class Product
     [JsonIgnore]
     public virtual Category? Category { get; set; }
     public int SubCategoryId { get; set; }
+
+    [JsonIgnore]
     public virtual IEnumerable<CartItem>? CartItems { get; set; }
 
     [JsonIgnore]

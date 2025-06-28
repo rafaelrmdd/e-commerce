@@ -1,23 +1,18 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
-import { UsersContext } from "@/context/ContextProvider"
-import { useContext, useEffect } from "react"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
 import { useFilterLogic } from "@/hooks/useFilterLogic";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/useToast";
+import { useRouter } from "next/router";
+import { usDolarFormatter } from "@/utils/formatters";
 
 import Image from "next/image";
 
 export default function Products() {
-    const { verifyIfUserIsLogged } = useContext(UsersContext);
-
-    useEffect(() => {
-        verifyIfUserIsLogged();
-    }, [verifyIfUserIsLogged])
-
-    const searchParams = useSearchParams();
+    const searchParams = useSearchParams(); 
+    const router = useRouter();
     const categoryFromHome = searchParams.get("category");
     
     const { handleAddProductToCart, hasError } = useCart();
@@ -271,8 +266,11 @@ export default function Products() {
                                     key={product.id}
                                     className="rounded bg-gray-800 w-[23.79%] h-[374px]">
                                     {/* Image */}
-                                    <div className="relative w-full h-1/2 rounded-t">
-                                        {product.imageURL ? <Image
+                                    <div 
+                                        onClick={() => router.push(`/product/${product.id}`)}
+                                        className="relative w-full h-1/2 rounded-t hover:cursor-pointer"
+                                    >
+                                        {product.imageURL.startsWith("https", 0) ? <Image
                                             className="rounded"
                                             src={product.imageURL}
                                             alt="Product's Image"

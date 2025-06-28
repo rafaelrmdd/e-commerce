@@ -5,7 +5,6 @@ import { FaUserCircle } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 
 export function Header() {
-
     const { user, isUserLogged } = useContext(UsersContext);
     
     return (
