@@ -1,16 +1,40 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { UsersContext } from "@/context/ContextProvider";
+import { api } from "@/services/api/api";
 import { useRouter } from "next/router";
-import { FormEvent } from "react";
+import { FormEvent, useContext, useState } from "react";
 
 export default function Review() {
     const router = useRouter();
     const productId = router.query.id as string;
 
-    const handleSubmit = (e : FormEvent) => {
+    const { user } = useContext(UsersContext);
+
+    const [title, setTitle] = useState("");
+    const [comment, setComment] = useState("");
+    const [stars, setStars] = useState(0);
+
+    const isEnabled = title.length >= 6 && comment.length >= 12
+    
+    const onSubmit = async (e : FormEvent) => {
         e.preventDefault();
 
-        console.log(e);
+        if (isEnabled){
+            try{
+                const response = await api.post('/review', {
+                    'userId': user?.id,
+                    'productId': productId,
+                    'stars': stars,
+                    'title': title,
+                    'comment': comment
+                })
+
+                console.log('Review response: ', response);
+            }catch(e){
+                console.log('Review error', e);
+            }
+        }
     }
 
     return (
@@ -35,15 +59,40 @@ export default function Review() {
 
                 <form 
                     className="p-6 rounded bg-gray-800"
-                    onSubmit={handleSubmit}
+                    onSubmit={onSubmit}
                 >
                     <div className="mb-4">
                         <h2 className="text-gray-50 font-semibold text-xl">Your review</h2>
-                        <span className="text-yellow-400 text-2xl">☆</span>
-                        <span className="text-yellow-400 text-2xl">☆</span>
-                        <span className="text-yellow-400 text-2xl">☆</span>
-                        <span className="text-yellow-400 text-2xl">☆</span>
-                        <span className="text-yellow-400 text-2xl">☆</span>
+                        <span 
+                            onClick={() => setStars(1)}
+                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                        >
+                            ☆
+                        </span>
+                        <span 
+                            onClick={() => setStars(2)}
+                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                        >
+                            ☆
+                        </span>
+                                                <span 
+                            onClick={() => setStars(3)}
+                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                        >
+                            ☆
+                        </span>
+                                                <span 
+                            onClick={() => setStars(4)}
+                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                        >
+                            ☆
+                        </span>
+                                                <span 
+                            onClick={() => setStars(5)}
+                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                        >
+                            ☆
+                        </span>
 
                         <h2 className="text-gray-400 text-[0.9rem]">Review by clicking on the stars</h2>
                     </div>
@@ -56,28 +105,35 @@ export default function Review() {
                             Title *
                         </label>
                         <input 
-                            className="rounded bg-gray-700 px-4 py-3 w-full placeholder:text-gray-400"
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="rounded bg-gray-700 px-4 py-3 w-full placeholder:text-gray-400
+                            outline-0 text-gray-50 mb-1"
                             type="text" 
                             name="title"
                             placeholder="Sum up your experience using the product"
+                            required
                         />
+                        <span className="text-gray-400 text-[0.9rem]">0/100 characters</span>
                     </div>
 
                     <div className="mb-12">
                         <label 
                             className="text-gray-50 font-semibold text-xl block mb-1"
-                            htmlFor="description"
+                            htmlFor="comment"
                         >
-                            Detailed description
+                            Comment
                         </label>
                         <textarea 
-                            className="rounded bg-gray-700 px-4 py-3 w-full placeholder:text-gray-400"
-                            name="description"
+                            onChange={(e) => setComment(e.target.value)}
+                            className="rounded bg-gray-700 px-4 py-3 w-full placeholder:text-gray-400
+                            outline-0 text-gray-50"
+                            name="comment"
                             placeholder="Tell your experiences with the products etc..."
                             rows={6}
+                            required
                         >
-
                         </textarea>
+                        <span className="text-gray-400 text-[0.9rem]">0/100 characters</span>
                     </div>
 
                     <div className="flex justify-between gap-x-4">
@@ -88,9 +144,12 @@ export default function Review() {
                             Cancel
                         </button>
                         <button
-                            className="rounded px-4 py-3 bg-purple-800 w-full text-gray-950 font-semibold
-                            hover:cursor-not-allowed"
-                            disabled 
+                            className={`rounded px-4 py-3 w-full text-gray-950 font-semibold transition duration-200
+                            ${isEnabled ? 
+                                ("bg-purple-600 hover:cursor-pointer") :
+                                ("bg-purple-800 hover:cursor-not-allowed")}`
+                            }
+                            disabled={!isEnabled}
                             type="submit"
                         >
                             Send review
@@ -101,20 +160,20 @@ export default function Review() {
 
                     <div>
                         <h2 className="text-gray-50 font-semibold mb-2">Evaluation Guidelines</h2>
-                        <ol className="text-gray-400 text-[0.9rem]">
+                        <ul className="text-gray-400 text-[0.9rem]">
                             <li>
-                                Be honest and constructive in your evaluation   
+                                • Be honest and constructive in your evaluation   
                             </li>
                             <li>
-                                Focus on the product&apos;s quality, functionality, and user experience  
+                                • Focus on the product&apos;s quality, functionality, and user experience  
                             </li>
                             <li>
-                                Avoid offensive or inappropriate language 
+                                • Avoid offensive or inappropriate language 
                             </li>
                             <li>
-                                Your reviews help other customers make better choices  
+                                • Your reviews help other customers make better choices  
                             </li>
-                        </ol>
+                        </ul>
                     </div>
                 </form>
             </div>
