@@ -69,25 +69,29 @@ export default function Review() {
                         >
                             ☆
                         </span>
+
                         <span 
                             onClick={() => setStars(2)}
                             className="text-yellow-400 text-2xl hover:cursor-pointer" 
                         >
                             ☆
                         </span>
-                                                <span 
+
+                        <span 
                             onClick={() => setStars(3)}
                             className="text-yellow-400 text-2xl hover:cursor-pointer" 
                         >
                             ☆
                         </span>
-                                                <span 
+
+                         <span 
                             onClick={() => setStars(4)}
                             className="text-yellow-400 text-2xl hover:cursor-pointer" 
                         >
                             ☆
                         </span>
-                                                <span 
+                        
+                        <span 
                             onClick={() => setStars(5)}
                             className="text-yellow-400 text-2xl hover:cursor-pointer" 
                         >
