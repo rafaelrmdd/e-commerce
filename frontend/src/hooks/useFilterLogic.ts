@@ -8,7 +8,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
     const [category, setCategory] = useState(categoryFromHome || "");
     const [searchKeyword, setSearchKeyword] = useState("");
     const [temporarySearchKeyword, setTemporarySearchKeyword] = useState("");
-    const [priceRange, setPriceRange] = useState(0)
+    const [priceRange, setPriceRange] = useState("")
     const [starsFilter, setStarsFilter] = useState(0);
 
     const productStars = new Map<string, number[]>();
@@ -113,7 +113,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         setCategory("");
         setSearchKeyword("");
         setTemporarySearchKeyword("");
-        setPriceRange(2500)
+        setPriceRange("2500")
     }
 
     const convertCategoryToNumber = (category : string) => {
@@ -155,7 +155,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         const categoryNumber = convertCategoryToNumber(category);
         const hasCategory = categoryNumber !== null;
         const hasKeyword = searchKeyword.trim() !== "";
-        const hasPriceRange = priceRange !== 0;
+        const hasPriceRange = priceRange !== "";
         const hasStarsFilter = starsFilter !== 0;
         const hasId = productIds.has(product.id)
         const thisProductStarsAverage = productAverages.get(product.id);
@@ -163,7 +163,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
         if(hasCategory && hasKeyword && hasPriceRange) {
             return product.categoryId === categoryNumber && 
                     product.name.toLowerCase().includes(searchKeyword.toLowerCase()) && 
-                    product.price <= priceRange;
+                    product.price <= Number(priceRange);
         }
         else if(hasCategory && hasKeyword) {
             return product.categoryId === categoryNumber &&
@@ -176,7 +176,7 @@ export const useFilterLogic = (categoryFromHome : string | null) => {
             return product.name.toLowerCase().includes(searchKeyword.toLowerCase());
         }
         else if(hasPriceRange) {
-            return product.price <= priceRange;
+            return product.price <= Number(priceRange);
         }
         else if(hasStarsFilter){
             if(thisProductStarsAverage){

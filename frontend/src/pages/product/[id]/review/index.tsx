@@ -3,7 +3,8 @@ import { Header } from "@/components/Header";
 import { UsersContext } from "@/context/ContextProvider";
 import { api } from "@/services/api/api";
 import { useRouter } from "next/router";
-import { FormEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
+import { FaRegStar, FaStar } from "react-icons/fa";
 
 export default function Review() {
     const router = useRouter();
@@ -17,9 +18,7 @@ export default function Review() {
 
     const isEnabled = title.length >= 6 && comment.length >= 12
     
-    const onSubmit = async (e : FormEvent) => {
-        e.preventDefault();
-
+    const onSubmit = async () => {
         if (isEnabled){
             try{
                 const response = await api.post('/review', {
@@ -31,6 +30,7 @@ export default function Review() {
                 })
 
                 console.log('Review response: ', response);
+                router.push(`/product/${productId}`)
             }catch(e){
                 console.log('Review error', e);
             }
@@ -63,40 +63,43 @@ export default function Review() {
                 >
                     <div className="mb-4">
                         <h2 className="text-gray-50 font-semibold text-xl">Your review</h2>
-                        <span 
-                            onClick={() => setStars(1)}
-                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
-                        >
-                            ☆
-                        </span>
+                        <div className="flex mt-2 mb-1">
+                            <span 
+                                onClick={() => setStars(1)}
+                                className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                            >
+                                {stars >= 1 ? <FaStar /> : <FaRegStar />}
+                            </span>
 
-                        <span 
-                            onClick={() => setStars(2)}
-                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
-                        >
-                            ☆
-                        </span>
+                            <span 
+                                onClick={() => setStars(2)}
+                                className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                            >
+                                {stars >= 2 ? <FaStar /> : <FaRegStar />}
+                            </span>
 
-                        <span 
-                            onClick={() => setStars(3)}
-                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
-                        >
-                            ☆
-                        </span>
+                            <span 
+                                onClick={() => setStars(3)}
+                                className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                            >
+                                {stars >= 3 ? <FaStar /> : <FaRegStar />}
+                            </span>
 
-                         <span 
-                            onClick={() => setStars(4)}
-                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
-                        >
-                            ☆
-                        </span>
+                            <span 
+                                onClick={() => setStars(4)}
+                                className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                            >
+                                {stars >= 4 ? <FaStar /> : <FaRegStar />}
+                            </span>
+                            
+                            <span 
+                                onClick={() => setStars(5)}
+                                className="text-yellow-400 text-2xl hover:cursor-pointer" 
+                            >
+                                {stars >= 5 ? <FaStar /> : <FaRegStar />}
+                            </span>
+                        </div>
                         
-                        <span 
-                            onClick={() => setStars(5)}
-                            className="text-yellow-400 text-2xl hover:cursor-pointer" 
-                        >
-                            ☆
-                        </span>
 
                         <h2 className="text-gray-400 text-[0.9rem]">Review by clicking on the stars</h2>
                     </div>
@@ -116,8 +119,9 @@ export default function Review() {
                             name="title"
                             placeholder="Sum up your experience using the product"
                             required
+                            maxLength={30}
                         />
-                        <span className="text-gray-400 text-[0.9rem]">0/100 characters</span>
+                        <span className="text-gray-400 text-[0.9rem]">{title.length}/30 characters</span>
                     </div>
 
                     <div className="mb-12">
@@ -135,9 +139,10 @@ export default function Review() {
                             placeholder="Tell your experiences with the products etc..."
                             rows={6}
                             required
+                            maxLength={500}
                         >
                         </textarea>
-                        <span className="text-gray-400 text-[0.9rem]">0/100 characters</span>
+                        <span className="text-gray-400 text-[0.9rem]">{comment.length}/500 characters</span>
                     </div>
 
                     <div className="flex justify-between gap-x-4">
@@ -156,7 +161,7 @@ export default function Review() {
                             disabled={!isEnabled}
                             type="submit"
                         >
-                            Send review
+                            Send Review
                         </button>
                     </div>
 
