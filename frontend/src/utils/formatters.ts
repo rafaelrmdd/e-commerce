@@ -12,3 +12,15 @@ export const usDolarFormatter = (value : number | undefined) => {
 
     return formattedValue;
 }; 
+
+export const utcDateFormatter = (date: Date) => {
+    if (date === undefined){
+        return 0;
+    }
+
+    const utcFormat = Intl.DateTimeFormat("en-US");
+
+    const formattedDate = utcFormat.format(date);
+
+    return formattedDate;
+}

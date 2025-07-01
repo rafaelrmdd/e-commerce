@@ -2,8 +2,9 @@ import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
 import { useContext } from "react";
 import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
-import { usDolarFormatter } from "@/utils/formatters";
+import { usDolarFormatter, utcDateFormatter } from "@/utils/formatters";
 import { useCart } from "@/hooks/useCart";
+import Image from "next/image";
 
 import Link from "next/link";
 
@@ -16,9 +17,11 @@ export default function ProductPage() {
     const router = useRouter();
     const productId = router.query.id as string;
 
-    const thisProduct = products.find((p) => p.id === productId);
-    const relatedProducts = products.filter((p) => p.subCategoryId === thisProduct?.subCategoryId).slice(0, 3);
-    const totalReviews = reviews.filter((r) => r.productId === productId).length;
+    const thisProduct = products.find((product) => product.id === productId);
+    const relatedProducts = products.filter((product) => product.subCategoryId === thisProduct?.subCategoryId)
+                                    .slice(0, 3);
+    const totalReviews = reviews.filter((review) => review.productId === productId).length;
+    const thisProductReviews = reviews.filter((review) => review.productId === productId);
 
     const priceFormatted = usDolarFormatter(thisProduct?.price);
 
@@ -223,17 +226,21 @@ export default function ProductPage() {
                                 <Link 
                                     href={`/product/${product.id}`}
                                     key={product.id}
-                                    className="p-2 bg-gray-800 flex rounded hover:cursor-pointer"
+                                    className="p-3 bg-gray-800 flex rounded hover:cursor-pointer"
                                 >
                                     {/* Image */}
-                                    <div className="w-[40%] mr-2">
-
+                                    <div className="w-[40%] mr-2 relative rounded">
+                                        <Image
+                                            src={product.imageURL}
+                                            fill
+                                            alt="Related product's image"
+                                        />
                                     </div>
 
                                     {/* Informations */}
                                     <div>
                                         <h3 className="text-gray-50 text-xl font-semibold">{product.name}</h3>
-                                        <span className="text-purple-500 text-xl font-bold">{product.price}</span>
+                                        <span className="text-purple-500 text-xl font-bold">{usDolarFormatter(product.price)}</span>
                                     </div>
                                 </Link>
                             ))}
@@ -268,19 +275,7 @@ export default function ProductPage() {
                             
                             {/* Feedbacks */}
                             <div>
-                                {/* <div className="border-b border-b-gray-700 py-6">
-                                    <div className="flex justify-between">
-                                        <span className="text-yellow-400">★★★★★</span>
-                                        <span className="text-gray-500 text-[0.9rem] font-semibold">14/03/2025</span>
-                                    </div>
-
-                                    <div>
-                                        <h2 className="text-gray-50 font-bold">Excelente Smartphone!</h2>
-                                        <h3 className="text-gray-300">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, debitis ea. Quisquam consectetur iusto eveniet.</h3>
-                                        <span className="text-gray-500 text-[0.9rem]">Rafael R. - Cliente</span>
-                                    </div>
-                                </div> */}
-                                {reviews.map((review) => (
+                                {thisProductReviews.map((review) => (
                                     <div 
                                         key={review.id}
                                         className="border-b border-b-gray-700 py-6"
@@ -288,32 +283,27 @@ export default function ProductPage() {
                                         <div className="flex justify-between">
                                             <span className="text-yellow-400">{generateStars(review.stars)}</span>
                                             <span className="text-gray-500 text-[0.9rem] font-semibold">
-
-                                                {/* ----------------------------- */}
-                                                {/* Fix timestamp later */}
-                                                {/* ----------------------------- */}
-
-                                                {/* {dateFormat.format(new Date(review.timestamp))} */}
+                                                {utcDateFormatter(new Date(review.timestamp))}
                                                 
                                             </span>
                                         </div>
 
                                         <div>
+                                            <span className="text-gray-500 text-[0.9rem] block mb-2">{searchUser(review)}</span>
                                             <h2 className="text-gray-50 font-bold">{review.title}</h2>
                                             <h3 className="text-gray-300">{review.comment}</h3>
-                                            <span className="text-gray-500 text-[0.9rem]">{searchUser(review)}</span>
                                         </div>
                                     </div>
                                 )).slice(0, 2)}
 
-                                <div className="py-6">
+                                {<div className="py-6">
                                     <Link 
                                         href={`/product/${productId}/reviews`}
                                         className="hover:cursor-pointer text-purple-400 font-semibold"
                                     >
-                                        See all {totalReviews} reviews
+                                        {thisProductReviews.length > 2 ? `See all ${totalReviews} reviews` : null}
                                     </Link>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                     </div>

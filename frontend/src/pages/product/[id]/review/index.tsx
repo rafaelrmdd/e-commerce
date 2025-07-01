@@ -21,7 +21,7 @@ export default function Review() {
     const onSubmit = async () => {
         if (isEnabled){
             try{
-                const response = await api.post('/review', {
+                await api.post('/review', {
                     'userId': user?.id,
                     'productId': productId,
                     'stars': stars,
@@ -29,7 +29,6 @@ export default function Review() {
                     'comment': comment
                 })
 
-                console.log('Review response: ', response);
                 router.push(`/product/${productId}`)
             }catch(e){
                 console.log('Review error', e);
