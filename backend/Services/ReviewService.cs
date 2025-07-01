@@ -66,9 +66,9 @@ public class ReviewService : IReviewService
 
     public async Task<Review> AddReviewService(ReviewDTO reviewDTO)
     {
-        if (string.IsNullOrEmpty(reviewDTO.Comment))
+        if (string.IsNullOrEmpty(reviewDTO.Comment) || string.IsNullOrEmpty(reviewDTO.Title) || reviewDTO.Stars == 0)
         {
-            throw new ValidationException("Review's name can't be null or empty");
+            throw new ValidationException("All review's fields must have an value");
         }
 
         Review newReview = new Review(
