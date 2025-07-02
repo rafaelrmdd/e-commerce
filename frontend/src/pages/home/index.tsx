@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { useRouter } from "next/router";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/useToast";
+import { usDolarFormatter } from "@/utils/formatters";
 
 import Slider from "react-slick"
 import Link from "next/link";
@@ -63,6 +64,13 @@ export default function Home() {
                         <hr className="text-gray-600 w-52"/>
                     </div>
 
+                    <Image
+                        src={'/assets/image/sao_paulo_shirt.png'}
+                        width={54}
+                        height={54}
+                        alt="Image"
+                    />
+
                     {/* Carousel */}
                     <div className="bg-gray-800 p-6 rounded mt-16">
                         <Slider {...settings}>
@@ -90,7 +98,7 @@ export default function Home() {
                                         {/* Product Informations */}
                                         <div>
                                             <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
-                                            <span className="text-purple-400 text-2xl block mb-4 font-bold">${product.price}</span>
+                                            <span className="text-purple-400 text-2xl block mb-4 font-bold">{usDolarFormatter(product.price)}</span>
                                             <button 
                                                 onClick={() => {
                                                     handleAddProductToCart(product.id)
@@ -187,11 +195,11 @@ export default function Home() {
                                 <div className="mt-2">
                                     <h2 className="text-gray-50 text-xl font-semibold mb-2">{product.name}</h2>
                                     <h3 className="text-gray-400 mb-2">{product.description}</h3>
-                                    <span className="text-purple-400 text-2xl font-bold mb-4 block">${product.price}</span>
+                                    <span className="text-purple-400 text-2xl font-bold mb-4 block">{usDolarFormatter(product.price)}</span>
 
                                     <button 
                                         onClick={() => {
-                                            // handleAddProductToCart(product.id)
+                                            handleAddProductToCart(product.id)
                                             if (hasError){
                                                 notifyFailure("An error ocurred. Your product was not added to cart.");
                                             }else{

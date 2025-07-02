@@ -1,12 +1,15 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
 import { usDolarFormatter, utcDateFormatter } from "@/utils/formatters";
 import { useCart } from "@/hooks/useCart";
 import Image from "next/image";
 
 import Link from "next/link";
+import { destroyCookie, parseCookies } from "nookies";
+import { useToast } from "@/hooks/useToast";
+import { Toaster } from "react-hot-toast";
 
 export default function ProductPage() {
     const { handleAddProductToCart } = useCart();
@@ -24,6 +27,32 @@ export default function ProductPage() {
     const thisProductReviews = reviews.filter((review) => review.productId === productId);
 
     const priceFormatted = usDolarFormatter(thisProduct?.price);
+    
+    const { notifyFailure, notifySuccess } = useToast();
+
+    
+    //Toast notification persists between different pages
+    useEffect(() => {
+        const { 'pendingToast': pendingToast } = parseCookies();
+
+        if (pendingToast){
+            const toast = JSON.parse(pendingToast);
+            console.log(toast);
+
+            if (toast.type === 'success'){
+                notifySuccess(toast.message);
+
+                destroyCookie(undefined, 'pendingToast');
+            }
+
+            if (toast.type === 'failure'){
+                notifyFailure(toast.message);
+
+                destroyCookie(undefined, 'pendingToast');
+            }
+        }
+
+    })
 
     const generateStars = (quantity : number) => {
         const stars = [];
@@ -80,7 +109,11 @@ export default function ProductPage() {
 
                     <div className="w-[48%] min-h-[380px]">
                         <h1 className="text-gray-50 text-3xl font-bold mb-2">{thisProduct?.name}</h1>
-                        <span className="text-gray-300 block mb-2">4.7 (153 avalições)</span>
+                        <span 
+                            className="text-gray-300 block mb-2"
+                        >
+                            4.7 ({totalReviews} {totalReviews > 1 ? 'avaliações' : 'avaliação'})
+                        </span>
                         <span className="text-purple-400 text-3xl font-bold">{priceFormatted}</span>
 
                         {/* Color choose */}
@@ -147,7 +180,7 @@ export default function ProductPage() {
                             </div>
                         </div>
 
-                        <div className="mb-6">
+                        {/* <div className="mb-6">
                             <h2 className="text-2xl font-bold text-gray-50 mb-3">Features</h2>
                             <div className="bg-gray-800 rounded p-5">
                                 <ul className="flex flex-col gap-y-2">
@@ -173,9 +206,9 @@ export default function ProductPage() {
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> */}
 
-                        <div className="mb-20">
+                        {/* <div className="mb-20">
                             <h2 className="text-2xl font-bold text-gray-50 mb-3">Specifications</h2>
                             <div className="bg-gray-800 rounded p-5">
                                 <table className="text-gray-400 w-full">
@@ -215,7 +248,7 @@ export default function ProductPage() {
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     
                     <div className="w-[25%]">
@@ -385,6 +418,8 @@ export default function ProductPage() {
                     </nav>
                 </footer>
             </main>
+
+            <Toaster />
         </div>
     )
 }

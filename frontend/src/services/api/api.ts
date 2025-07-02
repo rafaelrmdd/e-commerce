@@ -1,7 +1,5 @@
-import { UsersContext } from "@/context/ContextProvider";
 import axios, { AxiosInstance } from "axios";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
-import { useContext } from "react";
 
 const refreshApi = axios.create({
     baseURL: "http://localhost:5241/api/reifferce/",
@@ -48,12 +46,12 @@ api.interceptors.response.use(response => {
             const { jwt, newRefreshToken } = response.data;
 
             setCookie(undefined, 'reifferce.jwt', jwt, {
-                maxAge: 60 * 60 * 24 * 30,
+                maxAge: 60 * 60 * 6,
                 path: "/"
             });
         
             setCookie(undefined, 'reifferce.refreshToken', newRefreshToken, {
-                maxAge: 60 * 60 * 24 * 30, 
+                maxAge: 60 * 60 * 6, 
                 path: "/"
             });
 

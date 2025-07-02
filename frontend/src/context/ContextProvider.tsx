@@ -188,12 +188,12 @@ export function ContextProvider({children} : ContextProviderProps) {
                 })
 
                 setCookie(undefined, 'reifferce.jwt', jwt, {
-                    maxAge: 60 * 60 * 24 * 30,
+                    maxAge: 60 * 60 * 6,
                     path: "/" 
                 })
 
                 setCookie(undefined, 'reifferce.refreshToken', refreshToken, {
-                    maxAge: 60 * 60 * 24 * 30,
+                    maxAge: 60 * 60 * 6,
                     path: "/" 
                 })
 

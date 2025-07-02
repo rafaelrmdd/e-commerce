@@ -1,24 +1,33 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { UsersContext } from "@/context/ContextProvider";
+import { ProductsContext, UsersContext } from "@/context/ContextProvider";
 import { api } from "@/services/api/api";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
+import Image from "next/image";
+import { usDolarFormatter } from "@/utils/formatters";
+import { Toaster } from "react-hot-toast";
+import { setCookie } from "nookies";
 
 export default function Review() {
     const router = useRouter();
     const productId = router.query.id as string;
 
     const { user } = useContext(UsersContext);
+    const { products } = useContext(ProductsContext);
 
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
     const [stars, setStars] = useState(0);
 
-    const isEnabled = title.length >= 6 && comment.length >= 12
+    const thisProduct = products.find((product) => product.id === productId);
+
+    const isEnabled = title.length >= 6 && comment.length >= 12 && stars != 0;
     
-    const onSubmit = async () => {
+    const onSubmit = async (e : FormEvent) => {
+        e.preventDefault();
+
         if (isEnabled){
             try{
                 await api.post('/review', {
@@ -29,8 +38,18 @@ export default function Review() {
                     'comment': comment
                 })
 
+                setCookie(undefined, 'pendingToast', JSON.stringify({message: 'Review was successfully submitted', type: 'success'}), {
+                    maxAge: 1,
+                    path: "/" 
+                })
+
                 router.push(`/product/${productId}`)
             }catch(e){
+                setCookie(undefined, 'pendingToast', JSON.stringify({message: 'An error ocurred. Review was not submitted', type: 'failure'}), {
+                    maxAge: 1,
+                    path: "/" 
+                })
+
                 console.log('Review error', e);
             }
         }
@@ -47,12 +66,16 @@ export default function Review() {
                 </div>
 
                 <section className="bg-gray-800 rounded p-6 flex mb-8">
-                    <div className="w-24 h-24 bg-gray-300 rounded">
-                        {/* Image */}
+                    <div className="w-24 h-24 bg-gray-300 rounded relative">
+                        <Image
+                            src={thisProduct ? thisProduct.imageURL : ''}
+                            alt="Product's image" 
+                            fill
+                        />
                     </div>
                     <div className="ml-6 flex flex-col justify-center">
-                        <h2 className="text-gray-50 font-semibold text-xl mb-2">Wireless Headphones</h2>
-                        <span className="text-purple-400 font-semibold text-xl" >$99.90</span>
+                        <h2 className="text-gray-50 font-semibold text-xl mb-2">{thisProduct?.name}</h2>
+                        <span className="text-purple-400 font-semibold text-xl" >{usDolarFormatter(thisProduct?.price)}</span>
                     </div>
                 </section>
 
@@ -152,6 +175,7 @@ export default function Review() {
                             Cancel
                         </button>
                         <button
+                            
                             className={`rounded px-4 py-3 w-full text-gray-950 font-semibold transition duration-200
                             ${isEnabled ? 
                                 ("bg-purple-600 hover:cursor-pointer") :
@@ -185,6 +209,8 @@ export default function Review() {
                     </div>
                 </form>
             </div>
+
+            <Toaster />
 
             <Footer />
         </div>
