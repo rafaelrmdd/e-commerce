@@ -51,7 +51,7 @@ type ReviewsContextProps = {
 }
 
 type UsersContextProps = {
-    users : UserProps[]
+    // users : UserProps[]
     signIn: ({email, password} : {email: string, password: string}) => void
     signOut: () => void
     user: UserProps | undefined
@@ -74,7 +74,7 @@ export const ReviewsContext = createContext<ReviewsContextProps>({
 });
 
 export const UsersContext = createContext<UsersContextProps>({
-    users: [],
+    // users: [],
     signIn: () => {},
     signOut: () => {},
     user: undefined,
@@ -91,7 +91,7 @@ export function ContextProvider({children} : ContextProviderProps) {
 
     const router = useRouter();
 
-    const [users, setUsers] = useState<UserProps[]>([]);
+    // const [users, setUsers] = useState<UserProps[]>([]);
     const [products, setProducts] = useState<ProductProps[]>([]);
     const [reviews, setReviews] = useState<ReviewProps[]>([]);
     const [cartItems, setCartItems] = useState<CartItemsProps[]>([]);
@@ -119,14 +119,14 @@ export function ContextProvider({children} : ContextProviderProps) {
                     return;
                 }
 
-                const [usersResponse, productsResponse, reviewsResponse, cartItemsResponse] = await Promise.all([
-                    api.get('users'), 
+                const [productsResponse, reviewsResponse, cartItemsResponse] = await Promise.all([
+                    //Maybe add api.get('users'); later
                     api.get('products'),
                     api.get('reviews'),
                     api.get('carts')
                 ])
 
-                setUsers(usersResponse.data);
+                // setUsers(usersResponse.data);
                 setProducts(productsResponse.data);
                 setReviews(reviewsResponse.data);
                 setCartItems(cartItemsResponse.data);
@@ -218,7 +218,7 @@ export function ContextProvider({children} : ContextProviderProps) {
 
     return (
         <UsersContext.Provider 
-            value={{ users, signIn, signOut, user, isUserLogged, verifyIfUserIsLogged, hasCredentialsError }
+            value={{ signIn, signOut, user, isUserLogged, verifyIfUserIsLogged, hasCredentialsError }
         }>
             <ProductsContext.Provider value={{ products, }}>
                 <ReviewsContext.Provider value={{ reviews }}>

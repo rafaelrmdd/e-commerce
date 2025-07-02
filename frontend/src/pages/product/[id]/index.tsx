@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { Header } from "@/components/Header";
 import { useContext, useEffect } from "react";
-import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
+import { ProductsContext, ReviewsContext, UsersContext } from "@/context/ContextProvider";
 import { usDolarFormatter, utcDateFormatter } from "@/utils/formatters";
 import { useCart } from "@/hooks/useCart";
 import Image from "next/image";
@@ -15,7 +15,7 @@ export default function ProductPage() {
     const { handleAddProductToCart } = useCart();
     const { products } = useContext(ProductsContext);
     const { reviews } = useContext(ReviewsContext);
-    const { users } = useContext(UsersContext); 
+    const { user } = useContext(UsersContext); 
 
     const router = useRouter();
     const productId = router.query.id as string;
@@ -64,19 +64,19 @@ export default function ProductPage() {
         return stars;
     } 
 
-    const searchUser = (review : ReviewProps) => {
-        if (!users || !Array.isArray(users)) {
-            return "Loading...";
-        }
+    // const searchUser = (review : ReviewProps) => {
+    //     if (!users || !Array.isArray(users)) {
+    //         return "Loading...";
+    //     }
 
-        const user : UserProps | undefined = users?.find((user) => user.id === review.userId);
+    //     const user : UserProps | undefined = users?.find((user) => user.id === review.userId);
 
-        if(user == undefined){
-            return "User not found";
-        }
+    //     if(user == undefined){
+    //         return "User not found";
+    //     }
 
-        return user.email;
-    }
+    //     return user.email;
+    // }
 
     return (
         <div className="bg-gray-900 h-full">
@@ -342,7 +342,7 @@ export default function ProductPage() {
                                         </div>
 
                                         <div>
-                                            <span className="text-gray-500 text-[0.9rem] block mb-2">{searchUser(review)}</span>
+                                            <span className="text-gray-500 text-[0.9rem] block mb-2">{user?.email}</span>
                                             <h2 className="text-gray-50 font-bold">{review.title}</h2>
                                             <h3 className="text-gray-300">{review.comment}</h3>
                                         </div>
