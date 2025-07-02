@@ -6,7 +6,6 @@ import { useFilterLogic } from "@/hooks/useFilterLogic";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "next/router";
-import { usDolarFormatter } from "@/utils/formatters";
 
 import Image from "next/image";
 
@@ -270,7 +269,7 @@ export default function Products() {
                                         onClick={() => router.push(`/product/${product.id}`)}
                                         className="relative w-full h-1/2 rounded-t hover:cursor-pointer"
                                     >
-                                        {product.imageURL.startsWith("https", 0) ? <Image
+                                        {product.imageURL.startsWith("/assets/images/", 0) ? <Image
                                             className="rounded"
                                             src={product.imageURL}
                                             alt="Product's Image"

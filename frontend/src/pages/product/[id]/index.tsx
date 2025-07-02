@@ -86,23 +86,43 @@ export default function ProductPage() {
                 <section className="flex justify-between px-8">
                     <div className="w-[47%] min-h-[380px]">
                         {/* Main Image */}
-                        <div className="w-full h-[380px] bg-gray-800 rounded p-2">
-
+                        <div className="w-full h-[380px] bg-gray-800 rounded p-2 relative">
+                            <Image
+                                src={thisProduct ? thisProduct?.imageURL : ''}
+                                fill
+                                alt="Product's image"
+                            />
                         </div>
 
                         {/* Other Images Selection */}
                         <div className="mt-4 flex gap-x-3">
-                            <div className="w-36 h-28 rounded bg-gray-800">
-
+                            <div className="w-36 h-28 rounded bg-gray-800 relative">
+                                <Image
+                                    src={thisProduct ? thisProduct?.imageURL : ''}
+                                    fill
+                                    alt="Product's image"
+                                />
                             </div>
-                            <div className="w-36 h-28 rounded bg-gray-800">
-
+                            <div className="w-36 h-28 rounded bg-gray-800 relative">
+                                <Image
+                                    src={thisProduct ? thisProduct?.imageURL : ''}
+                                    fill
+                                    alt="Product's image"
+                                />
                             </div >
-                            <div className="w-36 h-28 rounded bg-gray-800">
-
+                            <div className="w-36 h-28 rounded bg-gray-800 relative">
+                                <Image
+                                    src={thisProduct ? thisProduct?.imageURL : ''}
+                                    fill
+                                    alt="Product's image"
+                                />
                             </div>
-                            <div className="w-36 h-28 rounded bg-gray-800">
-
+                            <div className="w-36 h-28 rounded bg-gray-800 relative">
+                                <Image
+                                    src={thisProduct ? thisProduct?.imageURL : ''}
+                                    fill
+                                    alt="Product's image"
+                                />
                             </div>
                         </div>
                     </div>

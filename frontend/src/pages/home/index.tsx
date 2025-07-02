@@ -64,13 +64,6 @@ export default function Home() {
                         <hr className="text-gray-600 w-52"/>
                     </div>
 
-                    <Image
-                        src={'/assets/image/sao_paulo_shirt.png'}
-                        width={54}
-                        height={54}
-                        alt="Image"
-                    />
-
                     {/* Carousel */}
                     <div className="bg-gray-800 p-6 rounded mt-16">
                         <Slider {...settings}>
