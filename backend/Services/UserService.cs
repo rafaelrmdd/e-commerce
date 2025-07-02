@@ -3,16 +3,17 @@ using backend.DTOs;
 using backend.Models;
 using backend.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BCrypt.Net;
 
 namespace backend.Services;
 
 public class UserService : IUserService
 {
+    private const int WORK_FACTOR = 12;
     private readonly ReifferceContext _context;
     private readonly IConfiguration _configuration;
 
@@ -77,23 +78,29 @@ public class UserService : IUserService
             throw new ValidationException("User's email can't be null or empty");
         }
 
+        if (string.IsNullOrEmpty(userDTO.Password))
+        {
+            throw new ValidationException("User's password can't be null or empty");
+        }
+
         if (userDTO.Password != userDTO.ConfirmPassword)
         {
             throw new ValidationException("The passwords should be the same");
         }
 
-        var findUser = await _context.Users.FirstOrDefaultAsync(user => user.Email == userDTO.Email);
+        var user = await _context.Users.FirstOrDefaultAsync(user => user.Email == userDTO.Email);
 
-        if (findUser is not null)
+        if (user is not null)
         {
             throw new ValidationException("This email is already registered");
         }
 
         var refreshToken = GenerateRefreshToken();
+        string hashPassword = BCrypt.Net.BCrypt.HashPassword(userDTO.Password, WORK_FACTOR);
 
         User newUser = new User(
             userDTO.Email,
-            userDTO.Password,
+            hashPassword,
             refreshToken
         );
 
@@ -112,7 +119,7 @@ public class UserService : IUserService
             throw new ValidationException("Wrong email!");
         }
 
-        if (user.Password != userDTO.Password)
+        if (!BCrypt.Net.BCrypt.Verify(userDTO.Password, user.Password))
         {
             throw new ValidationException("Wrong password!");
         }
@@ -123,7 +130,6 @@ public class UserService : IUserService
         {
             user.Id,
             user.Email,
-            user.Password,
             user.RefreshToken,
             jwt
         };
@@ -148,10 +154,11 @@ public class UserService : IUserService
 
         await _context.SaveChangesAsync();
 
+        string hashPassword = BCrypt.Net.BCrypt.HashPassword(user.Password, WORK_FACTOR);
         UserDTO userDTO = new
         (
             user.Email,
-            user.Password
+            hashPassword
         );
 
         var jwt = GenerateJwtToken(userDTO);
@@ -177,8 +184,15 @@ public class UserService : IUserService
             throw new ValidationException("User's name can't be null or empty");
         }
 
+        if (string.IsNullOrEmpty(userDTO.Password))
+        {
+            throw new ValidationException("User's password can't be null or empty");
+        }
+
+        string hashPassword = BCrypt.Net.BCrypt.HashPassword(userDTO.Password, WORK_FACTOR);
+
         user.Email = userDTO.Email;
-        user.Password = userDTO.Password;
+        user.Password = hashPassword;
 
         await _context.SaveChangesAsync();
 

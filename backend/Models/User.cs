@@ -11,6 +11,7 @@ public class User
 
     [JsonIgnore]
     public virtual ICollection<Review>? Reviews { get; set; }
+    [JsonIgnore]
     public virtual IEnumerable<CartItem>? CartItems { get; set; }
 
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;

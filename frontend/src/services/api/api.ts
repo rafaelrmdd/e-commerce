@@ -46,12 +46,10 @@ api.interceptors.response.use(response => {
             const { jwt, newRefreshToken } = response.data;
 
             setCookie(undefined, 'reifferce.jwt', jwt, {
-                maxAge: 60 * 60 * 6,
                 path: "/"
             });
         
             setCookie(undefined, 'reifferce.refreshToken', newRefreshToken, {
-                maxAge: 60 * 60 * 6, 
                 path: "/"
             });
 

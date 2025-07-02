@@ -33,7 +33,6 @@ export type ReviewProps = {
 export type UserProps = {
     id: string 
     email: string
-    password: string 
 }
 
 export type CartItemsProps = {
@@ -53,7 +52,7 @@ type ReviewsContextProps = {
 
 type UsersContextProps = {
     users : UserProps[]
-    signIn: (user : UserProps) => void
+    signIn: ({email, password} : {email: string, password: string}) => void
     signOut: () => void
     user: UserProps | undefined
     isUserLogged: boolean
@@ -146,13 +145,12 @@ export function ContextProvider({children} : ContextProviderProps) {
                     return;
                 }
 
-                const response : AxiosResponse = await api.get(`/user/refreshToken/${refreshToken}`)
+                const response : AxiosResponse = await api.get(`/user/me/${refreshToken}`)
 
-                const { id, email, password } = response.data;
+                const { id, email } = response.data;
                 setUser({
                     id,
-                    email,
-                    password
+                    email
                 })
             }catch(e){
                 console.log('Error keeping user updated: ', e)
@@ -171,7 +169,7 @@ export function ContextProvider({children} : ContextProviderProps) {
         }
     }, [])
 
-    const signIn = async ({email, password} : UserProps) => {
+    const signIn = async ({email, password} : {email: string, password: string}) => {
         try{
             const response : AxiosResponse = await api.post('/user/session', {
                 email,
@@ -183,17 +181,14 @@ export function ContextProvider({children} : ContextProviderProps) {
 
                 setUser({
                     id,
-                    email,
-                    password
+                    email
                 })
 
                 setCookie(undefined, 'reifferce.jwt', jwt, {
-                    maxAge: 60 * 60 * 6,
                     path: "/" 
                 })
 
                 setCookie(undefined, 'reifferce.refreshToken', refreshToken, {
-                    maxAge: 60 * 60 * 6,
                     path: "/" 
                 })
 

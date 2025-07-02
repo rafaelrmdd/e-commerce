@@ -17,7 +17,6 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("users")]
-    [Authorize]
     public async Task<IActionResult> GetUsers()
     {
         try
@@ -47,7 +46,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("user/email/{email}", Name = "GetUserByEmail")]
+    [HttpGet("user/email/{email}")]
     [Authorize]
     public async Task<IActionResult> GetUserByEmail(string email)
     {
@@ -62,7 +61,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("user/refreshToken/{refreshToken}", Name = "GetUserByRefreshToken")]
+    [HttpGet("user/me/{refreshToken}", Name = "GetUserByRefreshToken")]
     [Authorize]
     public async Task<IActionResult> GetUserByRefreshToken(string refreshToken)
     {
@@ -120,7 +119,6 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("user/{id}")]
-    [Authorize]
     public async Task<IActionResult> UpdateUser(UserDTO userDTO, Guid id)
     {
         try
