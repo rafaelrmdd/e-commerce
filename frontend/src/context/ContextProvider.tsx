@@ -154,6 +154,7 @@ export function ContextProvider({children} : ContextProviderProps) {
                 })
             }catch(e){
                 console.log('Error keeping user updated: ', e)
+                signOut();
             }
         }
 

@@ -1,7 +1,7 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { UsersContext } from "@/context/ContextProvider";
-import { useFilterLogic } from "@/hooks/useFilterLogic";
+import { useFilterLogic } from "@/hooks/useProductsFilter";
 import { useContext, useEffect } from "react";
 import { SlMagnifier } from "react-icons/sl";
 import Image from "next/image";

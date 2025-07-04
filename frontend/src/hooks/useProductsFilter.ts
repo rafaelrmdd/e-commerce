@@ -1,7 +1,7 @@
 import { ProductsContext, ReviewsContext } from "@/context/ContextProvider";
 import { useContext, useEffect, useState } from "react";
 
-export const useFilterLogic = (categoryFromHome : string | null) => {
+export const useFilterLogic = (categoryFromHome : string | null | undefined) => {
     const { products } = useContext(ProductsContext);
     const { reviews } = useContext(ReviewsContext);
 

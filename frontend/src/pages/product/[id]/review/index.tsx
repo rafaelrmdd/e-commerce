@@ -175,7 +175,6 @@ export default function Review() {
                             Cancel
                         </button>
                         <button
-                            
                             className={`rounded px-4 py-3 w-full text-gray-950 font-semibold transition duration-200
                             ${isEnabled ? 
                                 ("bg-purple-600 hover:cursor-pointer") :

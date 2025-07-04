@@ -2,7 +2,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
-import { useFilterLogic } from "@/hooks/useFilterLogic";
+import { useFilterLogic } from "@/hooks/useProductsFilter";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "next/router";

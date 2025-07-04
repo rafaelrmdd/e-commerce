@@ -1,8 +1,9 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { ProductsContext, ReviewProps, ReviewsContext, UserProps, UsersContext } from "@/context/ContextProvider";
+import { ProductsContext, ReviewsContext, UsersContext } from "@/context/ContextProvider";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 export default function ProductReviewsPage() {
     const router = useRouter();
@@ -10,16 +11,21 @@ export default function ProductReviewsPage() {
 
     const { products } = useContext(ProductsContext);
     const { reviews } = useContext(ReviewsContext);
-    const { users } = useContext(UsersContext); 
+    const { user } = useContext(UsersContext); 
 
+    const [starsFilter, setStarsFilter] = useState(0);
     const [filter, setFilter] = useState("Newest");
 
     const thisProduct = products.find((p) => String(p.id) === productId);
-    const thisProductReviews = reviews.filter((r) => r.productId === productId);   
+    const thisProductReviews = reviews.filter((review) => review.productId === productId);  
+     
+    const starsFilteredThisProductReviews = thisProductReviews.filter((review) => {
+        if(starsFilter && starsFilter != 0){
+            return review.stars === starsFilter;
+        }
 
-    const starsTotal = thisProductReviews.reduce((a, review) => a + review.stars, 0);
-    const totalReviews = thisProductReviews.length;
-    const starsAverage = starsTotal / totalReviews;
+        return thisProductReviews;
+    })
 
     const generateStars = (quantity : number | undefined) => {
         const stars = [];
@@ -35,14 +41,57 @@ export default function ProductReviewsPage() {
         return stars;
     } 
 
-    const searchUser = (review : ReviewProps) => {
-        const user : UserProps | undefined = users.find((user) => String(user.id) === review.userId);
+    const [isFiveStarsActive, setIsFiveStarsActive] = useState(false);
+    const [isFourOrMoreStarsActive, setIsFourOrMoreStarsActive] = useState(false);
+    const [isThreeOrMoreStarsActive, setIsThreeOrMoreStarsActive] = useState(false);
+    const [isTwoOrMoreStarsActive, setIsTwoOrMoreStarsActive] = useState(false);
+    const [isOneOrMoreStarsActive, setIsOneOrMoreStarsActive] = useState(false);
+    
+    useEffect(() => {
+        setIsFiveStarsActive(starsFilter === 5)
+        setIsFourOrMoreStarsActive(starsFilter === 4)
+        setIsThreeOrMoreStarsActive(starsFilter === 3)
+        setIsTwoOrMoreStarsActive(starsFilter === 2)
+        setIsOneOrMoreStarsActive(starsFilter === 1)
+    }, [starsFilter]);
 
-        if(user == undefined){
-            return "User not found";
+    const handleStarsFilter = (quantity : number) => {
+        switch(quantity){
+            case 5:
+                setIsFiveStarsActive(!isFiveStarsActive);
+                break;
+            case 4:
+                setIsFourOrMoreStarsActive(!isFourOrMoreStarsActive);
+                break;
+            case 3:
+                setIsThreeOrMoreStarsActive(!isThreeOrMoreStarsActive);
+                break;
+            case 2:
+                setIsTwoOrMoreStarsActive(!isTwoOrMoreStarsActive);
+                break;
+            case 1:
+                setIsOneOrMoreStarsActive(!isOneOrMoreStarsActive);
+                break;
+        }
+    }
+
+    const filterReviews = () => {
+        if(filter) {
+            switch(filter){
+                case "Newest":
+                    return [...starsFilteredThisProductReviews].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+                case "Oldest":
+                    return [...starsFilteredThisProductReviews].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+                case "Lowest Rating":
+                    return [...starsFilteredThisProductReviews].sort((a, b) => a.stars - b.stars);
+                case "Highest Rating":
+                    return [...starsFilteredThisProductReviews].sort((a, b) => b.stars - a.stars);
+                default:
+                    return starsFilteredThisProductReviews;
+            }
         }
 
-        return user.email;
+        return thisProductReviews;
     }
 
     const dateFormat = Intl.DateTimeFormat('pt-BR', {
@@ -50,22 +99,11 @@ export default function ProductReviewsPage() {
         month: '2-digit',
         day: '2-digit'
     });
+    
+    const starsTotal = thisProductReviews.reduce((a, review) => a + review.stars, 0);
+    const totalReviews = thisProductReviews.length;
+    const starsAverage = starsTotal / totalReviews;
 
-    const filterReviews = () => {
-        switch(filter){
-            case "Newest":
-                return [...thisProductReviews].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-            case "Oldest":
-                return [...thisProductReviews].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-            case "Lowest Rating":
-                return [...thisProductReviews].sort((a, b) => a.stars - b.stars);
-            case "Highest Rating":
-                return [...thisProductReviews].sort((a, b) => b.stars - a.stars);
-            default:
-                return thisProductReviews;
-        }
-    }
- 
     return (
         <div className="h-full bg-gray-900">
             <Header />
@@ -84,23 +122,58 @@ export default function ProductReviewsPage() {
                     </div>
 
                     <div className="flex gap-x-4 text-gray-50">
-                        <div className="rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 transition duration-200">
+                        <div
+                            onClick={() => {
+                                setStarsFilter(5)
+                                handleStarsFilter(5)
+                            }} 
+                            className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
+                            transition duration-200 ${isFiveStarsActive ? 'bg-purple-600' : null}`}
+                        >
                             <span className="mr-1">5</span>
                             <span>★</span>
                         </div>
-                        <div className="rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 transition duration-200">
+                        <div
+                            onClick={() => {
+                                setStarsFilter(4)
+                                handleStarsFilter(4)
+                            }} 
+                            className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
+                            transition duration-200 ${isFourOrMoreStarsActive ? 'bg-purple-600' : null}`}
+                        >
                             <span className="mr-1">4</span>
                             <span>★</span>
                         </div>
-                        <div className="rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 transition duration-200">
+                        <div
+                            onClick={() => {
+                                setStarsFilter(3)
+                                handleStarsFilter(3)
+                            }}
+                            className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
+                            transition duration-200 ${isThreeOrMoreStarsActive ? 'bg-purple-600' : null}`}
+                        >
                             <span className="mr-1">3</span>
                             <span>★</span>
                         </div>
-                        <div className="rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 transition duration-200">
+                        <div
+                            onClick={() => {
+                                setStarsFilter(2)
+                                handleStarsFilter(2)
+                            }} 
+                            className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
+                            transition duration-200 ${isTwoOrMoreStarsActive ? 'bg-purple-600' : null}`}
+                        >
                             <span className="mr-1">2</span>
                             <span>★</span>
                         </div>
-                        <div className="rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 transition duration-200">
+                        <div
+                            onClick={() => {
+                                setStarsFilter(1)
+                                handleStarsFilter(1)
+                            }} 
+                            className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
+                            transition duration-200 ${isOneOrMoreStarsActive ? 'bg-purple-600' : null}`}
+                        >
                             <span className="mr-1">1</span>
                             <span>★</span>
                         </div>
@@ -127,12 +200,13 @@ export default function ProductReviewsPage() {
                                     <option>Lowest Rating</option>
                                 </select>
 
-                                <button 
+                                <Link 
+                                    href={`/product/${productId}/review`}
                                     className="px-4 py-2 text-gray-950 bg-purple-500 rounded
                                     hover:bg-purple-400 transition duration-200 font-semibold hover:cursor-pointer"
                                 >
                                     WRITE A REVIEW
-                                </button>
+                                </Link>
                             </div>
                         </div>
 
@@ -151,7 +225,7 @@ export default function ProductReviewsPage() {
                                     <div>
                                         <h2 className="text-gray-50 font-bold">{review.title}</h2>
                                         <h3 className="text-gray-300">{review.comment}</h3>
-                                        <span className="text-gray-500 text-[0.9rem]">{searchUser(review)}</span>
+                                        <span className="text-gray-500 text-[0.9rem]">{user?.email}</span>
                                     </div>
                                 </div>
                             ))}
