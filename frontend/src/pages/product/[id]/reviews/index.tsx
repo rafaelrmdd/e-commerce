@@ -1,31 +1,35 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { ProductsContext, ReviewsContext, UsersContext } from "@/context/ContextProvider";
-import Link from "next/link";
+import { ProductsContext, UsersContext } from "@/context/ContextProvider";
+import { useReviewsFilter } from "@/hooks/useReviewsFilter";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
+
+import Link from "next/link";
 
 export default function ProductReviewsPage() {
     const router = useRouter();
     const productId = router.query.id;
 
     const { products } = useContext(ProductsContext);
-    const { reviews } = useContext(ReviewsContext);
-    const { user } = useContext(UsersContext); 
-
-    const [starsFilter, setStarsFilter] = useState(0);
-    const [filter, setFilter] = useState("Newest");
+    const { user } = useContext(UsersContext); // esse
 
     const thisProduct = products.find((p) => String(p.id) === productId);
-    const thisProductReviews = reviews.filter((review) => review.productId === productId);  
-     
-    const starsFilteredThisProductReviews = thisProductReviews.filter((review) => {
-        if(starsFilter && starsFilter != 0){
-            return review.stars === starsFilter;
-        }
 
-        return thisProductReviews;
-    })
+    const { 
+        filter,
+        thisProductReviews,
+        isFiveStarsActive,
+        isFourStarsActive,
+        isThreeStarsActive,
+        isTwoStarsActive,
+        isOneStarActive,
+        handleStarsFilter, 
+        setStarsFilter, 
+        setFilter, 
+        filterReviews,
+        handleResetFilter,
+    } = useReviewsFilter();
 
     const generateStars = (quantity : number | undefined) => {
         const stars = [];
@@ -41,65 +45,12 @@ export default function ProductReviewsPage() {
         return stars;
     } 
 
-    const [isFiveStarsActive, setIsFiveStarsActive] = useState(false);
-    const [isFourOrMoreStarsActive, setIsFourOrMoreStarsActive] = useState(false);
-    const [isThreeOrMoreStarsActive, setIsThreeOrMoreStarsActive] = useState(false);
-    const [isTwoOrMoreStarsActive, setIsTwoOrMoreStarsActive] = useState(false);
-    const [isOneOrMoreStarsActive, setIsOneOrMoreStarsActive] = useState(false);
-    
-    useEffect(() => {
-        setIsFiveStarsActive(starsFilter === 5)
-        setIsFourOrMoreStarsActive(starsFilter === 4)
-        setIsThreeOrMoreStarsActive(starsFilter === 3)
-        setIsTwoOrMoreStarsActive(starsFilter === 2)
-        setIsOneOrMoreStarsActive(starsFilter === 1)
-    }, [starsFilter]);
-
-    const handleStarsFilter = (quantity : number) => {
-        switch(quantity){
-            case 5:
-                setIsFiveStarsActive(!isFiveStarsActive);
-                break;
-            case 4:
-                setIsFourOrMoreStarsActive(!isFourOrMoreStarsActive);
-                break;
-            case 3:
-                setIsThreeOrMoreStarsActive(!isThreeOrMoreStarsActive);
-                break;
-            case 2:
-                setIsTwoOrMoreStarsActive(!isTwoOrMoreStarsActive);
-                break;
-            case 1:
-                setIsOneOrMoreStarsActive(!isOneOrMoreStarsActive);
-                break;
-        }
-    }
-
-    const filterReviews = () => {
-        if(filter) {
-            switch(filter){
-                case "Newest":
-                    return [...starsFilteredThisProductReviews].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-                case "Oldest":
-                    return [...starsFilteredThisProductReviews].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-                case "Lowest Rating":
-                    return [...starsFilteredThisProductReviews].sort((a, b) => a.stars - b.stars);
-                case "Highest Rating":
-                    return [...starsFilteredThisProductReviews].sort((a, b) => b.stars - a.stars);
-                default:
-                    return starsFilteredThisProductReviews;
-            }
-        }
-
-        return thisProductReviews;
-    }
-
     const dateFormat = Intl.DateTimeFormat('pt-BR', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
     });
-    
+
     const starsTotal = thisProductReviews.reduce((a, review) => a + review.stars, 0);
     const totalReviews = thisProductReviews.length;
     const starsAverage = starsTotal / totalReviews;
@@ -139,7 +90,7 @@ export default function ProductReviewsPage() {
                                 handleStarsFilter(4)
                             }} 
                             className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
-                            transition duration-200 ${isFourOrMoreStarsActive ? 'bg-purple-600' : null}`}
+                            transition duration-200 ${isFourStarsActive ? 'bg-purple-600' : null}`}
                         >
                             <span className="mr-1">4</span>
                             <span>★</span>
@@ -150,7 +101,7 @@ export default function ProductReviewsPage() {
                                 handleStarsFilter(3)
                             }}
                             className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
-                            transition duration-200 ${isThreeOrMoreStarsActive ? 'bg-purple-600' : null}`}
+                            transition duration-200 ${isThreeStarsActive ? 'bg-purple-600' : null}`}
                         >
                             <span className="mr-1">3</span>
                             <span>★</span>
@@ -161,7 +112,7 @@ export default function ProductReviewsPage() {
                                 handleStarsFilter(2)
                             }} 
                             className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
-                            transition duration-200 ${isTwoOrMoreStarsActive ? 'bg-purple-600' : null}`}
+                            transition duration-200 ${isTwoStarsActive ? 'bg-purple-600' : null}`}
                         >
                             <span className="mr-1">2</span>
                             <span>★</span>
@@ -172,7 +123,7 @@ export default function ProductReviewsPage() {
                                 handleStarsFilter(1)
                             }} 
                             className={`rounded bg-gray-700 px-4 py-2 hover:bg-purple-400 
-                            transition duration-200 ${isOneOrMoreStarsActive ? 'bg-purple-600' : null}`}
+                            transition duration-200 ${isOneStarActive ? 'bg-purple-600' : null}`}
                         >
                             <span className="mr-1">1</span>
                             <span>★</span>
@@ -183,21 +134,34 @@ export default function ProductReviewsPage() {
                 <div className="mt-10">
                     <div className="">
                         <div className="flex justify-between">
-                            <h2 className="text-xl text-gray-50 font-bold">All Reviews ({totalReviews})</h2>
+                            <div className="flex items-center">
+                                <h2 className="text-xl text-gray-50 font-bold mr-4">All Reviews ({totalReviews})</h2>
+                                <button 
+                                    onClick={() => handleResetFilter()}
+                                    className="px-3 py-2 bg-purple-500 rounded hover:bg-purple-400 hover:cursor-pointer"
+                                >
+                                    Reset Filters
+                                </button>
+                            </div>
+                            
 
                             <div className="flex gap-x-3 items-center">
                                 <h3 className="text-gray-300">Sort by: </h3>
 
                                 <select 
-                                    onChange={(e) => setFilter(e.target.value)}
+                                    onChange={(e) =>{
+                                        setFilter(e.target.value);
+                                        console.log(e);
+                                    }}
                                     name="filter"
                                     className="outline-0 bg-gray-800 rounded px-4 py-2
                                     border border-gray-600 text-gray-50"
+                                    value={filter}
                                 >
-                                    <option>Newest</option>
-                                    <option>Oldest</option>
-                                    <option>Highest Rating</option>
-                                    <option>Lowest Rating</option>
+                                    <option value={'Newest'}>Newest</option>
+                                    <option value={'Oldest'}>Oldest</option>
+                                    <option value={'Highest Rating'}>Highest Rating</option>
+                                    <option value={'Lowest Rating'}>Lowest Rating</option>
                                 </select>
 
                                 <Link 
