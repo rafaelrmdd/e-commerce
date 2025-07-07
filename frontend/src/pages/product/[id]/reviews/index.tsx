@@ -1,12 +1,12 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ProductsContext, UsersContext } from "@/context/ContextProvider";
-import { useReviewsFilter } from "@/hooks/useReviewsFilter";
+import { useReviewsFilter } from "@/hooks/filters/useReviewsFilter";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
 import Link from "next/link";
-import { useReviewsPagination } from "@/hooks/useReviewsPagination";
+import { useReviewsPagination } from "@/hooks/pagination/useReviewsPagination";
 
 export default function ProductReviewsPage() {
     const router = useRouter();

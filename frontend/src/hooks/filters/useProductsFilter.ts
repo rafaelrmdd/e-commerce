@@ -1,7 +1,7 @@
 import { ProductsContext, ReviewsContext } from "@/context/ContextProvider";
 import { useContext, useEffect, useState } from "react";
 
-export const useFilterLogic = (categoryFromHome : string | null | undefined) => {
+export const useProductsFilter = (categoryFromHome : string | null | undefined) => {
     const { products } = useContext(ProductsContext);
     const { reviews } = useContext(ReviewsContext);
 
@@ -189,7 +189,7 @@ export const useFilterLogic = (categoryFromHome : string | null | undefined) => 
         }
         
         return true;
-    }).slice(initialValue, productsPerPage)
+    })
 
     const getProductAverageStars = (id : string) => {
         const productReviews = getProductReview(id);

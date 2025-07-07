@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useReviewsFilter } from "./useReviewsFilter";
+import { useReviewsFilter } from "../filters/useReviewsFilter";
 
 export const useReviewsPagination = () => {
     const { filterReviews } = useReviewsFilter();
@@ -8,9 +8,10 @@ export const useReviewsPagination = () => {
     const [initialValue, setInitialValue] = useState(0)
     const [currentPage, setCurrentPage] = useState(1);
 
-    const totalPages = Math.ceil(filterReviews().length / 4);
+    const reviewsPerPage = 4;
+    const totalPages = Math.ceil(filterReviews().length / reviewsPerPage);
 
-    const canGoNextPage = initialValue < totalPages;
+    const canGoNextPage = currentPage < totalPages;
 
     return {
         splitLimit,

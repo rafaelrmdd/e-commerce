@@ -2,10 +2,11 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
-import { useFilterLogic } from "@/hooks/useProductsFilter";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/useToast";
 import { useRouter } from "next/router";
+import { useProductsPagination } from "@/hooks/pagination/useProductsPagination";
+import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
 
 import Image from "next/image";
 
@@ -24,8 +25,6 @@ export default function Products() {
         setStarsFilter,
         setTemporarySearchKeyword,
         setPriceRange,
-        setProductsPerPage,
-        setInitialValue,
         getProductAverageStars,
         getProductReview,
         generateStars,
@@ -40,9 +39,18 @@ export default function Products() {
         isOneOrMoreStarsActive,       
         priceRange,
         filteredProducts,
+    } = useProductsFilter(categoryFromHome);
+
+    const {
+        splitLimit,
         initialValue,
-        productsPerPage,
-    } = useFilterLogic(categoryFromHome);
+        currentPage,
+        canGoNextPage,
+        setSplitLimit,
+        setInitialValue,
+        setCurrentPage,
+        totalPages,
+    } = useProductsPagination();
 
     const { notifyFailure, notifySuccess, Toaster } = useToast();
     
@@ -312,7 +320,7 @@ export default function Products() {
                                         </button>
                                     </div>
                                 </div>  
-                            ))}
+                            )).slice(initialValue, splitLimit)}
                         </div>
                         
 
@@ -322,7 +330,8 @@ export default function Products() {
                                 onClick={() => {
                                     if (initialValue !== 0){
                                         setInitialValue(initialValue - 8)
-                                        setProductsPerPage(productsPerPage - 8)
+                                        setSplitLimit(splitLimit - 8)
+                                        setCurrentPage(currentPage - 1)
                                     }
                                 }}
                             >
@@ -330,9 +339,15 @@ export default function Products() {
                             </div>
                             <div 
                                 onClick={() => {
-                                    if(initialValue < filteredProducts.length){
+                                    console.log('canGoNextPage: ', canGoNextPage);
+                                    console.log('initialValue: ', initialValue);
+                                    console.log('spliLimit: ', splitLimit);
+                                    console.log('currentPage: ', currentPage);
+                                    console.log('totalPages: ', totalPages);
+                                    if(canGoNextPage){
                                         setInitialValue(initialValue + 8)
-                                        setProductsPerPage(productsPerPage + 8)
+                                        setSplitLimit(splitLimit + 8)
+                                        setCurrentPage(currentPage + 1)
                                     }
                                 }}
                                 className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
