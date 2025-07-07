@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 
 import Link from "next/link";
+import { useReviewsPagination } from "@/hooks/useReviewsPagination";
 
 export default function ProductReviewsPage() {
     const router = useRouter();
@@ -13,8 +14,6 @@ export default function ProductReviewsPage() {
 
     const { products } = useContext(ProductsContext);
     const { user } = useContext(UsersContext); // esse
-
-    const thisProduct = products.find((p) => String(p.id) === productId);
 
     const { 
         filter,
@@ -31,26 +30,38 @@ export default function ProductReviewsPage() {
         handleResetFilter,
     } = useReviewsFilter();
 
+    const {
+        initialValue,
+        splitLimit,
+        currentPage,
+        canGoNextPage,
+        setInitialValue,
+        setSplitLimit,
+        setCurrentPage
+    } = useReviewsPagination();
+
     const generateStars = (quantity : number | undefined) => {
         const stars = [];
-
+        
         if(quantity == undefined){
             return "Stars not found";
         }
-
+        
         for(let x = 0; x < quantity; x++) {
             stars.push("★")
         }
-
+        
         return stars;
     } 
-
+    
     const dateFormat = Intl.DateTimeFormat('pt-BR', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
     });
 
+    const thisProduct = products.find((p) => String(p.id) === productId);
+    
     const starsTotal = thisProductReviews.reduce((a, review) => a + review.stars, 0);
     const totalReviews = thisProductReviews.length;
     const starsAverage = starsTotal / totalReviews;
@@ -144,7 +155,6 @@ export default function ProductReviewsPage() {
                                 </button>
                             </div>
                             
-
                             <div className="flex gap-x-3 items-center">
                                 <h3 className="text-gray-300">Sort by: </h3>
 
@@ -192,8 +202,36 @@ export default function ProductReviewsPage() {
                                         <span className="text-gray-500 text-[0.9rem]">{user?.email}</span>
                                     </div>
                                 </div>
-                            ))}
+                            )).slice(initialValue, splitLimit)}
+
                         </section>
+
+                        <div className="mt-6 w-full flex gap-x-1 justify-center">
+                            <div 
+                                className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
+                                onClick={() => {
+                                    if (initialValue !== 0){
+                                        setInitialValue(initialValue - 4)
+                                        setSplitLimit(splitLimit - 4)
+                                        setCurrentPage(currentPage - 1);
+                                    }
+                                }}
+                            >
+                                <span className="text-gray-400">&lt;</span>
+                            </div>
+                            <div 
+                                onClick={() => {
+                                    if(canGoNextPage){
+                                        setInitialValue(initialValue + 4)
+                                        setSplitLimit(splitLimit + 4)
+                                        setCurrentPage(currentPage + 1);
+                                    }
+                                }}
+                                className="rounded bg-gray-800 px-4 py-2 hover:cursor-pointer"
+                            >
+                                <span className="text-gray-400">&gt;</span>
+                            </div>
+                        </div>
                     </div>
                     
                 </div>
