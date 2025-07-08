@@ -10,12 +10,15 @@ import Link from "next/link";
 import { destroyCookie, parseCookies } from "nookies";
 import { useToast } from "@/hooks/useToast";
 import { Toaster } from "react-hot-toast";
+import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
 
 export default function ProductPage() {
     const { handleAddProductToCart } = useCart();
     const { products } = useContext(ProductsContext);
     const { reviews } = useContext(ReviewsContext);
     const { user } = useContext(UsersContext); 
+
+    const { getProductAverageStars, generateStars } = useProductsFilter(undefined);
 
     const router = useRouter();
     const productId = router.query.id as string;
@@ -25,12 +28,12 @@ export default function ProductPage() {
                                     .slice(0, 3);
     const totalReviews = reviews.filter((review) => review.productId === productId).length;
     const thisProductReviews = reviews.filter((review) => review.productId === productId);
-
+    const thisProductAverageStars = getProductAverageStars(productId);
     const priceFormatted = usDolarFormatter(thisProduct?.price);
+
     
     const { notifyFailure, notifySuccess } = useToast();
 
-    
     //Toast notification persists between different pages
     useEffect(() => {
         const { 'pendingToast': pendingToast } = parseCookies();
@@ -53,16 +56,6 @@ export default function ProductPage() {
         }
 
     })
-
-    const generateStars = (quantity : number) => {
-        const stars = [];
-
-        for(let x = 0; x < quantity; x++) {
-            stars.push("★")
-        }
-
-        return stars;
-    } 
 
     // const searchUser = (review : ReviewProps) => {
     //     if (!users || !Array.isArray(users)) {
@@ -132,7 +125,7 @@ export default function ProductPage() {
                         <span 
                             className="text-gray-300 block mb-2"
                         >
-                            4.7 ({totalReviews} {totalReviews > 1 ? 'avaliações' : 'avaliação'})
+                            <span className="text-yellow-400">{generateStars(thisProductAverageStars)}</span> ({totalReviews} {totalReviews > 1 ? 'review' : 'reviews'})
                         </span>
                         <span className="text-purple-400 text-3xl font-bold">{priceFormatted}</span>
 
@@ -310,9 +303,14 @@ export default function ProductPage() {
                         <div className="w-full rounded px-5 bg-gray-800">
                             <div className="flex justify-between border-b border-b-gray-700 py-6">
                                 <div className="flex flex-col">
-                                    <span className="text-gray-50 font-bold text-4xl">4.7</span>
-                                    <span className="text-yellow-300">★★★★★</span>
-                                    <span className="text-gray-400">153 feedbacks</span>
+                                    {/* <span className="text-gray-50 font-bold text-4xl">{thisProductAverageStars}</span> */}
+                                    <span 
+                                        className="text-gray-50 text-xl"
+                                    >
+                                        {thisProduct?.name} - <span className="text-yellow-400">{generateStars(thisProductAverageStars)}</span>
+                                    </span> 
+
+                                    <span className="text-gray-400">({totalReviews} {totalReviews > 1 ? 'reviews' : 'review'})</span>
                                 </div>
 
                                 <div className="flex items-center">
@@ -326,7 +324,7 @@ export default function ProductPage() {
                                 </div>           
                             </div>
                             
-                            {/* Feedbacks */}
+                            {/* Reviews */}
                             <div>
                                 {thisProductReviews.map((review) => (
                                     <div 
@@ -336,8 +334,7 @@ export default function ProductPage() {
                                         <div className="flex justify-between">
                                             <span className="text-yellow-400">{generateStars(review.stars)}</span>
                                             <span className="text-gray-500 text-[0.9rem] font-semibold">
-                                                {utcDateFormatter(new Date(review.timestamp))}
-                                                
+                                                {utcDateFormatter(new Date(review.timestamp))}  
                                             </span>
                                         </div>
 
@@ -349,14 +346,14 @@ export default function ProductPage() {
                                     </div>
                                 )).slice(0, 2)}
 
-                                {<div className="py-6">
+                                <div className="py-6">
                                     <Link 
                                         href={`/product/${productId}/reviews`}
                                         className="hover:cursor-pointer text-purple-400 font-semibold"
                                     >
-                                        {thisProductReviews.length > 2 ? `See all ${totalReviews} reviews` : null}
+                                        {thisProductReviews.length > 2 ? `See all ${totalReviews} reviews` : `See review`}
                                     </Link>
-                                </div>}
+                                </div>
                             </div>
                         </div>
                     </div>

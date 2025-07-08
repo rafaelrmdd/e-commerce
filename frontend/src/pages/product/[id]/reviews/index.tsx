@@ -7,6 +7,7 @@ import { useContext } from "react";
 
 import Link from "next/link";
 import { useReviewsPagination } from "@/hooks/pagination/useReviewsPagination";
+import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
 
 export default function ProductReviewsPage() {
     const router = useRouter();
@@ -40,19 +41,7 @@ export default function ProductReviewsPage() {
         setCurrentPage
     } = useReviewsPagination();
 
-    const generateStars = (quantity : number | undefined) => {
-        const stars = [];
-        
-        if(quantity == undefined){
-            return "Stars not found";
-        }
-        
-        for(let x = 0; x < quantity; x++) {
-            stars.push("★")
-        }
-        
-        return stars;
-    } 
+    const { generateStars } = useProductsFilter(undefined);
     
     const dateFormat = Intl.DateTimeFormat('pt-BR', {
         year: 'numeric',
@@ -72,15 +61,17 @@ export default function ProductReviewsPage() {
             
             <main className="px-8 mt-8 mb-20">
                 <div className="flex items-center mb-8">
-                    <span className="text-purple-400 mr-6">Back to product</span>
+                    <Link 
+                        href={`/product/${productId}`}
+                        className="text-purple-400 mr-6">Back to product
+                    </Link>
                     <h2 className="text-gray-50 font-bold text-3xl">{thisProduct?.name} - Reviews</h2>
                 </div>
 
                 <div className="flex bg-gray-800 rounded p-5 justify-between items-center">
-                    <div className="">
-                        <span className="text-gray-50 font-bold text-4xl block">4.7</span>
-                        <span className="text-yellow-400 block">{generateStars(starsAverage)}</span>
-                        <h3 className="text-gray-500">{totalReviews} {totalReviews > 1 ? "feedbacks" : "feedback"}</h3>
+                    <div>
+                        <span className="text-yellow-400 block text-2xl">{generateStars(starsAverage)}</span>
+                        <h3 className="text-gray-500">{totalReviews} {totalReviews > 1 ? "reviews" : "review"}</h3>
                     </div>
 
                     <div className="flex gap-x-4 text-gray-50">
@@ -149,7 +140,8 @@ export default function ProductReviewsPage() {
                                 <h2 className="text-xl text-gray-50 font-bold mr-4">All Reviews ({totalReviews})</h2>
                                 <button 
                                     onClick={() => handleResetFilter()}
-                                    className="px-3 py-2 bg-purple-500 rounded hover:bg-purple-400 hover:cursor-pointer"
+                                    className="px-3 py-2 bg-purple-500 rounded hover:bg-purple-400 
+                                    hover:cursor-pointer font-semibold"
                                 >
                                     Reset Filters
                                 </button>

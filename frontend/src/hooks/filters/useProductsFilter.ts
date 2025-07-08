@@ -214,16 +214,17 @@ export const useProductsFilter = (categoryFromHome : string | null | undefined) 
     const generateStars = (quantity : number | undefined) => {
         const stars = [];
 
-
         if(quantity === undefined || isNaN(quantity)){
             return "No reviews found";
         }
 
-        for(let x = 0; x < quantity; x++) {
+        const roundedValue = Math.round(quantity);
+
+        for(let x = 0; x < roundedValue; x++) {
             stars.push("★")
         }
 
-        for(let x = quantity; x < 5; x++){
+        for(let x = roundedValue; x < 5; x++){
             stars.push("☆")
         }
 

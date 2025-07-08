@@ -32,7 +32,7 @@ export default function Home() {
         slidesToScroll: 3,
         variableWidth: false,
         centerMode: false,
-        adaptiveHeight: true
+        adaptiveHeight: true,
     }
 
     const { notifyFailure, notifySuccess, Toaster } = useToast();
@@ -66,7 +66,10 @@ export default function Home() {
 
                     {/* Carousel */}
                     <div className="bg-gray-800 p-6 rounded mt-16">
-                        <Slider {...settings}>
+                        <Slider 
+                            className=""
+                            {...settings}
+                        >
                             {productsBestSellers.map((product) => (
                                 <div className="p-3" key={product.id}>
                                     <div
@@ -74,8 +77,6 @@ export default function Home() {
                                         hover:cursor-pointer block hover:bg-gray-600
                                         transition duration-300"
                                     >
-                                        
-                                        {/* Image */}
                                         <div 
                                             onClick={() => router.push(`/product/${product.id}`)}
                                             className="relative w-full h-56 rounded mb-2"

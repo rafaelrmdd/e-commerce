@@ -56,7 +56,6 @@ type UsersContextProps = {
     signOut: () => void
     user: UserProps | undefined
     isUserLogged: boolean
-    verifyIfUserIsLogged: () => void
     hasCredentialsError: boolean
 }
 
@@ -79,7 +78,6 @@ export const UsersContext = createContext<UsersContextProps>({
     signOut: () => {},
     user: undefined,
     isUserLogged: false,
-    verifyIfUserIsLogged: () => {},
     hasCredentialsError: false
 });
 
@@ -211,15 +209,9 @@ export function ContextProvider({children} : ContextProviderProps) {
         router.push('/login');  
     }
 
-    const verifyIfUserIsLogged = () => {
-        if (!isUserLogged){
-            signOut();
-        }
-    }
-
     return (
         <UsersContext.Provider 
-            value={{ signIn, signOut, user, isUserLogged, verifyIfUserIsLogged, hasCredentialsError }
+            value={{ signIn, signOut, user, isUserLogged, hasCredentialsError }
         }>
             <ProductsContext.Provider value={{ products, }}>
                 <ReviewsContext.Provider value={{ reviews }}>
