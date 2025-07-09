@@ -1,22 +1,38 @@
-import { Footer } from "@/components/Footer"
-import { Header } from "@/components/Header"
-import { UsersContext } from "@/context/ContextProvider";
-import { useContext, useEffect } from "react";
-import { useForm } from "react-hook-form"
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import { useForm } from "react-hook-form";
+import emailjs from '@emailjs/browser';
+import { FormEvent, useRef } from "react";
 
 export default function Contact() {
+    const { register } = useForm()
 
-    const { verifyIfUserIsLogged } = useContext(UsersContext);
+    const form = useRef<HTMLFormElement>(null);
 
-    useEffect(() => {
-        verifyIfUserIsLogged();
-    }, [verifyIfUserIsLogged])
-    
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '';
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '';
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '';
 
-    const { register, handleSubmit } = useForm()
+    const onSubmit = (e : FormEvent) => {
+        e.preventDefault();
 
-    const onSubmit = (data : object) => {
-        console.log(data)
+        if (!form.current){
+            return
+        }
+
+
+        emailjs
+        .sendForm(serviceId, templateId, form.current, {
+            publicKey: publicKey,
+        })
+        .then(
+            () => {
+                console.log('Email sent sucessfully');
+            },
+            (error) => {
+                console.log('Email not sent: ', error.text);
+            },
+        );
     }
 
     return (
@@ -97,7 +113,8 @@ export default function Contact() {
                     <h2 className="text-2xl font-semibold text-gray-50 mb-5">Send your Message</h2>
 
                     <form 
-                        onSubmit={handleSubmit(onSubmit)}
+                        ref={form}
+                        onSubmit={onSubmit}
                     >
                         <div className="flex gap-x-3 mb-3 w-full">
                             <div className="w-1/2">
@@ -110,7 +127,9 @@ export default function Contact() {
                                 <input 
                                     {...register("name")}
                                     type="text" 
-                                    placeholder="Rafael"
+                                    name="name"
+                                    required
+                                    placeholder="Your name"
                                     className="text-gray-400 placeholder:text-gray-400 block p-3
                                     bg-gray-700 rounded outline-0 mt-1 w-full"
                                 />
@@ -127,6 +146,8 @@ export default function Contact() {
                                 <input 
                                     {...register("email")}
                                     type="text" 
+                                    name="email"
+                                    required
                                     placeholder="youremail@example.com"
                                     className="text-gray-400 placeholder:text-gray-400 block p-3
                                     bg-gray-700 rounded outline-0 mt-1 w-full"
@@ -134,7 +155,7 @@ export default function Contact() {
                             </div>
                         </div>
 
-                        <label 
+                        {/* <label 
                             htmlFor="number"
                             className="text-gray-400"
                         >
@@ -146,7 +167,7 @@ export default function Contact() {
                             placeholder="(00) 00000-0000"
                             className="text-gray-400 placeholder:text-gray-400 block p-3
                             bg-gray-700 rounded outline-0 mb-3 mt-1 w-full"
-                        />
+                        /> */}
 
                         <label 
                             htmlFor="subject"
@@ -156,7 +177,8 @@ export default function Contact() {
                         </label>
                         <select 
                             {...register("subject")}
-                            defaultValue="cs"
+                            name="subject"
+                            required
                             className="block text-gray-50 p-3 mb-3 mt-1 w-full bg-gray-700
                             rounded"
                         >
@@ -177,6 +199,8 @@ export default function Contact() {
                         <textarea 
                             {...register("message")}
                             placeholder="Enter your message"
+                            name="message"
+                            required
                             rows={10}
                             cols={10}
                             className="text-gray-400 placeholder:text-gray-400 block p-3
@@ -198,7 +222,8 @@ export default function Contact() {
                         </div>
 
                         <button
-                            className="w-full bg-purple-600 text-gray-50 px-5 py-3 rounded
+                            type="submit"
+                            className="w-full bg-purple-600 text-gray-950 px-5 py-3 rounded font-semibold
                             mt-8 hover:cursor-pointer hover:bg-purple-500 transition duration-300" 
                         >   
                             Send Message

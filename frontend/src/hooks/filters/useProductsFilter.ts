@@ -162,24 +162,24 @@ export const useProductsFilter = (categoryFromHome : string | null | undefined) 
         
         if(hasCategory && hasKeyword && hasPriceRange) {
             return product.categoryId === categoryNumber && 
-                    product.name.toLowerCase().includes(searchKeyword.toLowerCase()) && 
+                    product.name.toLowerCase().startsWith(searchKeyword.toLowerCase(), 0) && 
                     product.price <= Number(priceRange);
         }
         else if(hasCategory && hasKeyword) {
             return product.categoryId === categoryNumber &&
-                    product.name.toLowerCase().includes(searchKeyword.toLowerCase());
+                    product.name.toLowerCase().startsWith(searchKeyword.toLowerCase(), 0);
         }
         else if(hasCategory) {
             return product.categoryId === categoryNumber;
         }
         else if(hasKeyword) {
-            return product.name.toLowerCase().includes(searchKeyword.toLowerCase());
+            return product.name.toLowerCase().startsWith(searchKeyword.toLowerCase(), 0);
         }
         else if(hasPriceRange) {
             return product.price <= Number(priceRange);
         }
         else if(hasStarsFilter){
-            if(thisProductStarsAverage){
+            if(thisProductStarsAverage) {
                 const isStarsGreaterThanFilter = thisProductStarsAverage >= starsFilter;
 
                 if(hasId){    
@@ -187,7 +187,6 @@ export const useProductsFilter = (categoryFromHome : string | null | undefined) 
                 }
             }
         }
-        
         return true;
     })
 
