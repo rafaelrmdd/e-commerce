@@ -47,10 +47,10 @@ export default function Cart() {
     const tax = 0;
     const total = subtotal- shipping - tax;
 
-    const subtotalFormatted = usDolarFormat.format(subtotal);
-    const shippingFormatted = usDolarFormat.format(shipping);
-    const taxFormatted = usDolarFormat.format(tax);
-    const totalFormatted = usDolarFormat.format(total);
+    const subtotalFormatted = usDolarFormatter(subtotal);
+    const shippingFormatted = usDolarFormatter(shipping);
+    const taxFormatted = usDolarFormatter(tax);
+    const totalFormatted = usDolarFormatter(total);
 
     return (
         <div className="h-full bg-gray-900">

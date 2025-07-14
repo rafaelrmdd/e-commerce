@@ -58,23 +58,22 @@ export default function Contact() {
                     <div className="mb-7">
                         <h2 className="text-2xl font-semibold text-gray-50 mb-2">Adress</h2>
 
-                        <h3 className="text-gray-400">Av. Paulista, 1000</h3>
+                        <h3 className="text-gray-400">Example, 8</h3>
                         <h3 className="text-gray-400">São Paulo, SP</h3>
-                        <h3 className="text-gray-400">CEP: 01310-100</h3>
+                        <h3 className="text-gray-400">CEP: 00000-000</h3>
                     </div>
 
                     <div className="mb-7">
                         <h2 className="text-2xl font-semibold text-gray-50 mb-2">Phone</h2>
 
-                        <h3 className="text-gray-400">(11) 3000-1000</h3>
-                        <h3 className="text-gray-400">(11) 99999-9999 (Whatsapp)</h3>
+                        <h3 className="text-gray-400">(11) 0000-0000</h3>
+                        <h3 className="text-gray-400">(11) 90000-0000 (Whatsapp)</h3>
                     </div>
 
                     <div className="mb-7">
                         <h2 className="text-2xl font-semibold text-gray-50 mb-2">Email</h2>
 
-                        <h3 className="text-gray-400">contato@ecommerce.com</h3>
-                        <h3 className="text-gray-400">suporte@ecommerce.com</h3>
+                        <h3 className="text-gray-400">rrodriguesmd17@gmail.com</h3>
                     </div>
 
                     <div className="mb-7">
@@ -87,21 +86,22 @@ export default function Contact() {
                     <div className="mb-7">
                         <h2 className="text-2xl font-semibold text-gray-50 mb-2">Social Media</h2>
 
+                        {/* Not real data */}
                         <div className="flex gap-3 mt-4">
                             <div className="rounded-full px-3 py-1 bg-gray-600 hover:cursor-pointer">
-                                <span className="text-purple-500">F</span>
+                                <span className="text-purple-500">*</span>
                             </div>
 
                             <div className="rounded-full px-3 py-1 bg-gray-600 hover:cursor-pointer">
-                                <span className="text-purple-500">F</span>
+                                <span className="text-purple-500">*</span>
                             </div>
 
                             <div className="rounded-full px-3 py-1 bg-gray-600 hover:cursor-pointer">
-                                <span className="text-purple-500">F</span>
+                                <span className="text-purple-500">*</span>
                             </div>
 
                             <div className="rounded-full px-3 py-1 bg-gray-600 hover:cursor-pointer">
-                                <span className="text-purple-500">F</span>
+                                <span className="text-purple-500">*</span>
                             </div>
                         </div>
                     </div>
