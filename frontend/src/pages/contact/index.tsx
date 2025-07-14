@@ -20,9 +20,7 @@ export default function Contact() {
             return
         }
 
-
-        emailjs
-        .sendForm(serviceId, templateId, form.current, {
+        emailjs.sendForm(serviceId, templateId, form.current, {
             publicKey: publicKey,
         })
         .then(
