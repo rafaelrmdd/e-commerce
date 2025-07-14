@@ -3,12 +3,12 @@ import { Header } from "@/components/Header";
 import { useContext, useEffect } from "react";
 import { ProductsContext, ReviewsContext, UsersContext } from "@/context/ContextProvider";
 import { usDolarFormatter, utcDateFormatter } from "@/utils/formatters";
-import { useCart } from "@/hooks/useCart";
+import { useCart } from "@/hooks/components/useCart";
 import Image from "next/image";
 
 import Link from "next/link";
 import { destroyCookie, parseCookies } from "nookies";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/components/useToast";
 import { Toaster } from "react-hot-toast";
 import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
 

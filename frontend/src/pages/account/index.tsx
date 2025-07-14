@@ -1,5 +1,5 @@
 import { Header } from "@/components/Header";
-import { useAccount } from "@/hooks/useAccount";
+import { useAccount } from "@/hooks/components/useAccount";
 
 export default function Account(){
 

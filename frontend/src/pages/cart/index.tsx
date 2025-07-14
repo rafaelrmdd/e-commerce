@@ -5,6 +5,7 @@ import { CartItemsContext, ProductProps, ProductsContext, UsersContext } from "@
 import { api } from "@/services/api/api";
 import { Footer } from "@/components/Footer";
 import { usDolarFormatter } from "@/utils/formatters";
+import { useRouter } from "next/router";
 
 import Image from "next/image";
 
@@ -15,6 +16,8 @@ export default function Cart() {
     const { products } = useContext(ProductsContext);
     
     const [productsToShow, setProductsToShow] = useState<ProductProps[]>([]);
+
+    const router = useRouter();
 
     useEffect(() => {
         const userCartItems = cartItems.filter(item => item.userId === user?.id);
@@ -150,6 +153,7 @@ export default function Cart() {
                             Proceed to Checkout
                         </button>
                         <button
+                            onClick={() => router.push('/products')}
                             className="w-full px-4 py-3 bg-gray-700 hover:bg-gray-600 transition 
                             duration-300 rounded text-gray-50 font-semibold hover:cursor-pointer"
                         >

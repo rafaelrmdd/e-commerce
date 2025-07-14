@@ -5,7 +5,7 @@ import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
 import { useContext, useEffect } from "react";
 import { SlMagnifier } from "react-icons/sl";
 import Image from "next/image";
-import { useCart } from "@/hooks/useCart";
+import { useCart } from "@/hooks/components/useCart";
 
 export default function Offers() {
 

@@ -2,8 +2,8 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header"
 import { useSearchParams } from "next/navigation";
 import { SlMagnifier } from "react-icons/sl";
-import { useCart } from "@/hooks/useCart";
-import { useToast } from "@/hooks/useToast";
+import { useCart } from "@/hooks/components/useCart";
+import { useToast } from "@/hooks/components/useToast";
 import { useRouter } from "next/router";
 import { useProductsPagination } from "@/hooks/pagination/useProductsPagination";
 import { useProductsFilter } from "@/hooks/filters/useProductsFilter";

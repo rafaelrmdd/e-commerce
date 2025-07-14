@@ -4,8 +4,8 @@ import { useContext } from "react";
 import { ProductsContext } from "@/context/ContextProvider";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/router";
-import { useCart } from "@/hooks/useCart";
-import { useToast } from "@/hooks/useToast";
+import { useCart } from "@/hooks/components/useCart";
+import { useToast } from "@/hooks/components/useToast";
 import { usDolarFormatter } from "@/utils/formatters";
 
 import Slider from "react-slick"
