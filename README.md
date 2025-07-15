@@ -31,15 +31,15 @@ Backend
 * JWT Authentication - Sistema de autenticação baseado em tokens
 * Custom Exceptions - Tratamento personalizado de erros
 
-🏗️ Arquitetura e Estrutura
-Frontend (Next.js)
-src/
+🏗️ Arquitetura e Estrutura <br/>
+Frontend (Next.js) <br/>
+src/ <br/>
 ├── components/     # Componentes reutilizáveis <br/>
 ├── context/        # Context API para estado global <br/>
 ├── services/       # Serviços e configurações do Axios <br/>
 ├── assets/         # Recursos estáticos (imagens, ícones) <br/>
 └── pages/          # Páginas da aplicação <br/>
-Backend (.NET Core) <br/>
+<br/>Backend (.NET Core) <br/>
 ├── Controllers/    # Controladores da API <br/>
 ├── Models/         # Modelos de dados e DTOs <br/>
 ├── Services/       # Lógica de negócios <br/>
