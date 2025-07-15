@@ -34,18 +34,18 @@ Backend
 🏗️ Arquitetura e Estrutura
 Frontend (Next.js)
 src/
-├── components/     # Componentes reutilizáveis
-├── context/        # Context API para estado global
-├── services/       # Serviços e configurações do Axios
-├── assets/         # Recursos estáticos (imagens, ícones)
-└── pages/          # Páginas da aplicação
-Backend (.NET Core)
-├── Controllers/    # Controladores da API
-├── Models/         # Modelos de dados e DTOs
-├── Services/       # Lógica de negócios
-├── Context/        # Configuração do Entity Framework
-├── DTOs/           # Tranferência seguro dos dados
-└── Migrations/     # Migrações do banco de dados
+├── components/     # Componentes reutilizáveis <br/>
+├── context/        # Context API para estado global <br/>
+├── services/       # Serviços e configurações do Axios <br/>
+├── assets/         # Recursos estáticos (imagens, ícones) <br/>
+└── pages/          # Páginas da aplicação <br/>
+Backend (.NET Core) <br/>
+├── Controllers/    # Controladores da API <br/>
+├── Models/         # Modelos de dados e DTOs <br/>
+├── Services/       # Lógica de negócios <br/>
+├── Context/        # Configuração do Entity Framework <br/>
+├── DTOs/           # Tranferência seguro dos dados <br/>
+└── Migrations/     # Migrações do banco de dados <br/>
 
 🔐 Sistema de Autenticação
 Frontend
