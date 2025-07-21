@@ -4,19 +4,23 @@ import { useContext, useEffect } from "react";
 import { ProductsContext, ReviewsContext, UsersContext } from "@/context/ContextProvider";
 import { usDolarFormatter, utcDateFormatter } from "@/utils/formatters";
 import { useCart } from "@/hooks/components/useCart";
-import Image from "next/image";
-
-import Link from "next/link";
 import { destroyCookie, parseCookies } from "nookies";
 import { useToast } from "@/hooks/components/useToast";
 import { Toaster } from "react-hot-toast";
 import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
 
+import Image from "next/image";
+import Link from "next/link";
+import { Footer } from "@/components/Footer";
+
 export default function ProductPage() {
-    const { handleAddProductToCart } = useCart();
     const { products } = useContext(ProductsContext);
     const { reviews } = useContext(ReviewsContext);
     const { user } = useContext(UsersContext); 
+
+    const { handleAddProductToCart } = useCart();
+
+    const { notifyFailure, notifySuccess } = useToast();
 
     const { getProductAverageStars, generateStars } = useProductsFilter(undefined);
 
@@ -30,9 +34,6 @@ export default function ProductPage() {
     const thisProductReviews = reviews.filter((review) => review.productId === productId);
     const thisProductAverageStars = getProductAverageStars(productId);
     const priceFormatted = usDolarFormatter(thisProduct?.price);
-
-    
-    const { notifyFailure, notifySuccess } = useToast();
 
     //Toast notification persists between different pages
     useEffect(() => {
@@ -57,26 +58,12 @@ export default function ProductPage() {
 
     })
 
-    // const searchUser = (review : ReviewProps) => {
-    //     if (!users || !Array.isArray(users)) {
-    //         return "Loading...";
-    //     }
-
-    //     const user : UserProps | undefined = users?.find((user) => user.id === review.userId);
-
-    //     if(user == undefined){
-    //         return "User not found";
-    //     }
-
-    //     return user.email;
-    // }
-
     return (
         <div className="bg-gray-900 h-full">
             <Header />
 
             <main className="mt-8">
-                <section className="flex justify-between px-8">
+                <article className="flex justify-between px-8">
                     <div className="w-[47%] min-h-[380px]">
                         {/* Main Image */}
                         <div className="w-full h-[380px] bg-gray-800 rounded p-2 relative">
@@ -178,11 +165,11 @@ export default function ProductPage() {
                             </button>
                         </div>
                     </div>
-                </section>
+                </article>
 
                 {/* Informations */}
-                <section className="flex justify-between mt-20 px-8">
-                    <div className="w-[70%]">
+                <div className="flex justify-between mt-20 px-8">
+                    <section className="w-[70%]">
                         {/* Description */}
                         <div className="mb-6">
                             <h2 className="text-2xl font-bold text-gray-50 mb-3">Description</h2>
@@ -262,38 +249,41 @@ export default function ProductPage() {
                                 </table>
                             </div>
                         </div> */}
-                    </div>
+                    </section>
                     
-                    <div className="w-[25%]">
-                        <h2 className="text-2xl font-bold text-gray-50 mb-3">Related Products</h2>
+                    <aside className="w-[25%]">
+                        <section>
+                            <h2 className="text-2xl font-bold text-gray-50 mb-3">Related Products</h2>
 
-                        <div className="flex flex-col gap-y-3">
-                            {relatedProducts.map((product) => (
-                                <Link 
-                                    href={`/product/${product.id}`}
-                                    key={product.id}
-                                    className="p-3 bg-gray-800 flex rounded hover:cursor-pointer"
-                                >
-                                    {/* Image */}
-                                    <div className="w-[40%] mr-2 relative rounded">
-                                        <Image
-                                            src={product.imageURL}
-                                            fill
-                                            alt="Related product's image"
-                                        />
-                                    </div>
+                            <div className="flex flex-col gap-y-3">
+                                {relatedProducts.map((product) => (
+                                    <Link 
+                                        href={`/product/${product.id}`}
+                                        key={product.id}
+                                        className="p-3 bg-gray-800 flex rounded hover:cursor-pointer"
+                                    >
+                                        {/* Image */}
+                                        <div className="w-[40%] mr-2 relative rounded">
+                                            <Image
+                                                src={product.imageURL}
+                                                fill
+                                                alt="Related product's image"
+                                            />
+                                        </div>
 
-                                    {/* Informations */}
-                                    <div>
-                                        <h3 className="text-gray-50 text-xl font-semibold">{product.name}</h3>
-                                        <span className="text-purple-500 text-xl font-bold">{usDolarFormatter(product.price)}</span>
-                                    </div>
-                                </Link>
-                            ))}
-                            
-                        </div>
-                    </div>
-                </section>
+                                        {/* Informations */}
+                                        <div>
+                                            <h3 className="text-gray-50 text-xl font-semibold">{product.name}</h3>
+                                            <span className="text-purple-500 text-xl font-bold">{usDolarFormatter(product.price)}</span>
+                                        </div>
+                                    </Link>
+                                ))}
+                                
+                            </div>
+                        </section>
+                        
+                    </aside>
+                </div>
 
                 <section className="px-8">
                     <div>
@@ -358,83 +348,9 @@ export default function ProductPage() {
                         </div>
                     </div>
                 </section>
-
-                <footer className="bg-gray-700 mt-16 ">
-                    <nav className="flex gap-x-56 p-4 justify-center">
-                        <ul className="flex flex-col gap-y-2">
-                            <li className="text-gray-50 text-xl font-bold ">
-                                Navigation
-                            </li>
-                            <li className="text-gray-400">
-                                Home
-                            </li>
-                            <li className="text-gray-400">
-                                Products
-                            </li>
-                            <li className="text-gray-400">
-                                Offers
-                            </li>
-                            <li className="text-gray-400">
-                                News
-                            </li>
-                        </ul>
-
-                        <ul className="flex flex-col gap-y-2">
-                            <li className="text-gray-50 text-xl font-bold ">
-                                Categories
-                            </li>
-                            <li className="text-gray-400">
-                                Electronics
-                            </li>
-                            <li className="text-gray-400">
-                                Fashion
-                            </li>
-                            <li className="text-gray-400">
-                                House & Decoration
-                            </li>
-                            <li className="text-gray-400">
-                                Sports
-                            </li>
-                        </ul>
-
-                        <ul className="flex flex-col gap-y-2">
-                            <li className="text-gray-50 text-xl font-bold ">
-                                Support
-                            </li>
-                            <li className="text-gray-400">
-                                Help Center
-                            </li>
-                            <li className="text-gray-400">
-                                How to Shop
-                            </li>
-                            <li className="text-gray-400">
-                                Payment Methods
-                            </li>
-                            <li className="text-gray-400">
-                                Delivery Time
-                            </li>
-                        </ul>
-
-                        <ul className="flex flex-col gap-y-2">
-                            <li className="text-gray-50 text-xl font-bold ">
-                                Contact Us
-                            </li>
-                            <li className="text-gray-400">
-                                Email
-                            </li>
-                            <li className="text-gray-400">
-                                Phone Support
-                            </li>
-                            <li className="text-gray-400">
-                                Whatsapp
-                            </li>
-                            <li className="text-gray-400">
-                                Social Media
-                            </li>
-                        </ul>
-                    </nav>
-                </footer>
             </main>
+
+            <Footer />
 
             <Toaster />
         </div>

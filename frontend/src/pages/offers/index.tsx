@@ -1,11 +1,11 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { UsersContext } from "@/context/ContextProvider";
-import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
-import { useContext, useEffect } from "react";
-import { SlMagnifier } from "react-icons/sl";
-import Image from "next/image";
-import { useCart } from "@/hooks/components/useCart";
+// import { UsersContext } from "@/context/ContextProvider";
+// import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
+// import { useContext, useEffect } from "react";
+// import { SlMagnifier } from "react-icons/sl";
+// import Image from "next/image";
+// import { useCart } from "@/hooks/components/useCart";
 
 export default function Offers() {
 

@@ -1,8 +1,9 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { useForm } from "react-hook-form";
-import emailjs from '@emailjs/browser';
 import { FormEvent, useRef } from "react";
+
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
     const { register } = useForm()
@@ -38,20 +39,11 @@ export default function Contact() {
             <Header /> 
 
             <section className="w-full bg-gray-950 py-20">
-                <div className="flex justify-center mb-3">
-                    <button 
-                        className="text-gray-950 font-bold bg-purple-500 rounded-full px-5 py-2"
-                    >
-                        LIMITED OFFERS
-                    </button>
-                </div>
-                
-
                 <h1 className="text-gray-50 text-5xl font-bold text-center mb-3">Contact Us</h1>
                 <h3 className="text-gray-50 text-center">Get in touch with our team for any questions, suggestions or complaints</h3>
             </section>
 
-            <main className="flex p-8">
+            <div className="flex p-8">
                 <aside className="bg-gray-800 p-6 rounded w-[30%] mr-8">
                     <h2 className="text-2xl font-semibold text-gray-50 mb-5">Contact Informations</h2>
                     
@@ -107,7 +99,7 @@ export default function Contact() {
                     </div>
                 </aside>
 
-                <div className="bg-gray-800 flex-1 rounded p-6">
+                <main className="bg-gray-800 flex-1 rounded p-6">
                     <h2 className="text-2xl font-semibold text-gray-50 mb-5">Send your Message</h2>
 
                     <form 
@@ -153,26 +145,13 @@ export default function Contact() {
                             </div>
                         </div>
 
-                        {/* <label 
-                            htmlFor="number"
-                            className="text-gray-400"
-                        >
-                            Number
-                        </label>
-                        <input 
-                            {...register("number")}
-                            type="text" 
-                            placeholder="(00) 00000-0000"
-                            className="text-gray-400 placeholder:text-gray-400 block p-3
-                            bg-gray-700 rounded outline-0 mb-3 mt-1 w-full"
-                        /> */}
-
                         <label 
                             htmlFor="subject"
                             className="text-gray-400"
                         >
                             Subject
                         </label>
+                        
                         <select 
                             {...register("subject")}
                             name="subject"
@@ -228,8 +207,8 @@ export default function Contact() {
                         </button>
                         
                     </form>
-                </div>
-            </main>
+                </main>
+            </div>
 
             <div className="px-8">
                 <h2 className="text-2xl font-semibold text-gray-50 mb-2">Our Location</h2>
@@ -244,7 +223,6 @@ export default function Contact() {
                 <h2 className="text-2xl font-semibold text-gray-50 mb-6">FAQ</h2>
 
                 <div className="flex flex-col gap-y-4">
-                    {/* Questions */}
                     <div className="bg-gray-800 rounded p-4 ">
                         <h2 className="mb-2 font-semibold text-gray-50">What is the delivery time?</h2>
                         <h3 className="text-gray-50">

@@ -20,6 +20,7 @@ export default function Home() {
     
     const { products } = useContext(ProductsContext);
     const { handleAddProductToCart, hasError } = useCart();
+    const { notifyFailure, notifySuccess, Toaster } = useToast();
 
     const productsBestSellers = products.filter(p => p.isBestSeller);
     const productsFeatureds = products.filter(p => p.isFeatured);
@@ -35,10 +36,8 @@ export default function Home() {
         adaptiveHeight: true,
     }
 
-    const { notifyFailure, notifySuccess, Toaster } = useToast();
-
     return (
-        <div className="h-screen bg-gray-900">
+        <div className="h-full bg-gray-900">
             <Header/>
             
             <section className="flex justify-center py-20 w-full bg-gray-950">
@@ -57,7 +56,7 @@ export default function Home() {
             </section>
 
             <main className="bg-gray-900">
-                <div className="py-16 px-8">
+                <section className="py-16 px-8">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-52"/>
                         <h2 className="font-bold text-gray-50 text-2xl">BEST SELLERS</h2>
@@ -113,9 +112,9 @@ export default function Home() {
                             ))}
                         </Slider>
                     </div>
-                </div>
-                {/* Categories */}
-                <section className="px-8">
+                </section>
+
+                <div className="px-8">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-52"/>
                         <h2 className="font-bold text-gray-50 text-2xl">CATEGORIES</h2>
@@ -157,10 +156,10 @@ export default function Home() {
                             <span className="text-gray-50 text-xl font-bold ">Sports</span>
                         </Link>
                     </div>
-                </section>
+                </div>
 
                 {/* Featured Items Section*/}
-                <section className="mt-16 px-8 mb-20">
+                <section className="mt-16 px-8">
                     <div className="flex justify-center items-center gap-4">
                         <hr className="text-gray-600 w-40"/>
                         <h2 className="font-bold text-gray-50 text-2xl">FEATURED THIS WEEK</h2>
@@ -211,8 +210,9 @@ export default function Home() {
                         ))}
                     </div>
                 </section>
-                <Footer />
             </main>
+
+            <Footer />
             
             <Toaster />
         </div>

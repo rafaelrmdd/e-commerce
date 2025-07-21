@@ -4,17 +4,19 @@ import { ProductsContext, UsersContext } from "@/context/ContextProvider";
 import { useReviewsFilter } from "@/hooks/filters/useReviewsFilter";
 import { useRouter } from "next/router";
 import { useContext } from "react";
-
-import Link from "next/link";
 import { useReviewsPagination } from "@/hooks/pagination/useReviewsPagination";
 import { useProductsFilter } from "@/hooks/filters/useProductsFilter";
 
+import Link from "next/link";
+
 export default function ProductReviewsPage() {
+    const { products } = useContext(ProductsContext);
+    const { user } = useContext(UsersContext);
+    
     const router = useRouter();
     const productId = router.query.id;
-
-    const { products } = useContext(ProductsContext);
-    const { user } = useContext(UsersContext); // esse
+    
+    const { generateStars } = useProductsFilter(undefined);
 
     const { 
         filter,
@@ -41,8 +43,6 @@ export default function ProductReviewsPage() {
         setCurrentPage
     } = useReviewsPagination();
 
-    const { generateStars } = useProductsFilter(undefined);
-    
     const dateFormat = Intl.DateTimeFormat('pt-BR', {
         year: 'numeric',
         month: '2-digit',
@@ -59,7 +59,7 @@ export default function ProductReviewsPage() {
         <div className="h-full bg-gray-900">
             <Header />
             
-            <main className="px-8 mt-8 mb-20">
+            <main className="px-8 mt-8">
                 <div className="flex items-center mb-8">
                     <Link 
                         href={`/product/${productId}`}

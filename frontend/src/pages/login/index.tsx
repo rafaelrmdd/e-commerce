@@ -13,7 +13,6 @@ export default function Login() {
         e.preventDefault();
 
         signIn({
-            id: 'null',
             email,
             password
         });

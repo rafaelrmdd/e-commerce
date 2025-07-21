@@ -5,17 +5,18 @@ import { api } from "@/services/api/api";
 import { useRouter } from "next/router";
 import { FormEvent, useContext, useState } from "react";
 import { FaRegStar, FaStar } from "react-icons/fa";
-import Image from "next/image";
 import { usDolarFormatter } from "@/utils/formatters";
 import { Toaster } from "react-hot-toast";
 import { setCookie } from "nookies";
 
-export default function Review() {
-    const router = useRouter();
-    const productId = router.query.id as string;
+import Image from "next/image";
 
+export default function Review() {
     const { user } = useContext(UsersContext);
     const { products } = useContext(ProductsContext);
+
+    const router = useRouter();
+    const productId = router.query.id as string;
 
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
@@ -59,7 +60,7 @@ export default function Review() {
         <div className="h-full bg-gray-900">
             <Header />
 
-            <div className="px-72 mb-16">
+            <main className="px-72">
                 <div className="flex flex-col justify-center items-center mt-16 mb-8">
                     <h1 className="text-gray-50 font-bold text-3xl mb-2">Rate Product</h1>
                     <h2 className="text-gray-400">Share your experience with other clients</h2>
@@ -207,7 +208,7 @@ export default function Review() {
                         </ul>
                     </div>
                 </form>
-            </div>
+            </main>
 
             <Toaster />
 

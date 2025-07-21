@@ -10,14 +10,23 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 export default function Cart() {
-
     const { user } = useContext(UsersContext);
     const { cartItems } = useContext(CartItemsContext);
     const { products } = useContext(ProductsContext);
+
+    const router = useRouter();
     
     const [productsToShow, setProductsToShow] = useState<ProductProps[]>([]);
 
-    const router = useRouter();
+    const subtotal = productsToShow.reduce((sum, product) => sum + Number(product.price), 0);
+    const shipping = 0;
+    const tax = 0;
+    const total = subtotal- shipping - tax;
+
+    const subtotalFormatted = usDolarFormatter(subtotal);
+    const shippingFormatted = usDolarFormatter(shipping);
+    const taxFormatted = usDolarFormatter(tax);
+    const totalFormatted = usDolarFormatter(total);
 
     useEffect(() => {
         const userCartItems = cartItems.filter(item => item.userId === user?.id);
@@ -44,23 +53,13 @@ export default function Cart() {
             console.log('delete error: ', error)
         }
     }
-
-    const subtotal = productsToShow.reduce((sum, product) => sum + Number(product.price), 0);
-    const shipping = 0;
-    const tax = 0;
-    const total = subtotal- shipping - tax;
-
-    const subtotalFormatted = usDolarFormatter(subtotal);
-    const shippingFormatted = usDolarFormatter(shipping);
-    const taxFormatted = usDolarFormatter(tax);
-    const totalFormatted = usDolarFormatter(total);
-
+    
     return (
         <div className="h-full bg-gray-900">
             <Header />
 
-            <main className="flex px-32 mt-8 rounded justify-between items-start mb-24">
-                <section className="w-[67%] bg-gray-800 rounded p-6">
+            <div className="flex px-32 mt-8 rounded justify-between items-start mb-24">
+                <main className="w-[67%] bg-gray-800 rounded p-6">
                     <h2 className="text-gray-50 font-semibold text-xl">Cart Items</h2>
 
                     <div className="mt-4 flex flex-col gap-y-4">
@@ -108,7 +107,7 @@ export default function Cart() {
                             <h3>Clear all items</h3>
                         </div>
                     </div>
-                </section>
+                </main>
 
                 <aside className="w-[30%] bg-gray-800 rounded p-6">
                     <h2 className="text-2xl font-semibold text-gray-50">Order Summary</h2>
@@ -161,7 +160,7 @@ export default function Cart() {
                         </button>
                     </div>
                 </aside>
-            </main>
+            </div>
 
             <Footer />
         </div>

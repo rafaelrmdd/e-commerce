@@ -12,10 +12,13 @@ import Image from "next/image";
 
 export default function Products() {
     const searchParams = useSearchParams(); 
-    const router = useRouter();
     const categoryFromHome = searchParams.get("category");
     
+    const router = useRouter();
+    
     const { handleAddProductToCart, hasError } = useCart();
+
+    const { notifyFailure, notifySuccess, Toaster } = useToast();
 
     const {
         handleCategory,
@@ -52,7 +55,6 @@ export default function Products() {
         totalPages,
     } = useProductsPagination();
 
-    const { notifyFailure, notifySuccess, Toaster } = useToast();
     
     //Subcategories
     // [
@@ -110,7 +112,7 @@ export default function Products() {
         <div className="h-full bg-gray-900">
             <Header />
 
-            <main className="px-8 mt-8 mb-20">
+            <div className="px-8 mt-8">
                 <div className="flex justify-center">
                     <div 
                         className="flex items-center justify-between mb-8 rounded bg-gray-700 w-3/5">
@@ -130,8 +132,8 @@ export default function Products() {
                     </div>
                 </div>
                 
-                <div className="flex gap-x-8 h-full">
-                    <aside className="w-1/5">
+                <aside className="flex gap-x-8 h-full">
+                    <div className="w-1/5">
                         <div className="bg-gray-800 p-4 rounded w-full min-h-96">
                             <h2 className="text-gray-50 font-semibold text-xl mb-5">Filters</h2>
 
@@ -261,8 +263,9 @@ export default function Products() {
                                 Reset Filters
                             </button>
                         </div>
-                    </aside>
-                    <div className="flex-1">
+                    </div>
+
+                    <main className="flex-1">
                         <h2 className="text-2xl font-bold text-gray-50">Products</h2>
                         <h3 className="text-[0.8rem] text-gray-400 ">8 products found</h3>
 
@@ -355,9 +358,9 @@ export default function Products() {
                                 <span className="text-gray-400">&gt;</span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </main>
+                    </main>
+                </aside>
+            </div>
 
             <Footer />
 
