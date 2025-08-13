@@ -1,9 +1,9 @@
 Português / Portuguese
 
-🛒 E-commerce Educativo
-📖 Sobre o Projeto
-Este é um projeto de e-commerce desenvolvido para fins educativos, demonstrando a implementação completa de uma aplicação web moderna com foco em boas práticas de desenvolvimento, segurança e arquitetura limpa. O projeto representa uma solução full-stack robusta que simula um ambiente de produção real.
-🎯 Objetivo
+🛒 E-commerce Educativo <br/>
+📖 Sobre o Projeto <br/>
+Este é um projeto de e-commerce desenvolvido para fins educativos, demonstrando a implementação completa de uma aplicação web moderna com foco em boas práticas de desenvolvimento, segurança e arquitetura limpa. O projeto representa uma solução full-stack robusta que simula um ambiente de produção real. <br/>
+🎯 Objetivo <br/>
 O principal objetivo deste projeto é demonstrar competências técnicas em desenvolvimento web moderno, incluindo:
 
 * Desenvolvimento de aplicações React/Next.js com TypeScript
